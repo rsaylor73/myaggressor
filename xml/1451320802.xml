@@ -1,0 +1,34 @@
+
+				<Response>
+					<Say voice="woman">Greetings from Aggressor Fleet and Dancer Fleet. Please enter in the following verification code on your screen.</Say>
+					<Pause></Pause>
+					<Say voice="woman">9</Say>
+               <Pause></Pause>
+               <Say voice="woman">3</Say>
+               <Pause></Pause>
+               <Say voice="woman">5</Say>
+               <Pause></Pause>
+               <Say voice="woman">2</Say>
+					<Pause></Pause>
+					<Say voice="woman">Again, the code is</Say>
+               <Pause></Pause>
+               <Say voice="woman">9</Say>
+               <Pause></Pause>
+               <Say voice="woman">3</Say>
+               <Pause></Pause>
+               <Say voice="woman">5</Say>
+               <Pause></Pause>
+               <Say voice="woman">2</Say>
+               <Pause></Pause>
+               <Say voice="woman">Again, the code is</Say>
+               <Pause></Pause>
+               <Say voice="woman">9</Say>
+               <Pause></Pause>
+               <Say voice="woman">3</Say>
+               <Pause></Pause>
+               <Say voice="woman">5</Say>
+               <Pause></Pause>
+               <Say voice="woman">2</Say>
+               <Pause></Pause>
+					<Say voice="woman">Good by!</Say>
+				</Response>

@@ -1,0 +1,105 @@
+body {
+ margin-left: 0px;
+ margin-top: 0px;
+ margin-right: 0px;
+ margin-bottom: 0px;
+}
+
+@font-face {
+    font-family: "Aggressor";
+    src: url(helveticaneue-ultralight-webfont.ttf) format("truetype");
+}
+
+#div1 {
+	position:relative;
+	top:0px;
+	left:0px;
+	width: 100%;
+	overflow: hidden;
+	/*
+	-moz-background-size:100% 100%;
+	-webkit-background-size:100% 100%;
+	background-size:100% 100%;
+	background-image: url(http://www.aggressor.com/tinymce/plugins/moxiemanager/data/files/Images/1-hm-imgs/RedSea-Intro.jpg); */
+	/*
+   -moz-border-radius: 35px;
+   border-radius: 35px;
+   border:1px solid black;
+	*/
+
+}
+
+#search_message {
+   position: relative;
+   top: -1300px;
+   left: 80px;
+   height: 400px;
+   width: 800px;
+   background: #FFFFFF;
+   -moz-border-radius: 35px;
+   border-radius: 35px;
+   border:1px solid black;
+   opacity:0.65;
+   filter:alpha(opacity=50); /* For IE8 and earlier */
+}
+
+
+#reservation-box-outline {
+	position: relative;
+	top: -1300px;
+	left: 80px;
+	height: 400px;
+	width: 300px;
+	background: #FFFFFF;
+	-moz-border-radius: 35px;
+	border-radius: 35px;
+	border:1px solid black;
+	opacity:0.65;
+	filter:alpha(opacity=50); /* For IE8 and earlier */
+   overflow: hidden;
+
+}
+
+#search_message_inline {
+   position: relative;
+   top: -1640px;
+   left: 100px;
+   width: 300px;
+}
+
+#reservation-box-inline {
+	position: relative;
+	top: -1650px;
+	left: 100px;
+	width: 300px;
+   overflow: hidden;
+
+}
+
+.reservation-start-text {
+
+	font: 15px Aggressor;
+   color: #000000;
+}
+
+.reservation-search-text {
+	font: 26px Verdana;
+	color: #000000;
+}
+
+#reservation-start-input-box {
+	position: relative;
+	top: -1670px;
+	left: 200px;
+	width:150px;
+   overflow: hidden;
+}
+
+#reservation-start-input-box-submit {
+   position: relative;
+   top: -1670px;
+   left: 200px;
+   width:150px;
+   overflow: hidden;
+}
+

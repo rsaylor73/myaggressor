@@ -1,0 +1,38 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#page-header {
+	font-family: Arial;
+	font-size: 16px;
+	color: #308DD4;
+	width: 100%;
+	background-color: #F3F9FC;
+	height: 75px;
+	border-width: 2px;
+	border-color: #CDDFEB;
+	font-weight: normal;
+	line-height: 30px;
+	top: 0px;
+	left: 0px;
+}
+
+.hr {
+	width: 98%;
+	color: #308DD4;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+#page-footer {
+	font-family: Arial;
+	font-size: 13px;
+	color: #FFFFFF;
+	width: 100%;
+	background-color: #F3F9FC;
+	height: 30px;
+	font-weight: bold;
+	line-height: 30px;
+	
+}
