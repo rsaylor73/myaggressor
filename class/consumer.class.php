@@ -2417,7 +2417,7 @@ class Reservation {
                            <input type=\"hidden\" name=\"name\" value=\"$_GET[name]\">
                            <input type=\"hidden\" name=\"passengers\" value=\"$_GET[passengers]\">
                            <div id=\"btn_img2\">
-                           <input type=\"image\" onclick=\"load_bunks_img2(this.form);return false;\" src=\"buttons/bt-booknow.png\" border=0>
+                           <input type=\"image\" onclick=\"load_bunks_img2(this.form);return false;\" src=\"buttons/bt-select.png\" border=0>
 									</div>
                            </form>
 									</center><br>\n";
@@ -2435,7 +2435,7 @@ class Reservation {
                            <input type=\"hidden\" name=\"name\" value=\"$_GET[name]\">
                            <input type=\"hidden\" name=\"passengers\" value=\"$_GET[passengers]\">
 									<div id=\"btn_img2\">
-                           <input type=\"image\" onclick=\"load_bunks_img2(this.form);return false;\" src=\"buttons/bt-booknow.png\" border=0>
+                           <input type=\"image\" onclick=\"load_bunks_img2(this.form);return false;\" src=\"buttons/bt-select.png\" border=0>
 									</div>
                            </form>
 									</center><br>\n";
@@ -2523,7 +2523,7 @@ class Reservation {
                            <input type=\"hidden\" name=\"name\" value=\"$_GET[name]\">
                            <input type=\"hidden\" name=\"passengers\" value=\"$_GET[passengers]\">
                            <div id=\"btn_img3\">
-                           <input type=\"image\" onclick=\"load_bunks_img3(this.form);return false;\" src=\"buttons/bt-booknow.png\" border=0>
+                           <input type=\"image\" onclick=\"load_bunks_img3(this.form);return false;\" src=\"buttons/bt-select.png\" border=0>
 									</div>
                            </form>
 									</center><br>\n";
@@ -2542,7 +2542,7 @@ class Reservation {
                            <input type=\"hidden\" name=\"name\" value=\"$_GET[name]\">
                            <input type=\"hidden\" name=\"passengers\" value=\"$_GET[passengers]\">
                            <div id=\"btn_img3\">
-                           <input type=\"image\" onclick=\"load_bunks_img3(this.form);return false;\" src=\"buttons/bt-booknow.png\" border=0>
+                           <input type=\"image\" onclick=\"load_bunks_img3(this.form);return false;\" src=\"buttons/bt-select.png\" border=0>
 									</div>
                            </form>
    		                  </center><br>\n";
@@ -2631,7 +2631,7 @@ class Reservation {
                            <input type=\"hidden\" name=\"name\" value=\"$_GET[name]\">
                            <input type=\"hidden\" name=\"passengers\" value=\"$_GET[passengers]\">
                            <div id=\"btn_img4\">
-                           <input type=\"image\" onclick=\"load_bunks_img4(this.form);return false;\" src=\"buttons/bt-booknow.png\" border=0>
+                           <input type=\"image\" onclick=\"load_bunks_img4(this.form);return false;\" src=\"buttons/bt-select.png\" border=0>
 									</div>
                            </form>
 									</center><br>\n";
@@ -2650,7 +2650,7 @@ class Reservation {
                            <input type=\"hidden\" name=\"name\" value=\"$_GET[name]\">
                            <input type=\"hidden\" name=\"passengers\" value=\"$_GET[passengers]\">
                            <div id=\"btn_img4\">
-                           <input type=\"image\" onclick=\"load_bunks_img4(this.form);return false;\" src=\"buttons/bt-booknow.png\" border=0>
+                           <input type=\"image\" onclick=\"load_bunks_img4(this.form);return false;\" src=\"buttons/bt-select.png\" border=0>
 									</div>
                            </form>
 									</center><br>\n";
