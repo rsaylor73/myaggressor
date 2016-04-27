@@ -86,8 +86,18 @@ while ($row2 = $result->fetch_assoc()) {
 		$boat = $row2['name'];
 		print "<tr><td><b>Stateroom</b></td><td><b>Nights</b></td><td><b>Price</b></td></tr>";
 	}
-	$comm = $row2['bunk_price'] / $row['default_commission'];
-	$bunk_price = $row2['bunk_price'] + $comm;
+
+	$default_commission = $row['default_commission'] * .01;
+
+	//print "$row2[bunk_price] * $row[default_commission]<br>";
+
+	$comm = $row2['bunk_price'] * $default_commission;
+
+	//print "$row2[bunk_price] - $comm<br>";
+
+	$bunk_price = $row2['bunk_price'] - $comm;
+
+
 	$stateroom = explode("-",$row2['bunk']);
 
    $sql3 = "SELECT `cabin_type` FROM `bunks` WHERE `boatID` = '$row2[boatID]' AND CONCAT(`cabin`,`bunk`) = '$stateroom[1]'";
