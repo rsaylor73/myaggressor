@@ -3187,7 +3187,7 @@ class Reservation {
 								if ($_GET['passengers'] == "1") {
 									print "<input type=\"image\" src=\"buttons/bt-select.png\" name=\"inventoryID_$row[inventoryID]\" id=\"inventoryID_$row[inventoryID]\" onclick=\"quickbook".$row['inventoryID']."(this.form);return false;\">";
 								} else {
-                           print "<input type=\"image\" src=\"buttons/bt-select.png\" name=\"inventoryID_$row[inventoryID]\" id=\"inventoryID_$row[inventoryID]\" onclick=\"quickbook".$row['inventoryID']."(this.form);return false;\">";
+                           print "<input type=\"image\" src=\"buttons/bt-book.png\" name=\"inventoryID_$row[inventoryID]\" id=\"inventoryID_$row[inventoryID]\" onclick=\"quickbook".$row['inventoryID']."(this.form);return false;\">";
 								}
 								print "
 								</form>
