@@ -1,0 +1,10 @@
+Options +SymLinksIfOwnerMatch
+AddType application/x-httpd-php5 .php5 .php .php3 .php2 .phtml
+
+RewriteEngine on
+
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*) https://%{HTTP_HOST}/$1
+
+RewriteCond %{HTTP_HOST} !^www\.
+RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301]
