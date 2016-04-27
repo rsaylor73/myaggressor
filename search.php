@@ -14,8 +14,6 @@ session_start();
 if ($bg != "1") {
 ?>
 <div id="toparea">
-ResSys/hm-ressys.html
-
    <iframe id="iframe" src="ResSys/hm-ressys.html" style="width:1950px;height:1400px;max-width:100%;overflow:hidden;border:0;padding:0;margin:0 auto;displ
 ay:block;scrolling=No;" marginheight="0" marginwidth="0"></iframe>
    <!-- Sets a transparent box -->
