@@ -41,25 +41,7 @@
 <script>
 
 
-<?php
-            switch ($_SESSION['contact_type']) {
-               case "consumer":
-          $max1 = "72M";
-               break;
 
-               case "reseller_manager":
-               case "reseller_agent":
-               case "reseller_third_party":
-          $max1 = "6M";
-          $max2 = "12M";
-          break;
-
-          default:
-          $max1 = "72M";
-          $max2 = "72M";
-          break;
-        }
-?>
 
    $(function() {
      $( "#start_date" ).datepicker({ 
