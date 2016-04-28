@@ -121,6 +121,16 @@ class Common {
 
          ?>
 
+
+
+<div class="row">
+	<div class="col-md-4">Image</div>
+	<div class="col-md-4">Stuff</div>
+</div>
+
+
+
+
 <table width="817" border="0" cellspacing="0" cellpadding="0">
  <tbody>
    <tr>
@@ -128,7 +138,7 @@ class Common {
        <tr>
          <td height="47">
          <input type="button" value="Update Profile" class="btn btn-primary" onclick="document.location.href='profile.php';">
-         <img name="ProfilePageMenu01" src="buttons/bt-updateprofile.png" width="185" height="32" id="ProfilePageMenu01" alt="" onclick="document.location.href='profile.php';" /></td>
+         </td>
        </tr>
        <tr>
          <td height="47"><img name="ProfilePageMenu02" src="buttons/bt-myreservations.png" width="185" height="32" id="ProfilePageMenu02" alt="" onclick="document.location.href='myreservations.php';" /></td>
