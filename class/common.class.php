@@ -76,120 +76,9 @@ class Common {
          print "<div id=\"result_pos3\">";
 		}
 
-      public function dive_map() {
-            print "
-            <div id=\"result_wrapper\">
-               <div id=\"result_pos1\">
-                  <div id=\"result_pos2\">
-                     <br>
-                     <table border=\"0\" width=\"950\" cellpadding=\"0\" cellspacing=\"0\">
-                        <tr>
-                           <td>
-                           ";
-
-                           $map = "ok";
-                           include "dive_map.php";
-
-                           print "
-                           </td>
-                        </tr>
-                        <tr>
-                           <td>
-                              <table border=\"0\" width=\"950\" cellpadding=\"0\" cellspacing=\"0\" background=\"bt-bck.jpg\" height=\"30\">
-                                 <tr>
-                                    <td width=\"263\" class=\"details-top\">&nbsp;&nbsp;MyAggressor</td>
-                                    <td width=\"303\" class=\"details-top\">&nbsp;</td>
-                                    <td width=\"283\" align=\"right\" class=\"details-top\">&nbsp;</td>
-                                 </tr>
-                              </table> 
-                           </td>
-                        </tr>
-                     </table>
-                    <div style=\"clear:both;\"></div>
-            ";
-
-
-         print "<div id=\"result_pos3\">";
-      }
-
-
 		public function header_bot() {
           print "</div></div></div></div>";
 		}
-
-      public function myaggressor() {
-
-         ?>
-
-
-
-<div class="row">
-	<div class="col-md-4">Image</div>
-	<div class="col-md-4">Stuff</div>
-</div>
-
-
-
-
-<table width="817" border="0" cellspacing="0" cellpadding="0">
- <tbody>
-   <tr>
-     <td valign="top"><table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="217">
-       <tr>
-         <td height="47">
-         <input type="button" value="Update Profile" class="btn btn-primary" onclick="document.location.href='profile.php';">
-         </td>
-       </tr>
-       <tr>
-         <td height="47"><img name="ProfilePageMenu02" src="buttons/bt-myreservations.png" width="185" height="32" id="ProfilePageMenu02" alt="" onclick="document.location.href='myreservations.php';" /></td>
-       </tr>
-      <?php
-            switch ($_SESSION['contact_type']) {
-               case "reseller_manager":
-               case "reseller_agent":
-               case "reseller_third_party":
-               print "<tr><td height=\"47\"><input type=\"button\" value=\"Reseller Portal\" onclick=\"document.location.href='resellerportal.php'\"></td></tr>";
-               break;
-            }
-      ?>
-       <tr>
-         <td height="47">&nbsp;</td>
-       </tr>
-       <tr>
-         <td height="47">&nbsp;</td>
-       </tr>
-       <tr>
-         <td height="47">&nbsp;</td>
-       </tr>
-       <tr>
-         <td height="47">&nbsp;</td>
-       </tr>
-     </table></td>
-     <td align="center" valign="top"><table text-align:="text-align:" center;="center;"" bgcolor="#ffffff" border="0" cellpadding="8" cellspacing="0" width="600">
-       <tr>
-         <td width="200" colspan="3" valign="top"><p style="text-align: center"><img src="images/Ad_CR-Profile1.jpg" alt=""/></p></td>
-       </tr>
-     </table></td>
-   </tr>
- </tbody>
-</table>
-
-
-
-
-         <?php
-
-
-      }
-
-
-
-
-
-
-
-
-
 
 		public function consumer_portal_view() {
          ?>
@@ -311,29 +200,8 @@ class Common {
 
 		}
 
-      public function show_reseller_menu() {
-               $this->reseller_portal_view();
-      }
 
-      public function my_profile() {
-            $this->dive_map();
-            switch ($_SESSION['contact_type']) {
-               case "consumer":
-               $this->myaggressor();
-               break;
-
-               case "reseller_manager":
-               case "reseller_agent":
-               case "reseller_third_party":
-               //$this->reseller_portal_view();
-               $this->myaggressor();
-               break;
-            }
-         $this->header_bot();
-      }
-
-
-		public function my_profileOLD() {
+		public function my_profile() {
             $this->header_top();
 				switch ($_SESSION['contact_type']) {
 					case "consumer":

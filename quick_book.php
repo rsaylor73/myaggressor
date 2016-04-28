@@ -57,7 +57,7 @@
 			if ($total == $stop) {
 				print "
                   <form name=\"MyForm\"><input type=\"hidden\" name=\"qb\" value=\"$_POST[qb]\">
-                  <input type=\"image\" src=\"buttons/bt-booknow.png\" name=\"inventoryID_$_POST[qb]\" id=\"inventoryID_$_POST[qb]\" onclick=\"quickbook".$_POST['qb']."(this.form);return false;\">
+                  <input type=\"image\" src=\"buttons/bt-select.png\" name=\"inventoryID_$_POST[qb]\" id=\"inventoryID_$_POST[qb]\" onclick=\"quickbook".$_POST['qb']."(this.form);return false;\">
                   </form>";
 
 				print "<br><font color=red>You can not book for then 4 staterooms.</font>";
@@ -146,7 +146,7 @@
 			$_SESSION['found_before'] = "";
 			print "
                   <form name=\"MyForm\"><input type=\"hidden\" name=\"qb\" value=\"$_POST[cancel]\">
-                  <input type=\"image\" src=\"buttons/bt-booknow.png\" name=\"inventoryID_$_POST[cancel]\" id=\"inventoryID_$_POST[cancel]\" onclick=\"quickbook".$_POST['cancel']."(this.form);return false;\">
+                  <input type=\"image\" src=\"buttons/bt-select.png\" name=\"inventoryID_$_POST[cancel]\" id=\"inventoryID_$_POST[cancel]\" onclick=\"quickbook".$_POST['cancel']."(this.form);return false;\">
                   </form>";
 
 						?>
