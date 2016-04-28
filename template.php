@@ -1,3 +1,8 @@
+<?php
+session_start();
+include "settings.php";
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,8 +22,8 @@
 
     <!-- Custom styles for this template -->
     <link href="assets/css/main.css" rel="stylesheet">
-     <link rel="stylesheet" href="css/styles.css">
-   <link rel="stylesheet" href="css/af.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/af.css">
 
     <!-- jQuery -->
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -73,8 +78,10 @@
       <div id="main_element">
         <div class="col-md-4">
 
-        menu here
-
+			<?php
+			$bg = "1";
+			include "search.php";
+			?>
 
         </div>
         <div class="col-md-8">
