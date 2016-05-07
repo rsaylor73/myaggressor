@@ -164,7 +164,7 @@ class Common {
  
      </table></td>
      <td align="center" valign="top">
-        <table text-align:="text-align:" center;="center;"" bgcolor="#ffffff" border="0" cellpadding="8" cellspacing="0" width="600">
+        <table text-align:="text-align:" center;="center;"" bgcolor="#ffffff" border="0" cellpadding="8" cellspacing="0" width="800">
         <tr>
           <td colspan="2">
           
