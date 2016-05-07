@@ -171,14 +171,14 @@ class Common {
           <span id="myaggressor">VIP Progress Bar</span><br>
 
           <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
               <span class="sr-only">60% Complete</span>
             </div>
           </div>
           
           </td>
           <td>
-            <i class="fa fa-facebook fa-5x" aria-hidden="true"></i>
+            <i class="fa fa-facebook fa-4x" aria-hidden="true"></i>
           </td>
         </tr>
         <tr>
@@ -186,13 +186,13 @@ class Common {
           
           <span id="myaggressor">7 Seas Progress Bar</span><br>
           <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-              <span class="sr-only">60% Complete</span>
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+              <span class="sr-only">30% Complete</span>
             </div>
           </div>        
           </td>
           <td>
-            <i class="fa fa-twitter fa-5x" aria-hidden="true"></i>
+            <i class="fa fa-twitter fa-4x" aria-hidden="true"></i>
           </td>
         </tr>
 
