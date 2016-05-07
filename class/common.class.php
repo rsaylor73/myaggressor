@@ -136,7 +136,7 @@ class Common {
          <td><br>
          
          <img src="avatar/default_avatar.png" width="200"><br>
-         <span class="myaggressor">
+         <span id="myaggressor">
          <?php
          print "$_SESSION[first] $_SESSION[last]";
          ?>
