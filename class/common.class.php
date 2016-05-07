@@ -159,18 +159,37 @@ class Common {
 
          </td>
        </tr>
-       <tr>
-         <td height="47">
-         <!--
-         <img name="ProfilePageMenu02" src="buttons/bt-myreservations.png" width="185" height="32" id="ProfilePageMenu02" alt="" onclick="document.location.href='myreservations.php';" /></td>
-          -->
-       </tr>
+
 
  
      </table></td>
-     <td align="center" valign="top"><table text-align:="text-align:" center;="center;"" bgcolor="#ffffff" border="0" cellpadding="8" cellspacing="0" width="600">
-       <tr>
-         <td width="200" colspan="3" valign="top"><p style="text-align: center"><img src="images/Ad_CR-Profile1.jpg" alt=""/></p></td>
+     <td align="center" valign="top">
+        <table text-align:="text-align:" center;="center;"" bgcolor="#ffffff" border="0" cellpadding="8" cellspacing="0" width="600">
+        <tr>
+          <td colspan="2">
+          
+          VIP Progress Bar<br>
+
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+              <span class="sr-only">60% Complete</span>
+            </div>
+          </div>
+          
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+          
+          7 Seas
+          
+          </td>
+        </tr>
+
+
+
+
+         <p style="text-align: center"><img src="images/Ad_CR-Profile1.jpg" alt=""/></p></td>
        </tr>
      </table></td>
    </tr>
