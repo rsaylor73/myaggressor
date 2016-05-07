@@ -123,10 +123,32 @@ class Common {
 
 
 
-<div class="row">
-	<div class="col-md-4">Image</div>
-	<div class="col-md-4">Stuff</div>
-</div>
+<table width="817" border="0" cellspacing="0" cellpadding="0">
+ <tr>
+  <td width="40%">
+    <table border="0" width="100%">
+      <tr>
+        <td>
+          Image
+
+
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td width="60%">
+    <tabele border="0" width="100%">
+      <tr>
+        <td>
+          VIP, 7 seas, etc
+
+
+        </td>
+      </tr>
+    </tabele>
+  </td>
+</tr>
+</table>
 
 
 
