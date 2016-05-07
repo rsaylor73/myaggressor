@@ -123,32 +123,7 @@ class Common {
 
 
 
-<table width="817" border="0" cellspacing="0" cellpadding="0">
- <tr>
-  <td width="40%">
-    <table border="0" width="100%">
-      <tr>
-        <td>
-          Image
 
-
-        </td>
-      </tr>
-    </table>
-  </td>
-  <td width="60%">
-    <tabele border="0" width="100%">
-      <tr>
-        <td>
-          VIP, 7 seas, etc
-
-
-        </td>
-      </tr>
-    </tabele>
-  </td>
-</tr>
-</table>
 
 
 
@@ -159,7 +134,12 @@ class Common {
      <td valign="top"><table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="217">
        <tr>
          <td height="47">
-         <input type="button" value="Update Profile" class="btn btn-primary" onclick="document.location.href='profile.php';">
+         <input type="button" value="Update Profile" class="btn btn-primary" onclick="document.location.href='profile.php';"><br>
+         <input type="button" value="My Reservations" class="btn btn-primary" onclick="document.location.href='myreservations.php';"><br>
+
+
+
+
          </td>
        </tr>
        <tr>
