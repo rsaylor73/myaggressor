@@ -178,7 +178,7 @@ class Common {
           
           </td>
           <td>
-            <i class="fa fa-facebook" aria-hidden="true"></i>
+            <i class="fa fa-facebook fa-5x" aria-hidden="true"></i>
           </td>
         </tr>
         <tr>
