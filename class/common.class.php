@@ -181,7 +181,13 @@ class Common {
         <tr>
           <td colspan="2">
           
-          7 Seas
+          7 Seas Progress Bar<br>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+              <span class="sr-only">60% Complete</span>
+            </div>
+          </div>
+          
           
           </td>
         </tr>
