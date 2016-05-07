@@ -149,7 +149,7 @@ class Common {
                case "reseller_manager":
                case "reseller_agent":
                case "reseller_third_party":
-               print "<input type=\"button\" value=\"Reseller Portal\" style=\"width:200px\" class=\"btn btn-primary\" onclick=\"document.location.href='resellerportal.php'\"><br>";
+               print "<br><input type=\"button\" value=\"Reseller Portal\" style=\"width:200px\" class=\"btn btn-primary\" onclick=\"document.location.href='resellerportal.php'\"><br>";
                break;
             }
           ?>
