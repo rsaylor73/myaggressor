@@ -134,6 +134,11 @@ class Common {
      <td valign="top"><table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="217">
        <tr>
          <td><br>
+         <pre>
+         <?php
+         print_r($_SESSION);
+         ?>
+         </pre>
          <img src="avatar/default_avatar.png" width="200"><br>
          <input type="button" style="width:200px;" value="Update Profile" class="btn btn-primary" onclick="document.location.href='profile.php';"><br><br>
          <input type="button" style="width:200px;" value="My Reservations" class="btn btn-primary" onclick="document.location.href='myreservations.php';"><br>
