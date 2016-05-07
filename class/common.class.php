@@ -189,8 +189,7 @@ class Common {
 
 
 
-         <p style="text-align: center"><img src="images/Ad_CR-Profile1.jpg" alt=""/></p></td>
-       </tr>
+         
      </table></td>
    </tr>
  </tbody>
