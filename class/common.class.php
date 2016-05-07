@@ -144,35 +144,28 @@ class Common {
          <input type="button" style="width:200px;" value="Update Profile" class="btn btn-primary" onclick="document.location.href='profile.php';"><br><br>
          <input type="button" style="width:200px;" value="My Reservations" class="btn btn-primary" onclick="document.location.href='myreservations.php';"><br>
 
+         <?php
+           switch ($_SESSION['contact_type']) {
+               case "reseller_manager":
+               case "reseller_agent":
+               case "reseller_third_party":
+               print "<input type=\"button\" value=\"Reseller Portal\" style=\"width:200px\" class=\"btn btn-primary\" onclick=\"document.location.href='resellerportal.php'\"><br>";
+               break;
+            }
+          ?>
 
 
 
          </td>
        </tr>
        <tr>
-         <td height="47"><img name="ProfilePageMenu02" src="buttons/bt-myreservations.png" width="185" height="32" id="ProfilePageMenu02" alt="" onclick="document.location.href='myreservations.php';" /></td>
+         <td height="47">
+         <!--
+         <img name="ProfilePageMenu02" src="buttons/bt-myreservations.png" width="185" height="32" id="ProfilePageMenu02" alt="" onclick="document.location.href='myreservations.php';" /></td>
+          -->
        </tr>
-      <?php
-            switch ($_SESSION['contact_type']) {
-               case "reseller_manager":
-               case "reseller_agent":
-               case "reseller_third_party":
-               print "<tr><td height=\"47\"><input type=\"button\" value=\"Reseller Portal\" onclick=\"document.location.href='resellerportal.php'\"></td></tr>";
-               break;
-            }
-      ?>
-       <tr>
-         <td height="47">&nbsp;</td>
-       </tr>
-       <tr>
-         <td height="47">&nbsp;</td>
-       </tr>
-       <tr>
-         <td height="47">&nbsp;</td>
-       </tr>
-       <tr>
-         <td height="47">&nbsp;</td>
-       </tr>
+
+ 
      </table></td>
      <td align="center" valign="top"><table text-align:="text-align:" center;="center;"" bgcolor="#ffffff" border="0" cellpadding="8" cellspacing="0" width="600">
        <tr>
