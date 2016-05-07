@@ -196,6 +196,25 @@ class Common {
           </td>
         </tr>
 
+        <tr>
+          <td colspan="3">
+          <table border="0" width="100%">
+            <tr>
+              <td width="50%">
+                
+                Log Book
+              
+              </td>
+              <td width="50%">
+                
+                Boutique Points
+              
+              </td>
+            </tr>
+          </table>
+
+          </td>
+        </tr>
 
 
 
