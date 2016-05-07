@@ -408,7 +408,7 @@ hr {
 	margin-right: 10px;
 }
 
-.btn:hover {
+.afbtn:hover {
   background: #bce0f7;
   background-image: -webkit-linear-gradient(top, #bce0f7, #ffffff);
   background-image: -moz-linear-gradient(top, #bce0f7, #ffffff);
