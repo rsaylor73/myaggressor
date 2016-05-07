@@ -192,7 +192,7 @@ class Common {
           </div>        
           </td>
           <td>
-            <i class="fa fa-facebook" aria-hidden="true"></i>
+            <i class="fa fa-twitter fa-5x" aria-hidden="true"></i>
           </td>
         </tr>
 
