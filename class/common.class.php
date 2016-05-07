@@ -136,12 +136,11 @@ class Common {
          <td><br>
          
          <img src="avatar/default_avatar.png" width="200"><br>
-         <h6><center>
+         <span class="myaggressor">
          <?php
          print "$_SESSION[first] $_SESSION[last]";
          ?>
-         </center>
-         </h6>
+         </span>
          <input type="button" style="width:200px;" value="Update Profile" class="btn btn-primary" onclick="document.location.href='profile.php';"><br><br>
          <input type="button" style="width:200px;" value="My Reservations" class="btn btn-primary" onclick="document.location.href='myreservations.php';"><br>
 
