@@ -177,6 +177,9 @@ class Common {
           </div>
           
           </td>
+          <td>
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+          </td>
         </tr>
         <tr>
           <td colspan="2">
@@ -186,10 +189,10 @@ class Common {
             <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
               <span class="sr-only">60% Complete</span>
             </div>
-          </div><i class="fa fa-facebook" aria-hidden="true"></i>
-
-          
-          
+          </div>        
+          </td>
+          <td>
+            <i class="fa fa-facebook" aria-hidden="true"></i>
           </td>
         </tr>
 
