@@ -4,7 +4,7 @@ include "settings.php";
 $err = "1";
 
 if (($_GET['uuname'] != "") && ($_GET['uupass'] != "")) {
-	$sql = "SELECT `first`,`last`,`uuname`,`uupass`,`contactID`,`email`,`sex`, `contact_type`,`reseller_agentID` FROM `contacts` WHERE `uuname` = '$_GET[uuname]' AND `uupass` = '$_GET[uupass]'";
+	$sql = "SELECT `first`,`last`,`uuname`,`uupass`,`contactID`,`email`,`sex`, `contact_type`,`reseller_agentID`,`city`,`state`,`province` FROM `contacts` WHERE `uuname` = '$_GET[uuname]' AND `uupass` = '$_GET[uupass]'";
 
 	$result = $reservation->new_mysql($sql);
 	while ($row = $result->fetch_assoc()) {
@@ -17,6 +17,9 @@ if (($_GET['uuname'] != "") && ($_GET['uupass'] != "")) {
 		$_SESSION['email'] = $row['email'];
 		$_SESSION['sex'] = $row['sex'];
 		$_SESSION['contact_type'] = $row['contact_type'];
+		$_SESSION['city'] = $row['city'];
+		$_SESSION['state'] = $row['state'];
+		$_SESSION['province'] = $row['province'];
 		// look up reseller if reseller
 		if ($row['reseller_agentID'] != "") {
 			$sql2 = "SELECT `resellerID`,`reseller_agentID` FROM `reseller_agents` WHERE `reseller_agentID` = '$row[reseller_agentID]'";

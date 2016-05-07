@@ -138,7 +138,7 @@ class Common {
          <img src="avatar/default_avatar.png" width="200"><br>
          <span id="myaggressor"><center>
          <?php
-         print "$_SESSION[first] $_SESSION[last]";
+         print "$_SESSION[first] $_SESSION[last]<br>$_SESSION[city], $_SESSION[state]$_SESSION[province]<br>";
          ?>
          </center></span>
          <input type="button" style="width:200px;" value="Update Profile" class="btn btn-primary" onclick="document.location.href='profile.php';"><br><br>
