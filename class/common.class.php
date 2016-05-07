@@ -136,7 +136,7 @@ class Common {
          <td><br>
          <pre>
          <?php
-         print_r($_SESSION);
+         //print_r($_SESSION);
          ?>
          </pre>
          <img src="avatar/default_avatar.png" width="200"><br>
