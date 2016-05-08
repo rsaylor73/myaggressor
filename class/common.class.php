@@ -675,10 +675,11 @@ class Common {
 
          print "<br><span class=\"result-title-text\">My Profile ($_SESSION[first] $_SESSION[last])</span><br><br>
          <span class=\"details-description\">
-				<form name=\"myform\" action=\"profile.php\" method=\"post\">
+				<form name=\"myform\" action=\"profile.php\" method=\"post\" enctype=\"multipart/form-data\">
 				<input type=\"hidden\" name=\"section\" value=\"update\">
 				<table border=0 width=90%>
 				<tr><td>Name:</td><td>$row[first] $row[middle] $row[last]</td></tr>
+        <tr><td>Profile Picture:</td><td><input type=\"file\" name=\"avatar\"></td></tr>
 				<tr><td>Address Line 1:</td><td><input type\"text\" name=\"address1\" size=40 value=\"$row[address1]\"></td></tr>
 				<tr><td>Address Line 2:</td><td><input type=\"text\" name=\"address2\" size=40 value=\"$row[address2]\"></td></tr>
 				<tr><td>City:</td><td><input type=\"text\" name=\"city\" size=40 value=\"$row[city]\"></td></tr>
@@ -735,6 +736,7 @@ class Common {
 					break;
 				}
 
+        print "<tr><td>Total Number of Dives:</td><td><input type=\"text\" name=\"total_dives\" value=\"$row[total_dives]\" size=40></td></tr>";
 				print "<tr><td>Account Type:</td><td>$type</td></tr>";
 				print "<tr><td>&nbsp;</td><td><br><input type=\"submit\" class=\"btn btn-success\" value=\"Update\"></td></tr>";
 				print "
