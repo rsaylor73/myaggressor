@@ -245,6 +245,22 @@ class Common {
                 <br><br>Photo ADD HERE<br><br>
               </td>
             </tr>
+
+            <tr>
+              <td valign=top>
+                <b>Creature Checklist</b><br><br>
+                Give list and checkboxes...<Br><br><br>
+                <a href="#">View All</a>&nbsp;&nbsp;<a href="#">Edit</a><br>
+              </td>
+
+              <td>
+                <b>Most Wanted</b><br><br>
+                Give list and checkbox<br><br><br>
+                <a href="#">Edit</a><br>
+              </td>
+            </tr>
+
+
           </table>
 
           </td>
