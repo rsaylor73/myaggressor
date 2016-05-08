@@ -201,8 +201,19 @@ class Common {
           <table border="0" width="100%">
             <tr>
               <td width="50%">
-                
-                Log Book
+                <table border="0" width="300">
+                  <tr>
+                    <td valign=top>
+                      <i class="fa fa-book fa-5x" aria-hidden="true"></i>
+                    </td>
+                    <td valign=top>
+
+                      <b>Log Book</b><br>
+                      DISPLAY LOGS<br><br><br>
+                      <a href="#">Add Log</a>&nbsp;&nbsp;<a href="#">View All</a><br>
+                    </td>
+                  </tr>
+                </table>
               
               </td>
               <td width="50%">
