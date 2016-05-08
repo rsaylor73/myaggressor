@@ -629,6 +629,16 @@ class Common {
 
 		}
 
+    public function file_types($type) {
+      $ext = "1";
+      $sql = "SELECT * FROM `file_types` WHERE `meta` = '$type'";
+         $result = $this->new_mysql($sql);
+                while ($row = $result->fetch_assoc()) {
+                        $ext = $row['ext'];
+                }
+                return $ext;
+        }
+
 		public function save_update_profile() {
          $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
          $check_login = $this->check_login();
@@ -642,7 +652,26 @@ class Common {
          print "<br><span class=\"result-title-text\">My Profile ($_SESSION[first] $_SESSION[last])</span><br><br>
          <span class=\"details-description\">";
 
-			$sql = "UPDATE `contacts` SET `address1` = '$_POST[address1]', `address2` = '$_POST[address2]', `city` = '$_POST[city]', `state` = '$_POST[state]', `province` = '$_POST[province]', `countryID` = '$_POST[countryID]',`zip` = '$_POST[zip]',
+      // upload image
+      $fileName = $_FILES['avatar']['name'];
+      $tmpName  = $_FILES['avatar']['tmp_name'];
+      $fileSize = $_FILES['avatar']['size'];
+      $fileType = $_FILES['avatar']['type'];
+      if ($fileName != "") {
+        $ext = $this->file_types($fileType);
+        if ($ext == "1") {
+          print "Supported file types are<br>GIF, PNG, JPG<br>";
+        } else {
+          $today = date("Ymd");
+          $new_file = date("U");
+          $new_file .= rand(50,500);
+          $new_file .= $ext;
+          move_uploaded_file("$tmpName", "avatar/$new_file");
+          chmod("avatar/$new_file", 0644);
+        }
+      }
+
+			 $sql = "UPDATE `contacts` SET `address1` = '$_POST[address1]', `address2` = '$_POST[address2]', `city` = '$_POST[city]', `state` = '$_POST[state]', `province` = '$_POST[province]', `countryID` = '$_POST[countryID]',`zip` = '$_POST[zip]',
 			`phone1` = '$_POST[phone1]', `phone2` = '$_POST[phone2]', `phone3` = '$_POST[phone3]', `phone4` = '$_POST[phone4]', `uupass` = '$_POST[uupass]' WHERE `contactID` = '$_SESSION[contactID]'";
 			$result = $this->new_mysql($sql);
 			if ($result == "TRUE") {
