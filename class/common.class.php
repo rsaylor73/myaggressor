@@ -236,14 +236,18 @@ class Common {
             </tr>
             <tr>
               <td valign=top>
-                <b>Awards & Certifications</b><br>
+                <table border="0" width="100%"><tr><td bgcolor="#ECECEC">
+                  <b>Awards & Certifications</b><br>
 
-                <br><br>...<br><br>
-                <a href="#">View All</a><br>
+                  <br><br>...<br><br>
+                  <a href="#">View All</a><br>
+                </td></tr></table>
+                
               </td>
               <td valign="top">
                 <br><br>Photo ADD HERE<br><br>
               </td>
+
             </tr>
 
             <tr>
