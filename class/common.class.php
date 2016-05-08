@@ -677,7 +677,7 @@ class Common {
          <span class=\"details-description\">
 				<form name=\"myform\" action=\"profile.php\" method=\"post\" enctype=\"multipart/form-data\">
 				<input type=\"hidden\" name=\"section\" value=\"update\">
-				<table border=0 width=90%>
+				<table border=0 width=90% class=\"table\">
 				<tr><td>Name:</td><td>$row[first] $row[middle] $row[last]</td></tr>
         <tr><td>Profile Picture:</td><td><input type=\"file\" name=\"avatar\"></td></tr>
 				<tr><td>Address Line 1:</td><td><input type\"text\" name=\"address1\" size=40 value=\"$row[address1]\"></td></tr>
