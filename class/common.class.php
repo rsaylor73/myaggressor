@@ -225,9 +225,8 @@ class Common {
                     </td>
                     <td valign=top>
 
-                      <b>Log Book</b><br>
-                      Boutique Points<br><br><br>
-                      203<br>
+                      <b>Boutique Points</b><br><br>
+                      <center><h1>203</h1><br><br><br>
                       <a href="#">Redeem</a>&nbsp;&nbsp;<a href="http://www.liveaboardboutique.com/" target=_blank>Shop</a><br>
 
                     </td>
