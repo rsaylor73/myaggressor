@@ -736,7 +736,7 @@ class Common {
 				}
 
 				print "<tr><td>Account Type:</td><td>$type</td></tr>";
-				print "<tr><td>&nbsp;</td><td><input type=\"submit\" value=\"Update\"></td></tr>";
+				print "<tr><td>&nbsp;</td><td><input type=\"submit\" class=\"btn btn-success\" value=\"Update\"></td></tr>";
 				print "
 				</table>
 				</form>
