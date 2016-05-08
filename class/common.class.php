@@ -218,8 +218,21 @@ class Common {
               </td>
               <td width="50%">
                 
-                Boutique Points
-              
+                <table border="0" width="300">
+                  <tr>
+                    <td valign=top>
+                      <i class="fa fa-usd fa-5x" aria-hidden="true"></i>
+                    </td>
+                    <td valign=top>
+
+                      <b>Log Book</b><br>
+                      Boutique Points<br><br><br>
+                      203<br>
+                      <a href="#">Redeem</a>&nbsp;&nbsp;<a href="http://www.liveaboardboutique.com/" target=_blank>Shop</a><br>
+
+                    </td>
+                  </tr>
+                </table>              
               </td>
             </tr>
           </table>
