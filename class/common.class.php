@@ -226,7 +226,7 @@ class Common {
                     <td valign=top>
 
                       <b>Boutique Points</b><br><br>
-                      <center><h1>203</h1><br><br><br>
+                      <center><font size="4">203</font></center><br><br><br>
                       <a href="#">Redeem</a>&nbsp;&nbsp;<a href="http://www.liveaboardboutique.com/" target=_blank>Shop</a><br>
 
                     </td>
