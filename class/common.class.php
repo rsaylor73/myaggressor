@@ -350,10 +350,14 @@ class Common {
 			        <tr>
 			          <td height="47"><img name="ProfilePageMenu02" src="buttons/bt-myreservations.png" width="185" height="32" id="ProfilePageMenu02" alt="" onclick="document.location.href='myreservations.php';" /></td>
 			        </tr>
+				<?php
+				if ($_SESSION['contact_type'] != "reseller_third_party") {
+				?>
 			        <tr>
 			          <td height="47"><img name="ProfilePageMenu03" src="buttons/bt-allreservations.png" width="185" height="32" id="ProfilePageMenu03" alt="" onclick="document.location.href='agentreservations.php';" /></td>
 			        </tr>
 				<?php
+				}
 				if ($_SESSION['contact_type'] == "reseller_manager") {
 				?>
 			        <tr>
@@ -374,7 +378,13 @@ class Common {
 			          <td colspan="3">
 
 
-				<p><strong>Welcome to the Reseller Reservation System.</strong> We have provided the following 
+<?php
+   if ($_SESSION['contact_type'] == "reseller_third_party") {
+      $extra_msg = " authorized by $_SESSION[company]";
+   }
+?>
+
+				<p><strong>Welcome <?=$_SESSION['first'];?> <?=$_SESSION['last'];?><?=$extra_msg;?> to the Reseller Reservation System.</strong> We have provided the following 
            Agent Resources to assist you with marketing Aggressor Fleet.</p>
            <blockquote>
              <blockquote>
@@ -399,8 +409,7 @@ class Common {
 			          <td width="200" align="center"><a href="ComplimentarySpaces.pdf" target="_blank"><img name="ProfilePagetextresellers04" src="buttons/bt-groupspecials.png" width="188" height="32" id="ProfilePagetextresellers04" alt="" /></a></td>
 			        </tr>
 			        <tr>
-			          <td colspan="3"><p style="text-align: center">If you have any questions, please contact Tom Gebhardt, Director of Sales at: <br />
-			            <a href="mailto:sales@aggressor.com">sales@aggressor.com</a> or +706-933-2531</p>
+			          <td colspan="3"><p style="text-align: center">If you have any questions, please email <a href="sales@aggressor.com">sales@aggressor.com</a> or call +706-933-2531 <br />
 			            <p style="text-align: center; font-size: 11px;">The download and use of all images and videos provided by WayneWorks Marine, LLC <br />
 			              dba Aggressor Fleet , are subject to agreement of our <a href="terms.html" target=_blank>Terms and Conditions</a>.</p></td>
 			        </tr>
@@ -1307,6 +1316,12 @@ class Common {
 
          print "<br><span class=\"result-title-text\">Agent Reservations</span><br><br>
          <span class=\"details-description\">";
+
+         if ($_SESSION['contact_type'] == "reseller_third_party") {
+            print "<br><font color=red>You have requested an un-authorized section!</font><br>";
+            die;
+         }
+
 
 			if ($_GET['res'] != "") {
 				$res = "AND `reservations`.`reservationID` = '$_GET[res]'";
