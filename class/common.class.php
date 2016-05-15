@@ -677,11 +677,14 @@ class Common {
           $new_file .= $ext;
           move_uploaded_file("$tmpName", "avatar/$new_file");
           chmod("avatar/$new_file", 0644);
+          $avatar_sql = " ,`avatar` = '$new_file' ";
         }
       }
 
 			 $sql = "UPDATE `contacts` SET `address1` = '$_POST[address1]', `address2` = '$_POST[address2]', `city` = '$_POST[city]', `state` = '$_POST[state]', `province` = '$_POST[province]', `countryID` = '$_POST[countryID]',`zip` = '$_POST[zip]',
-			`phone1` = '$_POST[phone1]', `phone2` = '$_POST[phone2]', `phone3` = '$_POST[phone3]', `phone4` = '$_POST[phone4]', `uupass` = '$_POST[uupass]' WHERE `contactID` = '$_SESSION[contactID]'";
+			`phone1` = '$_POST[phone1]', `phone2` = '$_POST[phone2]', `phone3` = '$_POST[phone3]', `phone4` = '$_POST[phone4]', `uupass` = '$_POST[uupass]' $avatar_sql, `total_dives` = '$_POST[total_dives]'
+
+      WHERE `contactID` = '$_SESSION[contactID]'";
 			$result = $this->new_mysql($sql);
 			if ($result == "TRUE") {
 				print "<br>Your profile has been updated.<br>";
@@ -717,7 +720,15 @@ class Common {
 				<input type=\"hidden\" name=\"section\" value=\"update\">
 				<table border=0 width=90% class=\"table\">
 				<tr><td>Name:</td><td>$row[first] $row[middle] $row[last]</td></tr>
-        <tr><td>Profile Picture:</td><td><input type=\"file\" name=\"avatar\"></td></tr>
+        <tr><td>Profile Picture:</td><td><input type=\"file\" name=\"avatar\">
+        ";
+
+        if ($row['avatar'] != "") {
+          print "<img src=\"avatar/$row[avatar]\" height=\"64\">";
+        }
+
+        print "
+        </td></tr>
 				<tr><td>Address Line 1:</td><td><input type\"text\" name=\"address1\" size=40 value=\"$row[address1]\"></td></tr>
 				<tr><td>Address Line 2:</td><td><input type=\"text\" name=\"address2\" size=40 value=\"$row[address2]\"></td></tr>
 				<tr><td>City:</td><td><input type=\"text\" name=\"city\" size=40 value=\"$row[city]\"></td></tr>
