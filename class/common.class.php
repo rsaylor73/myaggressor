@@ -201,29 +201,30 @@ class Common {
                         $south_pacific++;
                 }
         }
+      }
 
-        if ($andaman > 0) {
-          $total = $total + 1.42857142857143;
-        }
-        if ($caribbean > 0) {
-          $total = $total + 1.42857142857143;
-        }
-        if ($eastern_pacific > 0) {
-          $total = $total + 1.42857142857143;
-        }
-        if ($indian_ocean > 0) {
-          $total = $total + 1.42857142857143;
-        }
-        if ($north_atlantic > 0) {
-          $total = $total + 1.42857142857143;
-        }
-        if ($red_sea > 0) {
-          $total = $total + 1.42857142857143;
-        }
-        if ($south_pacific > 0) {
-          $total = $total + 1.42857142857143;
-        }
-        return $total;
+      if ($andaman > 0) {
+        $total = $total + 1.42857142857143;
+      }
+      if ($caribbean > 0) {
+        $total = $total + 1.42857142857143;
+      }
+      if ($eastern_pacific > 0) {
+        $total = $total + 1.42857142857143;
+      }
+      if ($indian_ocean > 0) {
+        $total = $total + 1.42857142857143;
+      }
+      if ($north_atlantic > 0) {
+        $total = $total + 1.42857142857143;
+      }
+      if ($red_sea > 0) {
+        $total = $total + 1.42857142857143;
+      }
+      if ($south_pacific > 0) {
+        $total = $total + 1.42857142857143;
+      }
+      return $total;
 
     }
 
