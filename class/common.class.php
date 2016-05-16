@@ -126,7 +126,9 @@ class Common {
           $row['total_dives'] = "0";
         }
 
-         ?>
+        print "$_SESSION[contactID]";
+
+        ?>
 
 
 
