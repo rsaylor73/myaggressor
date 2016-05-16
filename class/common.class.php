@@ -314,7 +314,13 @@ class Common {
         <tr>
           <td colspan="2">
           
-          <span id="myaggressor">7 Seas Progress Bar</span><br>
+          <span id="myaggressor">7 Seas Progress Bar 
+          <?php
+            if ($seven_seas == "100") {
+              print '&nbsp;&nbsp;<i class="fa fa-check" aria-hidden="true" color="green"></i>';
+            }
+          ?>
+          </span><br>
           <div class="progress">
             <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?=$seven_seas;?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$seven_seas;?>%;">
               <span class="sr-only"><?=$seven_seas;?>% Complete</span>
