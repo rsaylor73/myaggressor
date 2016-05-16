@@ -148,7 +148,7 @@ class Common {
           <?php } ?>
          <center><span id="myaggressor">
          <?php
-         print "$_SESSION[first] $_SESSION[last]<br>$_SESSION[city], $_SESSION[state]$_SESSION[province]<br>";
+         print "$row[first] $row[last]<br>$row[city], $row[state]$row[province]<br>";
          print "<br>Total Dives - <font color=\"green\"><b>$row[total_dives]</b></font><br><br>";
          ?>
          </span></center>
