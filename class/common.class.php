@@ -149,7 +149,7 @@ class Common {
          <center><span id="myaggressor">
          <?php
          print "$_SESSION[first] $_SESSION[last]<br>$_SESSION[city], $_SESSION[state]$_SESSION[province]<br>";
-         print "<br>Total Dives - <font color=\"green\"><b><?=$row['total_dives'];?></b></font><br><br>";
+         print "<br>Total Dives - <font color=\"green\"><b>$row[total_dives]</b></font><br><br>";
          ?>
          </span></center>
          <input type="button" style="width:200px;" value="Update Profile" class="btn btn-primary" onclick="document.location.href='profile.php';"><br><br>
