@@ -316,6 +316,7 @@ class Common {
           
           <span id="myaggressor">7 Seas Progress Bar 
           <?php
+            print "T: $seven_seas<br>";
             if ($seven_seas == "100") {
               print '&nbsp;&nbsp;<i class="fa fa-check" aria-hidden="true" color="green"></i>';
             }
