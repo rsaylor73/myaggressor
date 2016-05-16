@@ -119,6 +119,8 @@ class Common {
 
       public function myaggressor() {
 
+          print "$_SESSION[contactID]<br>";
+
          ?>
 
 
