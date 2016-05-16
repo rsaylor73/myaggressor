@@ -119,7 +119,9 @@ class Common {
 
       public function myaggressor() {
 
-          print "$_SESSION[contactID]<br>";
+        $sql = "SELECT * FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
+        $result = $this->new_mysql($sql);
+        $row = $result->fetch_assoc();
 
          ?>
 
