@@ -134,8 +134,11 @@ class Common {
      <td valign="top"><table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="217">
        <tr>
          <td><br>
-         
+         <?php if ($row['avatar'] == "") { ?>
          <img src="avatar/default_avatar.png" width="200"><br>
+         <?php } else { ?>
+          <img src="avatar/<?=$row['avatar'];?>" width="200"><br>
+          <?php } ?>
          <center><span id="myaggressor">
          <?php
          print "$_SESSION[first] $_SESSION[last]<br>$_SESSION[city], $_SESSION[state]$_SESSION[province]<br>";
