@@ -318,7 +318,8 @@ class Common {
           <?php
             print "T: $seven_seas<br>";
             if ($seven_seas == "100") {
-              print '&nbsp;&nbsp;<i class="fa fa-check" aria-hidden="true" color="green"></i>';
+              print "Ok";
+              print '&nbsp;&nbsp;<i class="fa fa-check" aria-hidden="true"></i>';
             }
           ?>
           </span><br>
