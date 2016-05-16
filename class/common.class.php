@@ -245,7 +245,7 @@ class Common {
         //  print_r($row2);
         //}
         $seven_seas = $this->seven_seas_status($_SESSION['contactID']);
-        print "Test $seven_seas<br>";
+        $seven_seas = $seven_seas * 10;
         ?>
 
 
@@ -316,8 +316,8 @@ class Common {
           
           <span id="myaggressor">7 Seas Progress Bar</span><br>
           <div class="progress">
-            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
-              <span class="sr-only">30% Complete</span>
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?=$seven_seas;?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$seven_seas;?>%;">
+              <span class="sr-only"><?=$seven_seas;?>% Complete</span>
             </div>
           </div>        
           </td>
