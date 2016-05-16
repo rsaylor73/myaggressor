@@ -129,7 +129,7 @@ class Common {
         //print "$_SESSION[contactID]";
         $linkID2 = new mysqli(HOST, USER, PASS, DB);
         $sql2 = "SELECT * FROM `af_guests` WHERE `contactID` = '$_SESSION[contactID]'";
-        $result2 = $linkID2->mysql_query($sql2);
+        $result2 = $linkID2->query($sql2);
         while ($row2 = $result2->fetch_assoc()) {
           print_r($row2);
         }
