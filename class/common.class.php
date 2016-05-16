@@ -752,8 +752,22 @@ class Common {
 
 			$result = $this->new_mysql($sql);
 			while ($row = $result->fetch_assoc()) {
+
+            switch ($_SESSION['contact_type']) {
+               case "reseller_manager":
+               case "reseller_agent":
+               //$invoice = "<a href=\"invoicer.php?r=$row[reservationID]\" target=_blank>Reseller Invoice</a>&nbsp;|&nbsp;<a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Client Invoice</a>";
+               $invoice = "<a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Aggressor Invoice</a> | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
+               break;
+
+               default:
+               $invoice = "<a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
+               break;
+
+            }
+
 				print "<tr><td>$row[reservationID]</td><td>$row[name]</td><td>$row[start_date]</td><td>$row[nights]</td><td><a href=\"guests.php?res=$row[reservationID]&c=$_SESSION[contactID]\">Assign Guests</a> | 
-				<a href=\"gis.php?res=$row[reservationID]\">GIS</a></td></tr>";
+				<a href=\"gis.php?res=$row[reservationID]\">GIS</a>$invoice</td></tr>";
 				$found = "1";
 			}
 			if ($found != "1") {

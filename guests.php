@@ -155,7 +155,7 @@ if ($check_login == "FALSE") {
 
 						print "<br><br><br><br><br><br>
 						<span class=\"result-title-text\">
-						Visit Aggressor Fleet and Dancer Fleet's <a href=\"http://www.aggressor.com\">website</a> or click <a href=\"index.php\">here</a> to make another reservation.
+						Visit Aggressor Fleet <a href=\"http://www.aggressor.com\">website</a> or click <a href=\"index.php\">here</a> to make another reservation.
 						</span>
 						<br><br>";
 
@@ -448,7 +448,7 @@ If you are a returning guest, enter your name and birth month to search for your
 							} else {
 
 								print "
-								Thank you for choosing to travel with us. Visit our <a href=\"http://www.aggressor.com\" target=_blank>website</a> to learn more about the yacht and destination. Visit <a href=\"http://www.liveaboardvacations.com\" target=_blank>LiveAboardVacations</a>, our travel department for Aggressor Fleet & Dancer Fleet for planning your hotel, tours and airline arrangements.<br><br><hr>";
+								Thank you for choosing to travel with us. Visit our <a href=\"http://www.aggressor.com\" target=_blank>website</a> to learn more about the yacht and destination. Visit <a href=\"http://www.liveaboardvacations.com\" target=_blank>Aggressor Travel</a>, our travel department for Aggressor Fleet for planning your hotel, tours and airline arrangements.<br><br><hr>";
 
 							}
 
