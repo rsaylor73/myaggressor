@@ -117,6 +117,116 @@ class Common {
           print "</div></div></div></div>";
 		}
 
+    public function seven_seas_status($contactID) {
+
+      $linkID2 = new mysqli(HOST, USER, PASS, DB);
+
+      $sql = "SELECT * FROM `seven_seas`.`af_guests` WHERE `contactID` = '$contactID'";
+      $result = $linkID2->query($sql);
+      while ($row = $result->fetch_assoc()) {
+
+        // andaman sea
+        $andaman = 0;
+        $sql2 = "SELECT * FROM `seven_seas`.`af_andaman_sea`";
+        $result2 = $linkID2->query($sql2);
+        while ($row2 = $result2->fetch_assoc()) {
+                $boatID = $row2['boatID'];
+                if ($row[$boatID] > 0) {
+                        $andaman++;
+                }
+        }
+
+        // caribbean
+        $caribbean = 0;
+        $sql2 = "SELECT * FROM `seven_seas`.`af_caribbean`";
+        $result2 = $linkID2->query($sql2);
+        while ($row2 = $result2->fetch_assoc()) {
+                $boatID = $row2['boatID'];
+                if ($row[$boatID] > 0) {
+                        $caribbean++;
+                }
+        }
+
+        // eastern pacific
+        $eastern_pacific = 0;
+        $sql2 = "SELECT * FROM `seven_seas`.`af_eastern_pacific`";
+        $result2 = $linkID2->query($sql2);
+        while ($row2 = $result2->fetch_assoc()) {
+                $boatID = $row2['boatID'];
+                if ($row[$boatID] > 0) {
+                        $eastern_pacific++;
+                }
+        }
+
+        // indian ocean
+        $indian_ocean = 0;
+        $sql2 = "SELECT * FROM `seven_seas`.`af_indian_ocean`";
+        $result2 = $linkID2->query($sql2);
+        while ($row2 = $result2->fetch_assoc()) {
+                $boatID = $row2['boatID'];
+                if ($row[$boatID] > 0) {
+                        $indian_ocean++;
+                }
+        }
+
+        // north atlantic
+        $north_atlantic = 0;
+        $sql2 = "SELECT * FROM `seven_seas`.`af_north_atlantic`";
+        $result2 = $linkID2->query($sql2);
+        while ($row2 = $result2->fetch_assoc()) {
+                $boatID = $row2['boatID'];
+                if ($row[$boatID] > 0) {
+                        $north_atlantic++;
+                }
+        }
+
+        // red sea
+        $red_sea = 0;
+        $sql2 = "SELECT * FROM `seven_seas`.`af_red_sea`";
+        $result2 = $linkID2->query($sql2);
+        while ($row2 = $result2->fetch_assoc()) {
+                $boatID = $row2['boatID'];
+                if ($row[$boatID] > 0) {
+                        $red_sea++;
+                }
+        }
+
+        // south pacific
+        $south_pacific = 0;
+        $sql2 = "SELECT * FROM `seven_seas`.`af_south_pacific`";
+        $result2 = $linkID2->query($sql2);
+        while ($row2 = $result2->fetch_assoc()) {
+                $boatID = $row2['boatID'];
+                if ($row[$boatID] > 0) {
+                        $south_pacific++;
+                }
+        }
+
+        if ($andaman > 0) {
+          $total = $total + 1.42857142857143;
+        }
+        if ($caribbean > 0) {
+          $total = $total + 1.42857142857143;
+        }
+        if ($eastern_pacific > 0) {
+          $total = $total + 1.42857142857143;
+        }
+        if ($indian_ocean > 0) {
+          $total = $total + 1.42857142857143;
+        }
+        if ($north_atlantic > 0) {
+          $total = $total + 1.42857142857143;
+        }
+        if ($red_sea > 0) {
+          $total = $total + 1.42857142857143;
+        }
+        if ($south_pacific > 0) {
+          $total = $total + 1.42857142857143;
+        }
+        return $total;
+
+    }
+
       public function myaggressor() {
 
         $sql = "SELECT * FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
@@ -127,13 +237,14 @@ class Common {
         }
 
         //print "$_SESSION[contactID]";
-        $linkID2 = new mysqli(HOST, USER, PASS, DB);
-        $sql2 = "SELECT * FROM `af_guests` WHERE `contactID` = '$_SESSION[contactID]'";
-        $result2 = $linkID2->query($sql2);
-        while ($row2 = $result2->fetch_assoc()) {
-          print_r($row2);
-        }
-
+        //$linkID2 = new mysqli(HOST, USER, PASS, DB);
+        //$sql2 = "SELECT * FROM `af_guests` WHERE `contactID` = '$_SESSION[contactID]'";
+        //$result2 = $linkID2->query($sql2);
+        //while ($row2 = $result2->fetch_assoc()) {
+        //  print_r($row2);
+        //}
+        $seven_seas = $this->seven_seas_status($_SESSION['contactID']);
+        print "Test $seven_seas<br>";
         ?>
 
 
