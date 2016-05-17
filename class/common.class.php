@@ -667,10 +667,14 @@ class Common {
 					// list agents
 					$sql2 = "
 					SELECT
-						`reseller_agents`.*
+						`reseller_agents`.*,
+						`c`.`company`,
+						`c`.`contact_type`
 
 					FROM
 						`reseller_agents`
+
+					LEFT JOIN `contacts` c ON `reseller_agents`.`reseller_agentID` = `c`.`reseller_agentID`
 
 					WHERE
 						`reseller_agents`.`resellerID` = '$row[resellerID]'
@@ -680,6 +684,8 @@ class Common {
 					print "<table border=0 width=90%>
 					<tr>
 						<td><b>Name</b></td>
+						<td><b>Company</b></td>
+						<td><b>Reseller Type</b></td>
 						<td><b>Email</b></td>
 						<td><b>Status</b></td>
 						<td><b>Action</b></td>
@@ -693,7 +699,24 @@ class Common {
 						} else {
 							$bgcolor = "#FFFFFF";
 						}
-						print "<tr bgcolor=\"$bgcolor\"><td>$row2[first] $row2[last]</td><td>$row2[email]</td><td>$row2[status]</td><td><a href=\"agent_edit.php?id=$row2[reseller_agentID]\">Edit</a></td></tr>";
+                  switch ($row2['contact_type']) {
+                     case "reseller_manager":
+                     $agent = "Manager";
+                     break;
+
+                     case "reseller_agent":
+                     $agent = "Agent";
+                     break;
+                  
+                     case "reseller_third_party":
+                     $agent = "3rd Party";
+                     break;
+
+                     default:
+                     $agent = "<font color=red>Missing!</font>";
+                     break;
+                  }
+						print "<tr bgcolor=\"$bgcolor\"><td>$row2[first] $row2[last]</td><td>$row2[company]</td><td>$agent</td><td>$row2[email]</td><td>$row2[status]</td><td><a href=\"agent_edit.php?id=$row2[reseller_agentID]\">Edit</a></td></tr>";
 					}
 
 					print "</table>";
@@ -1799,27 +1822,31 @@ class Common {
 			$sql = "
 			SELECT
 				`countries`.`country`,
-				`ra`.*
+				`ra`.*,
+				`c`.`company`,
+				`c`.`contactID`
 
 			FROM
-				`reseller_agents` ra
+				`reseller_agents` ra, `contacts` c
 
 			LEFT JOIN countries ON `ra`.`countryID` = `countries`.`countryID`
 
 			WHERE
 				`ra`.`reseller_agentID` = '$_GET[id]'
 				AND `ra`.`resellerID` = '$_SESSION[resellerID]'
+            AND `ra`.`reseller_agentID` = `c`.`reseller_agentID`
 			";
 
 			$result = $this->new_mysql($sql);
 			while ($row = $result->fetch_assoc()) {
-
+				$found = "1";
 
             $countries = $this->country_list($row['countryID']);
 
 				print "<form action=\"agent_edit.php\" method=\"post\">
 				<input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
 				<input type=\"hidden\" name=\"section\" value=\"update\">
+            <input type=\"hidden\" name=\"contactID\" value=\"$row[contactID]\">
 				<table border=\"0\" width=90%>
 				<tr><td width=\"200\">First Name:</td><td><input type=\"text\" name=\"first\" value=\"$row[first]\" size=40></td></tr>
 				<tr><td>Last Name:</td><td><input type=\"text\" name=\"last\" value=\"$row[last]\" size=40></td></tr>
@@ -1829,6 +1856,7 @@ class Common {
 				<tr><td>State:</td><td><input type=\"text\" name=\"state\" value=\"$row[state]\" size=40></td></tr>
 				<tr><td>Zip:</td><td><input type=\"text\" name=\"zip\" value=\"$row[zip]\" size=40></td></tr>
 				<tr><td>Country:</td><td><select name=\"country\">$countries</select></td></tr>
+            <tr><td>Company:</td><td><input type=\"text\" name=\"company\" size=40 value=\"$row[company]\"></td></tr>
 				";
 				if ($row['phone1_type'] != "") {
 					print "<tr><td>$row[phone1_type] Phone:</td><td><input type=\"text\" name=\"phone1\" value=\"$row[phone1]\" size=40></td></tr>";
@@ -1913,11 +1941,13 @@ class Common {
                <option value=\"reseller_manager\">Reseller Manager</option></select></td></tr>";
 				}
 
-				print "<tr><td colspan=2><input type=\"submit\" value=\"Continue\"></td></tr>";
+				print "<tr><td colspan=2><input type=\"submit\" value=\"Continue\" class=\"btn btn-primary\"></td></tr>";
 				print "</table>
 				</form>";
 			}
-		
+         if ($found != "1") {
+            print "<br><br><font color=red>There was an error with the agent record. The reseller agent is not linked to a contact record. Please contact your reseller manager to correct the error.</font><br><br>";
+         }
 
 			print "</span>";
          $this->header_bot();
@@ -1955,6 +1985,12 @@ class Common {
 
 			$result = $this->new_mysql($sql);
 			if ($result == "TRUE") {
+
+            if ($_POST['contactID'] != "") {
+               $sql2 = "UPDATE `contacts` SET `company` = '$_POST[company]' WHERE `contactID` = '$_POST[contactID]'";
+               $result2 = $this->new_mysql($sql2);
+            }
+
 				print "<br>The reseller agent was updated.<br><br>Click <a href=\"agents.php\">here</a> to return to the list of agents.<br><br>";
 			} else {
 				print "<br><font color=red>There was an error updating the reseller agent.</font>";
