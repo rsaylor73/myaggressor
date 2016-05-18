@@ -18,14 +18,20 @@ if (($_GET['uuname'] != "") && ($_GET['uupass'] != "")) {
 		$_SESSION['sex'] = $row['sex'];
 		$_SESSION['contact_type'] = $row['contact_type'];
 		// look up reseller if reseller
+
 		if ($row['reseller_agentID'] != "") {
-			$sql2 = "SELECT `resellerID`,`reseller_agentID` FROM `reseller_agents` WHERE `reseller_agentID` = '$row[reseller_agentID]'";
+			$sql2 = "SELECT `resellerID`,`reseller_agentID`,`status` FROM `reseller_agents` WHERE `reseller_agentID` = '$row[reseller_agentID]'";
 			$result2 = $reservation->new_mysql($sql2);
 			while ($row2 = $result2->fetch_assoc()) {
 				$_SESSION['resellerID'] = $row2['resellerID'];
 				$_SESSION['reseller_agentID'] = $row2['reseller_agentID'];
+				if ($row2['status'] == "Inactive") {
+					$err2 = "1";
+					$err = "1";
+				}
 			}
 		}
+
 		// look up reseller company
       if ($row['reseller_agentID'] != "") {
 			$sql2 = "SELECT `company` FROM `resellers` WHERE `resellerID` = '$_SESSION[resellerID]'";
@@ -35,7 +41,12 @@ if (($_GET['uuname'] != "") && ($_GET['uupass'] != "")) {
 			}
 		}
 
-		print $_SESSION['uri'];
+		if ($err2 == "") {
+			print $_SESSION['uri'];
+		} else {
+			print "<br><center><font color=red>You do not have access.</font></center><br>";
+			die;
+		}
 	}
 }
 
@@ -73,6 +84,10 @@ if ($err == "1") {
 		die;
 
 	}
+}
+
+if ($err2 == "1") {
+	$err = "1";
 }
 
 if ($err == "1") {
