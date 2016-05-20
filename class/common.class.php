@@ -828,28 +828,48 @@ class Common {
          print "<br><span class=\"result-title-text\">My Profile ($_SESSION[first] $_SESSION[last])</span><br><br>
          <span class=\"details-description\">";
 
-      // upload image
-      $fileName = $_FILES['avatar']['name'];
-      $tmpName  = $_FILES['avatar']['tmp_name'];
-      $fileSize = $_FILES['avatar']['size'];
-      $fileType = $_FILES['avatar']['type'];
-      if ($fileName != "") {
-        $ext = $this->file_types($fileType);
-        if ($ext == "1") {
-          print "Supported file types are<br>GIF, PNG, JPG<br>";
-        } else {
-          $today = date("Ymd");
-          $new_file = date("U");
-          $new_file .= rand(50,500);
-          $new_file .= $ext;
-          move_uploaded_file("$tmpName", "avatar/$new_file");
-          chmod("avatar/$new_file", 0644);
-          $avatar_sql = " ,`avatar` = '$new_file' ";
-        }
-      }
+	      // upload image
+	      $fileName = $_FILES['avatar']['name'];
+   	   $tmpName  = $_FILES['avatar']['tmp_name'];
+	      $fileSize = $_FILES['avatar']['size'];
+   	   $fileType = $_FILES['avatar']['type'];
+      	if ($fileName != "") {
+	        $ext = $this->file_types($fileType);
+   	     if ($ext == "1") {
+      	    print "Supported file types are<br>GIF, PNG, JPG<br>";
+	        } else {
+   	       $today = date("Ymd");
+      	    $new_file = date("U");
+         	 $new_file .= rand(50,500);
+	          $new_file .= $ext;
+   	       move_uploaded_file("$tmpName", "avatar/$new_file");
+      	    chmod("avatar/$new_file", 0644);
+	          $avatar_sql = " ,`avatar` = '$new_file' ";
+   	     }
+	      }
+
+         // upload image
+         $fileName2 = $_FILES['logo']['name'];
+         $tmpName2  = $_FILES['logo']['tmp_name'];
+         $fileSize2 = $_FILES['logo']['size'];
+         $fileType2 = $_FILES['logo']['type'];
+         if ($fileName2 != "") {
+           $ext2 = $this->file_types($fileType2);
+           if ($ext2 == "1") {
+             print "Supported file types are<br>GIF, PNG, JPG<br>";
+           } else {
+             $today2 = date("Ymd");
+             $new_file2 = date("U");
+             $new_file2 .= rand(50,500);
+             $new_file2 .= $ext2;
+             move_uploaded_file("$tmpName2", "logo/$new_file2");
+             chmod("logo/$new_file2", 0644);
+             $logo_sql = " ,`logo` = '$new_file2' ";
+           }
+         }
 
 			 $sql = "UPDATE `contacts` SET `address1` = '$_POST[address1]', `address2` = '$_POST[address2]', `city` = '$_POST[city]', `state` = '$_POST[state]', `province` = '$_POST[province]', `countryID` = '$_POST[countryID]',`zip` = '$_POST[zip]',
-			`phone1` = '$_POST[phone1]', `phone2` = '$_POST[phone2]', `phone3` = '$_POST[phone3]', `phone4` = '$_POST[phone4]', `uupass` = '$_POST[uupass]' $avatar_sql, `total_dives` = '$_POST[total_dives]'
+			`phone1` = '$_POST[phone1]', `phone2` = '$_POST[phone2]', `phone3` = '$_POST[phone3]', `phone4` = '$_POST[phone4]', `uupass` = '$_POST[uupass]' $avatar_sql $logo_sql, `total_dives` = '$_POST[total_dives]'
 
       WHERE `contactID` = '$_SESSION[contactID]'";
 			$result = $this->new_mysql($sql);
@@ -893,6 +913,17 @@ class Common {
         if ($row['avatar'] != "") {
           print "<img src=\"avatar/$row[avatar]\" height=\"64\">";
         }
+
+			// merged
+            if ($row['contact_type'] == "reseller_third_party") {
+               print "<tr><td>Company:</td><td>$row[company]</td></tr>";
+               print "<tr><td>Logo (300x125)</td><td><input type=\"file\" name=\"logo\"></td></tr>";
+               if ($row['logo'] != "") {
+                  print "<tr><td colspan=2><img src=\"logo/$row[logo]\" width=\"300\" height=\"125\"></td></tr>";
+               }
+            }
+
+			// end merge
 
         print "
         </td></tr>
