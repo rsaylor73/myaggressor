@@ -40,8 +40,9 @@ WHERE
 ";
 
 $result = $common->new_mysql($sql);
-$row = $result->fetch_assoc();
+$row3 = $result->fetch_assoc();
 
+/*
 $sql = "
 SELECT
 	`c`.`company`,
@@ -66,6 +67,7 @@ WHERE
 
 $result3 = $common->new_mysql($sql);
 $row3 = $result3->fetch_assoc();
+*/
 
 $sql = "
 SELECT
@@ -201,7 +203,7 @@ while ($row2 = $result->fetch_assoc()) {
     print '
     <table width="750" cellpadding="4" cellspacing="0">
     <tr>
-         <td width="113"><b>Booked</b></td>
+         <td width="113"><b>Reservation Date</b></td>
          <td width="81" align="center"><p><strong>Departure</strong></p></td>
          <td width="76" align="center"><b>Return</b></td>
          <td width="54"><b>Nights</b></td>

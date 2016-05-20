@@ -1718,7 +1718,7 @@ class Common {
 						$new11 = date("U");
 						$fileName = $new1 . $fileName;
                   move_uploaded_file("$tmpName", "logo/$fileName");
-						$logo1 = "`logo` = '$fileName'";
+						$logo1 = ",`logo` = '$fileName'";
 						$logo2a = ",`logo`";
 						$logo2b = ",'$fileName'";
          }
