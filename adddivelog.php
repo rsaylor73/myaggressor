@@ -14,7 +14,7 @@ include "header.php";
 	   $common->add_divelog();
 	}
 
-	if ($_POST['section'] == "update") {
+	if ($_POST['section'] == "save") {
 		$common->save_divelog();
 	}
 
