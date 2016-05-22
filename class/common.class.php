@@ -392,7 +392,7 @@ class Common {
                       ?>
 
 
-                      <br><a href="adddivelog.php"><i class="fa fa-plus" aria-hidden="true"></i> Add Log</a>&nbsp;&nbsp;<a href="#"><i class="fa fa-reply-all" aria-hidden="true"></i> View All</a><br>
+                      <br><a href="adddivelog.php"><i class="fa fa-plus" aria-hidden="true"></i> Add Log</a>&nbsp;&nbsp;<a href="adddivelog.php?section=viewall"><i class="fa fa-reply-all" aria-hidden="true"></i> View All</a><br>
                     </td>
                   </tr>
                 </table>
@@ -618,6 +618,28 @@ class Common {
         $this->header_bot();
       }
 
+      public function view_alldivelog() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+        print "<h2>Dive Log</h2>";
+        $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `dive_date` DESC";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+          print "<a href=\"adddivelog.php?section=edit&id=$row[id]\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> $row[dive_date] - $row[site]</a><br>";
+        }
+
+
+        print "</span>";
+        $this->header_bot();
+      }
 
 
 

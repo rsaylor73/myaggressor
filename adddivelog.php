@@ -26,4 +26,8 @@ include "header.php";
 		$common->delete_divelog();
 	}
 
+	if ($_GET['section'] == "viewall") {
+		$common->view_alldivelog();
+	}
+
 ?>
