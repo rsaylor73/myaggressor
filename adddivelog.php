@@ -23,7 +23,7 @@ include "header.php";
 	}
 
 	if ($_POST['section'] == "update") {
-		
+		$common->delete_divelog();
 	}
 
 ?>

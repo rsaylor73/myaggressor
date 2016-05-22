@@ -559,6 +559,38 @@ class Common {
         $this->header_bot();
       }
 
+      public function delete_divelog() {
+        if ($_POST['delete'] == "yes") {
+          $sql = "DELETE FROM `dive_log` WHERE `id` = '$_POST[id]' AND `contactID` = '$_SESSION[contactID]'";
+        } else {
+          $sql = "UPDATE `dive_log` SET `dive_date` = '$_POST[dive_date]', `site` = '$_POST[site]', `dive_buddies` = '$_POST[dive_buddies]', `max_depth` = '$_POST[max_depth]', 
+          `bottom_time` = '$_POST[bottom_time]', `description` = '$_POST[description]', `rating` = '$_POST[rating]' WHERE `id` = '$_POST[id]' AND `contactID` = '$_SESSION[contactID]'
+          ";
+        }
+
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+
+        $result = $this->new_mysql($sql);
+        if ($result == "TRUE") {
+          print "<br><br>Your dive log was updated. Click <a href=\"portal.php\">here</a> to continue.<br><br>";
+        } else {
+          print "<br><br><font color=red>There was an error updating your dive log.</font><br><br>";
+        }
+
+        print "</span>";
+        $this->header_bot();
+
+      }
+
       public function save_divelog() {
 
         $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
