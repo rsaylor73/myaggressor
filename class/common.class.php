@@ -392,7 +392,7 @@ class Common {
                       ?>
 
 
-                      <br><br><a href="adddivelog.php"><i class="fa fa-plus" aria-hidden="true"></i> Add Log</a>&nbsp;&nbsp;<a href="#"><i class="fa fa-reply-all" aria-hidden="true"></i> View All</a><br>
+                      <br><a href="adddivelog.php"><i class="fa fa-plus" aria-hidden="true"></i> Add Log</a>&nbsp;&nbsp;<a href="#"><i class="fa fa-reply-all" aria-hidden="true"></i> View All</a><br>
                     </td>
                   </tr>
                 </table>
