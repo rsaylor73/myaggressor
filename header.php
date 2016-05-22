@@ -132,7 +132,7 @@ if (screenwidth > 1280) {
          dateFormat: "dd-M-yy",
          changeMonth: true,
          changeYear: true,
-         minDate: "+99M", 
+         minDate: "-99M", 
          maxDate: "+99M"
       });
 
