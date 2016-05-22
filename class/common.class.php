@@ -478,7 +478,7 @@ class Common {
         <form action=\"adddivelog.php\" method=\"post\">
         <input type=\"hidden\" name=\"section\" value=\"save\">
         <table class=\"table\">
-        <tr><td>Dive Date:</td><td><input type=\"text\" name=\"date\" id=\"flight_date\" size=\"40\" required></td></tr>
+        <tr><td>Dive Date:</td><td><input type=\"text\" name=\"date\" id=\"dive_date\" size=\"40\" required></td></tr>
         <tr><td>Dive Site:</td><td><input type=\"text\" name=\"site\" size=\"40\" required></td></tr>
         </table>
         ";

@@ -128,6 +128,14 @@ if (screenwidth > 1280) {
          maxDate: "+99M"
       });
 
+      $( "#dive_date" ).datepicker({ 
+         dateFormat: "dd-M-yy",
+         changeMonth: true,
+         changeYear: true,
+         minDate: "+99M", 
+         maxDate: "+99M"
+      });
+
 
 	});
 
