@@ -505,7 +505,29 @@ class Common {
 
       public function save_divelog() {
 
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
 
+        $sql = "INSERT INTO `dive_log` (`contactID`,`dive_date`,`site`,`dive_buddies`,`max_depth`,`bottom_time`,`description`,`rating`) VALUES
+        ('$_SESSION[contactID]','$_POST[dive_date]','$_POST[site]','$_POST[dive_buddies]','$_POST[max_depth]','$_POST[bottom_time]','$_POST[description]','$_POST[rating]')
+        ";
+        $result = $this->new_mysql($sql);
+        if ($result == "TRUE") {
+          print "<br><br>Your dive log was added. Click <a href=\"portal.php\">here</a> to continue.<br><br>";
+        } else {
+          print "<br><br><font color=red>There was an error saving your dive log.</font><br><br>";
+        }
+
+        print "</span>";
+        $this->header_bot();
       }
 
 
