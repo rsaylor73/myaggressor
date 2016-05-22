@@ -382,7 +382,7 @@ class Common {
 
                       <b>Log Book</b><br>
                       <?php
-                      $sql = "SELECT * FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `dive_date` DESC LIMIT 4";
+                      $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/&Y') AS 'dive_date' FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `dive_date` DESC LIMIT 4";
                       $result = $this->new_mysql($sql);
                       while ($row = $result->fetch_assoc()) {
                         print "<a href=\"adddivelog.php?section=edit&id=$row[id]\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> $row[dive_date] - $row[site]</a><br>";
