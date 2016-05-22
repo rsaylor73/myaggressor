@@ -129,7 +129,7 @@ if (screenwidth > 1280) {
       });
 
       $( "#dive_date" ).datepicker({ 
-         dateFormat: "dd-M-yy",
+         dateFormat: "yy-mm-dd",
          changeMonth: true,
          changeYear: true,
          minDate: "-99M", 
