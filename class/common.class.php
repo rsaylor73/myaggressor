@@ -382,7 +382,7 @@ class Common {
 
                       <b>Log Book</b><br>
                       DISPLAY LOGS<br><br><br>
-                      <a href="#">Add Log</a>&nbsp;&nbsp;<a href="#">View All</a><br>
+                      <a href="adddivelog.php">Add Log</a>&nbsp;&nbsp;<a href="#">View All</a><br>
                     </td>
                   </tr>
                 </table>
@@ -459,8 +459,33 @@ class Common {
 
 
 
+      public function add_divelog() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+        print "<br><span class=\"result-title-text\">Dive Log ($_SESSION[first] $_SESSION[last])</span><br><br>
+        <span class=\"details-description\">";
+        // content
 
 
+
+
+        // end content
+        print "</span>";
+        $this->header_bot();
+      }
+
+      public function save_divelog() {
+
+
+      }
 
 
 
