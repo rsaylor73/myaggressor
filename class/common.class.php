@@ -382,6 +382,17 @@ class Common {
 
                       <b>Log Book</b><br>
                       DISPLAY LOGS<br><br><br>
+                      <?php
+                      $sql = "SELECT * FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `dive_date` DESC LIMIT 4";
+                      $result = $this->new_mysql($sql);
+                      while ($row = $result->fetch_assoc()) {
+                        print "$row[dive_date]<br>";
+                      }
+
+
+                      ?>
+
+
                       <a href="adddivelog.php">Add Log</a>&nbsp;&nbsp;<a href="#">View All</a><br>
                     </td>
                   </tr>
