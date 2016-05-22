@@ -480,7 +480,20 @@ class Common {
         <table class=\"table\">
         <tr><td>Dive Date:</td><td><input type=\"text\" name=\"date\" id=\"dive_date\" size=\"40\" required></td></tr>
         <tr><td>Dive Site:</td><td><input type=\"text\" name=\"site\" size=\"40\" required></td></tr>
+        <tr><td>Dive Buddies:</td><td><textarea name=\"dive_buddies\" cols=40 rows=5></textarea></td></tr>
+        <tr><td>Max Depth:</td><td><input type=\"text\" name=\"max_depth\" size=\"40\"></td></tr>
+        <tr><td>Bottom Time:</td><td><input type=\"text\" name=\"bottom_time\" size=\"40\"></td></tr>
+        <tr><td>Describe Your Dive:</td><td><textarea name=\"description\" cols=40 rows=10></textarea></td></tr>
+        <tr><td>Rate This Dive:</td><td><select name=\"rating\">
+          <option selected value=\"5\">5 Stars</option>
+          <option value=\"4\">4 Stars</option>
+          <option value=\"3\">3 Stars</option>
+          <option value=\"2\">2 Stars</option>
+          <option value=\"1\">1 Stars</option>
+          </select></td></tr>
+        <tr><td colspan=2><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\"></td></tr>
         </table>
+        </form>
         ";
 
 
