@@ -310,7 +310,7 @@ class Common {
          <center><span id="myaggressor">
          <?php
          print "$row[first] $row[last]<br>$row[city], $row[state]$row[province]<br>";
-         print "$age years young<br>"
+         print "$age years young<br>";
          print "<br>Total Dives - <font color=\"green\"><b>$row[total_dives]</b></font><br><br>";
          ?>
          </span></center>
