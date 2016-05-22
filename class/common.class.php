@@ -407,8 +407,21 @@ class Common {
                     </td>
                     <td valign=top>
 
+                      <?php
+                      $sql = "SELECT `points` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
+                      $result = $this->new_mysql($sql);
+                      while ($row = $result->fetch_assoc()) {
+                        $points = $row['points'];
+                      }
+                      if ($points == "") {
+                        $points = "0";
+                      }
+
+                      ?>
+
+
                       <b>Boutique Points</b><br><br>
-                      <font size="12">203</font><br><br><br>
+                      <font size="12"><?=$points;?></font><br><br><br>
                       <a href="#">Redeem</a>&nbsp;&nbsp;<a href="http://www.liveaboardboutique.com/" target=_blank>Shop</a><br>
 
                     </td>
