@@ -273,6 +273,8 @@ class Common {
           $row['total_dives'] = "0";
         }
 
+        $age = floor((time() - strtotime($row['date_of_birth'])) / 31556926);
+
         //print "$_SESSION[contactID]";
         //$linkID2 = new mysqli(HOST, USER, PASS, DB);
         //$sql2 = "SELECT * FROM `af_guests` WHERE `contactID` = '$_SESSION[contactID]'";
@@ -308,6 +310,7 @@ class Common {
          <center><span id="myaggressor">
          <?php
          print "$row[first] $row[last]<br>$row[city], $row[state]$row[province]<br>";
+         print "$age years young<br>"
          print "<br>Total Dives - <font color=\"green\"><b>$row[total_dives]</b></font><br><br>";
          ?>
          </span></center>
