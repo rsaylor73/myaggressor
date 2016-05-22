@@ -117,6 +117,42 @@ class Common {
           print "</div></div></div></div>";
 		}
 
+    public function vip_status($contactID) {
+        $today = date("Ymd");
+
+        $sql = "
+        SELECT
+          `c`.`charterID`
+
+        FROM
+          `inventory` i,
+          `reservations` r,
+          `charters` c
+
+        WHERE
+          `i`.`passengerID` = '$contactID'
+          AND `i`.`reservationID` = `r`.`reservationID`
+          AND `r`.`show_as_suspended` != '1'
+          AND `i`.`charterID` = `c`.`charterID`
+          AND `c`.`start_date` < '$today'
+
+        GROUP BY `c`.`charterID`
+        ";
+        $vip = "0";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+          $vip++;
+        } 
+
+        // based on 100 / 14
+        $total = $vip * "7.14285714285714";
+        if ($total > "100") {
+          $total = "100";
+        }
+        return $total;
+
+    }
+
     public function seven_seas_status($contactID) {
 
       $linkID2 = new mysqli(HOST, USER, PASS, DB);
@@ -246,6 +282,9 @@ class Common {
         //}
         $seven_seas = $this->seven_seas_status($_SESSION['contactID']);
         $seven_seas = $seven_seas * 10;
+
+        $vip = $this->vip_status($_SESSION['contactID']);
+        $vip = $vip * 10;
         ?>
 
 
@@ -301,8 +340,8 @@ class Common {
           <span id="myaggressor">VIP Progress Bar</span><br>
 
           <div class="progress">
-            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-              <span class="sr-only">60% Complete</span>
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?=$vip;?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$vip;?>%;">
+              <span class="sr-only"><?=$vip;?>% Complete</span>
             </div>
           </div>
           
