@@ -506,7 +506,53 @@ class Common {
         </form>
         ";
 
+        // end content
+        print "</span>";
+        $this->header_bot();
+      }
 
+      public function edit_divelog() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+        print "<br><span class=\"result-title-text\">Dive Log ($_SESSION[first] $_SESSION[last])</span><br><br>
+        <span class=\"details-description\">";
+        // content
+
+        $sql = "SELECT * FROM `dive_log` WHERE `id` = '$_GET[id]' AND `contactID` = '$_SESSION[contactID]'";
+        $result = $this->new_mysql($sql);
+        $row = $result->fetch_assoc();
+
+        print "
+        <form action=\"adddivelog.php\" method=\"post\">
+        <input type=\"hidden\" name=\"section\" value=\"update\">
+        <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
+        <table class=\"table\">
+        <tr><td>Dive Date:</td><td><input type=\"text\" name=\"dive_date\" id=\"dive_date\" value=\"$row[dive_date]\" size=\"40\" required></td></tr>
+        <tr><td>Dive Site:</td><td><input type=\"text\" name=\"site\" size=\"40\" value=\"$row[site]\" required></td></tr>
+        <tr><td>Dive Buddies:</td><td><textarea name=\"dive_buddies\" cols=40 rows=5>$row[dive_buddies]</textarea></td></tr>
+        <tr><td>Max Depth:</td><td><input type=\"text\" name=\"max_depth\" value=\"$row[max_depth]\" size=\"40\"></td></tr>
+        <tr><td>Bottom Time:</td><td><input type=\"text\" name=\"bottom_time\" value=\"$row[bottom_time]\" size=\"40\"></td></tr>
+        <tr><td>Describe Your Dive:</td><td><textarea name=\"description\" cols=40 rows=10>$row[description]</textarea></td></tr>
+        <tr><td>Rate This Dive:</td><td><select name=\"rating\">
+          <option selected value=\"$row[rating]\">$row[rating] Stars</option>
+          <option value=\"5\">5 Stars</option>
+          <option value=\"4\">4 Stars</option>
+          <option value=\"3\">3 Stars</option>
+          <option value=\"2\">2 Stars</option>
+          <option value=\"1\">1 Stars</option>
+          </select></td></tr>
+        <tr><td colspan=2><input type=\"submit\" value=\"Update\" class=\"btn btn-primary\"> <input type=\"checkbox\" name=\"delete\" value=\"yes\" onclick=\"return confirm('You are about to delete your Dive Log. Click OK to continue.')\"> Delete Log</td></tr>
+        </table>
+        </form>
+        ";
 
         // end content
         print "</span>";

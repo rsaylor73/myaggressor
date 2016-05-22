@@ -18,4 +18,12 @@ include "header.php";
 		$common->save_divelog();
 	}
 
+	if ($_GET['section'] == "edit") {
+		$common->edit_divelog();
+	}
+
+	if ($_POST['section'] == "update") {
+		
+	}
+
 ?>
