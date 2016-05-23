@@ -598,8 +598,10 @@ class Common {
         )
         ";
 
-        print "<br>$sql";
-
+        $result = $linkID2->query($sql);
+        $id = $linkID2->insert_id;
+        print "<br>ID: $id<br>";
+        
       }
 
       public function add_divelog() {
