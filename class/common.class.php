@@ -422,7 +422,7 @@ class Common {
 
                       <b>Boutique Points</b><br><br>
                       <font size="12"><?=$points;?></font><br><br><br>
-                      <a href="redeem.php"><i class="fa fa-minus" aria-hidden="true"></i> Redeem</a>&nbsp;&nbsp;<a href="http://www.liveaboardboutique.com/" target=_blank>Shop</a><br>
+                      <a href="redeem.php"><i class="fa fa-minus" aria-hidden="true"></i> Redeem</a>&nbsp;&nbsp;<a href="http://www.liveaboardboutique.com/" target=_blank><i class="fa fa-cart-plus" aria-hidden="true"></i> Shop</a><br>
 
                     </td>
                   </tr>
