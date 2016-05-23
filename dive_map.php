@@ -32,7 +32,7 @@ while ($row4 = $result4->fetch_assoc()) {
         \"lat\": '$row4[latitude]',
         \"lng\": '$row4[longitude]',
         \"description\": '$row4[name] Confirmation #$row4[reservationID] starting $row4[start_date]',
-        \"icon\": \"FlagGreen.png\"
+        \"icon\": \"FlagBlue.png\"
     },
 	";
 
