@@ -593,8 +593,8 @@ class Common {
 
         VALUES
 
-        ('0','NOW()','NOW() + INTERVAL 30 DAY','My Aggressor Points Redeemed','1','1','1','1','$code','0.00','0','1','0','0','0','0','0','0','0','0','0.00','$amount','0','1','0','0','0',
-        '0','1','NOW()','NOW()'
+        ('0','NOW()','NOW + INTERVAL 30 DAY','My Aggressor Points Redeemed','1','1','1','1','$code','0.00','0','1','0','0','0','0','0','0','0','0','0.00','$amount','0','1','0','0','0',
+        '0','1','NOW','NOW'
         )
         ";
 
