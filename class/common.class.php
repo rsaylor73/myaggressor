@@ -368,6 +368,8 @@ class Common {
           </td>
         </tr>
 
+        <tr><td colspan="2"><hr></td></tr>
+
         <tr>
           <td colspan="3">
           <table border="0" width="100%">
