@@ -505,6 +505,7 @@ class Common {
           <input type=\"hidden\" name=\"section\" value=\"redeem\">
           <table class=\"table\">
           <tr><td>How many points would you like to redeem?</td><td><input type=\"text\" name=\"points\" size=\"20\" required></td></tr>
+          <tr><td>&nbsp;</td><td><b>Balance $points</b></td></tr>
           <tr><td colspan=\"2\"><input type=\"submit\" value=\"Redeem Points\" class=\"btn btn-primary\">&nbsp;&nbsp;
           <input type=\"button\" value=\"Cancel\" class=\"btn btn-warning\" onclick=\"document.location.href='portal.php'\"></td></tr>
           </table>
