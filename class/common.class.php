@@ -519,6 +519,38 @@ class Common {
 
       }
 
+      public function redeem_points() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+        print "<br><span class=\"result-title-text\">Dive Log ($_SESSION[first] $_SESSION[last])</span><br><br>
+        <span class=\"details-description\">";
+
+        $points = "0";
+        $sql = "SELECT `points` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+          $points = $row['points'];
+        }
+        if ($points <= $_POST['points']) {
+          print "test";
+          
+        } else {
+          print "<br><br><font color=red>Sorry, but you have requested more points then you have available.</font><br><br>";
+        }
+
+        print "</span>";
+        $this->header_bot();
+
+      }
+
       public function add_divelog() {
         $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $check_login = $this->check_login();

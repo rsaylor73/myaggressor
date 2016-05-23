@@ -14,6 +14,10 @@ include "header.php";
 	   $common->redeem_form();
 	}
 
+	if ($_POST['section'] == "redeem") {
+		$common->redeem_points();
+	}
+
 
 
 ?>
