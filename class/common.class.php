@@ -350,7 +350,7 @@ class Common {
           
           </td>
           <td>
-            <i class="fa fa-facebook fa-4x" aria-hidden="true"></i>
+            <a href="https://www.facebook.com/AggressorFleet.DancerFleet" target=_blank><i class="fa fa-facebook fa-4x" aria-hidden="true"></i></a>
           </td>
         </tr>
         <tr>
@@ -364,7 +364,7 @@ class Common {
           </div>        
           </td>
           <td>
-            <i class="fa fa-twitter fa-4x" aria-hidden="true"></i>
+            <a href="https://twitter.com/aggressorfleet" target=_blank><i class="fa fa-twitter fa-4x" aria-hidden="true"></i></a>
           </td>
         </tr>
 
