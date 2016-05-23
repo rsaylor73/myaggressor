@@ -37,6 +37,39 @@ while ($row4 = $result4->fetch_assoc()) {
 	";
 
 }
+
+// find past
+$sql4 = "
+SELECT
+    `inventory`.`reservationID`,
+    DATE_FORMAT(`charters`.`start_date`, '%m/%d/%Y') AS 'start_date',
+    `destinations`.`latitude`,
+    `destinations`.`longitude`,
+    `boats`.`name`
+
+FROM
+    `inventory`,`charters`,`boats`,`destinations`
+WHERE
+    `inventory`.`passengerID` = '$_SESSION[contactID]'
+    AND `inventory`.`charterID` = `charters`.`charterID`
+    AND `charters`.`start_date` < '$today'
+    AND `charters`.`boatID` = `boats`.`boatID`
+    AND `charters`.`destinationID` = `destinations`.`destinationID`
+";
+$result4 = $this->new_mysql($sql4);
+while ($row4 = $result4->fetch_assoc()) {
+    $markers .= "
+    {
+        \"title\": '$row4[name]',
+        \"lat\": '$row4[latitude]',
+        \"lng\": '$row4[longitude]',
+        \"description\": '$row4[name] Past Trip Confirmation #$row4[reservationID] starting $row4[start_date]',
+        \"icon\": \"FlagRed.png\"
+    },
+    ";
+
+}
+
 ?>
 
 <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
