@@ -430,6 +430,9 @@ class Common {
               </td>
             </tr>
             <tr>
+
+            <tr><td colspan="2"><hr></td></tr>
+
               <td valign=top>
                   <b>Awards & Certifications</b><br>
 
