@@ -368,7 +368,7 @@ class Common {
           </td>
         </tr>
 
-        <tr><td colspan="2"><hr></td></tr>
+        <tr><td colspan="3"><hr></td></tr>
 
         <tr>
           <td colspan="3">
