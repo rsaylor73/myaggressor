@@ -583,6 +583,9 @@ class Common {
 
         $code = $this->generate_code('8');
 
+        $date1 = date("Y-m-d H:i:s");
+        $date2 = date("Y-m-d H:i:s", strtotime($date1 . ' +30 day'));
+
         $sql = "
         INSERT INTO `ps_cart_rule` 
 
@@ -593,15 +596,15 @@ class Common {
 
         VALUES
 
-        ('0','NOW()','NOW + INTERVAL 30 DAY','My Aggressor Points Redeemed','1','1','1','1','$code','0.00','0','1','0','0','0','0','0','0','0','0','0.00','$amount','0','1','0','0','0',
-        '0','1','NOW','NOW'
+        ('0','$date1','$date2','My Aggressor Points Redeemed','1','1','1','1','$code','0.00','0','1','0','0','0','0','0','0','0','0','0.00','$amount','0','1','0','0','0',
+        '0','1','$date1','$date1'
         )
         ";
 
         $result = $linkID2->query($sql);
         $id = $linkID2->insert_id;
         print "<br>ID: $id<br>";
-        
+
       }
 
       public function add_divelog() {
