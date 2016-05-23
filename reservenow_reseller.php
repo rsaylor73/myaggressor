@@ -50,10 +50,17 @@ require "settings.php";
             $new_price = $row['bunk_price'] - $temp_d;
             $total = $total + $new_price;
             $gdr = $discount[$temp_d][0];
+
+				//print "Inventory ID $row[inventoryID] - Bunk price $row[bunk_price] - DWC $temp_d<br>";
+		      $sql2 = "UPDATE `inventory` SET `DWC_discount` = '$temp_d', `general_discount_reason` = '$gdr' WHERE `inventoryID` = '$row[inventoryID]'";
+				$result2 = $reservation->new_mysql($sql2);
+
+
          } else {
             $total = $total + $row['bunk_price'];
          } 
       }  
+
 
 		$balance = $total;
 		$today = date("Ymd");
@@ -115,7 +122,7 @@ require "settings.php";
 		$reservationID = $reservation->linkID->insert_id;
 
 		// Update Inventory
-		$sql2 = "UPDATE `inventory` SET `reservationID` = '$reservationID', `commission_at_time_of_booking` = '$commission', `passengerID` = '61531204', `status` = 'booked',`DWC_discount` = '$temp_d', `general_discount_reason` = '$gdr' WHERE `charterID` = '$_GET[charter]' AND `sessionID` = '$_SESSION[sessionID]'";
+		$sql2 = "UPDATE `inventory` SET `reservationID` = '$reservationID', `commission_at_time_of_booking` = '$commission', `passengerID` = '61531204', `status` = 'booked' WHERE `charterID` = '$_GET[charter]' AND `sessionID` = '$_SESSION[sessionID]'";
 		$result2 = $reservation->new_mysql($sql2);
 
 		// Add contact profile to inventory
