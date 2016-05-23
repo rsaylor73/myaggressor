@@ -619,7 +619,6 @@ class Common {
 
           // balance the user
           $sql4 = "SELECT `points` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
-          print "<br>SQL 4: $sql4<br><br>";
 
           $result4 = $this->new_mysql($sql4);
           while ($row4 = $result4->fetch_assoc()) {
@@ -627,9 +626,8 @@ class Common {
           }
           $points_balance = $points_balance - $points;
           $sql5 = "UPDATE `contacts` SET `points` = '$points_balance' WHERE `contactID` = '$_SESSION[contactID]'";
-          print "SQL 5: $sql5<br><br>";
-          
-          $result5 = $this->new_mysql($sq5);
+
+          $result5 = $this->new_mysql($sql5);
           $_SESSION['points'] = $points;
 
           print "<br><br>Thank you, your points have been redeemed in the amount <b>$ $amount</b>. Please use coupon code <b>$code</b> at the Aggressor Fleet Boutique.<br><br>
