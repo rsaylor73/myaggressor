@@ -539,9 +539,9 @@ class Common {
         while ($row = $result->fetch_assoc()) {
           $points = $row['points'];
         }
-        if ($points <= $_POST['points']) {
+        if ($_POST['points'] <= $points) {
           print "test";
-          
+
         } else {
           print "<br><br><font color=red>Sorry, but you have requested more points then you have available.</font><br><br>";
         }
