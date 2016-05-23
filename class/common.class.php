@@ -422,7 +422,7 @@ class Common {
 
                       <b>Boutique Points</b><br><br>
                       <font size="12"><?=$points;?></font><br><br><br>
-                      <a href="#">Redeem</a>&nbsp;&nbsp;<a href="http://www.liveaboardboutique.com/" target=_blank>Shop</a><br>
+                      <a href="redeem.php"><i class="fa fa-minus" aria-hidden="true"></i> Redeem</a>&nbsp;&nbsp;<a href="http://www.liveaboardboutique.com/" target=_blank>Shop</a><br>
 
                     </td>
                   </tr>
@@ -480,7 +480,42 @@ class Common {
       }
 
 
+      public function redeem_form() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+        print "<br><span class=\"result-title-text\">Dive Log ($_SESSION[first] $_SESSION[last])</span><br><br>
+        <span class=\"details-description\">";
 
+        $points = "0";
+        $sql = "SELECT `points` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+          $points = $row['points'];
+        }
+        if ($points > 0) {
+          print "<form action=\"redeem.php\" method=\"post\">
+          <input type=\"hidden\" name=\"section\" value=\"redeem\">
+          <table class=\"table\">
+          <tr><td>How many points would you like to redeem?</td><td><input type=\"text\" name=\"points\" size=\"20\" required></td></tr>
+          <tr><td colspan=\"2\"><input type=\"submit\" value=\"Redeem Points\"></td></tr>
+          </table>
+          </form>";
+        } else {
+          print "<br><font color=red>Sorry, but you do not have any points to redeem.</font><br>";
+        }
+
+        print "</span>";
+        $this->header_bot();
+
+      }
 
       public function add_divelog() {
         $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
