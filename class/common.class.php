@@ -542,7 +542,7 @@ class Common {
         if ($_POST['points'] <= $points) {
           print "test";
           $amount = $_POST['points'] * 0.05;
-          $this->create_coupon($amount);
+          $this->create_coupon($amount,$_POST['points']);
 
         } else {
           print "<br><br><font color=red>Sorry, but you have requested more points then you have available.</font><br><br>";
@@ -574,7 +574,13 @@ class Common {
       }
 
 
-      private function create_coupon($amount) {
+      private function create_coupon($amount,$points) {
+
+        if ($_SESSION['points'] == $points) {
+          print "<br><font color=red>Sorry, but we have detected the same amount of points was just issued as a coupon code. If you wish to generate another code please use a different value of points.
+          <br><br></font>";
+          die;
+        }
 
         $linkID2 = new mysqli(HOST2, USER2, PASS2, DB2);
 
@@ -585,6 +591,7 @@ class Common {
 
         $date1 = date("Y-m-d H:i:s");
         $date2 = date("Y-m-d H:i:s", strtotime($date1 . ' +30 day'));
+        $date3 = date("Ymd");
 
         $sql = "
         INSERT INTO `ps_cart_rule` 
@@ -602,8 +609,31 @@ class Common {
         ";
 
         $result = $linkID2->query($sql);
-        $id = $linkID2->insert_id;
-        print "<br>ID: $id<br>";
+        if ($result == "TRUE") {
+          $id = $linkID2->insert_id;
+          $sql2 = "INSERT INTO `ps_cart_rule_lang` (`id_cart_rule`,`id_lang`,`name`) VALUES ('$id','1','My Aggressor Points Redeemed')";
+          $result2 = $linkID2->query($sql2);
+
+          // log the details
+          $sql3 = "INSERT INTO `points_log` (`contactID`,`points_used`,`code_issued`,`date`) VALUES ('$_SESSION[contactID]','$points','$code','$date3')";
+          $result3 = $this->new_mysql($sql3);
+
+          // balance the user
+          $sql4 = "SELECT `points` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
+          $result4 = $this->new_mysql($sql4);
+          while ($row4 = $result4->fetch_assoc()) {
+            $points_balance = $row4['points'];
+          }
+          $points_balance = $points_balance - $points;
+          $sql5 = "UPDATE `contacts` SET `points` = '$points_balance' WHERE `contactID` = '$_SESSION[contactID]'";
+          $result5 = $this->new_mysql($sq5);
+          $_SESSION['points'] = $points;
+
+          print "<br><br>Thank you, your points have been redeemed in the amount <b>$ $amount</b>. Please use coupon code <b>$code</b> at the Aggressor Fleet Boutique.<br><br>
+          Please print this page for your records.<br><br><input type=\"button\" value=\"Back to My Aggressor\" class=\"btn btn-success\" onclick=\"document.location.href='portal.php'\"><br>";
+        }
+
+
 
       }
 
