@@ -540,7 +540,6 @@ class Common {
           $points = $row['points'];
         }
         if ($_POST['points'] <= $points) {
-          print "test";
           $amount = $_POST['points'] * 0.05;
           $this->create_coupon($amount,$_POST['points']);
 
@@ -620,12 +619,16 @@ class Common {
 
           // balance the user
           $sql4 = "SELECT `points` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
+          print "<br>SQL 4: $sql4<br><br>";
+
           $result4 = $this->new_mysql($sql4);
           while ($row4 = $result4->fetch_assoc()) {
             $points_balance = $row4['points'];
           }
           $points_balance = $points_balance - $points;
           $sql5 = "UPDATE `contacts` SET `points` = '$points_balance' WHERE `contactID` = '$_SESSION[contactID]'";
+          print "SQL 5: $sql5<br><br>";
+          
           $result5 = $this->new_mysql($sq5);
           $_SESSION['points'] = $points;
 
