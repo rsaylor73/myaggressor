@@ -553,12 +553,26 @@ class Common {
 
       }
 
-      private function generate_code($N) {
-        $s = "";
-        for ($i = 0; $i != $N; ++$i)
-        s .= $alph[mt_rand(0, ALPHSIZE - 1)];
-        return $s;
-}
+      private function generate_code($length = 10) {
+        $code = '';
+        $total = 0;
+
+        do
+        {
+          if (rand(0, 1) == 0)
+          {
+            $code.= chr(rand(97, 122)); // ASCII code from **a(97)** to **z(122)**
+          }
+          else
+          {
+            $code.= rand(0, 9); // Numbers!!
+          }
+          $total++;
+        } while ($total < $length);
+
+        return $code;
+      }
+
 
       private function create_coupon($amount) {
 
