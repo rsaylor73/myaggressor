@@ -541,6 +541,8 @@ class Common {
         }
         if ($_POST['points'] <= $points) {
           print "test";
+          $amount = $_POST['points'] * 0.05;
+          $this->create_coupon($amount);
 
         } else {
           print "<br><br><font color=red>Sorry, but you have requested more points then you have available.</font><br><br>";
@@ -548,6 +550,41 @@ class Common {
 
         print "</span>";
         $this->header_bot();
+
+      }
+
+      private function generate_code($N) {
+        $s = "";
+        for ($i = 0; $i != $N; ++$i)
+        s .= $alph[mt_rand(0, ALPHSIZE - 1)];
+        return $s;
+}
+
+      private function create_coupon($amount) {
+
+        $linkID2 = new mysqli(HOST2, USER2, PASS2, DB2);
+
+        //$sql = "SELECT * FROM `seven_seas`.`af_guests` WHERE `contactID` = '$contactID'";
+        //$result = $linkID2->query($sql);
+
+        $code = $this->generate_code('8');
+
+        $sql = "
+        INSERT INTO `ps_cart_rule` 
+
+        (`id_customer`,`date_from`,`date_to`,`description`,`quantity`,`quantity_per_user`,`priority`,`partial_use`,`code`,`minimum_amount`,`minimum_amount_tax`,`minimum_amount_currency`,
+        `minimum_amount_shipping`,`country_restriction`,`carrier_restriction`,`group_restriction`,`cart_rule_restriction`,`product_restriction`,`shop_restriction`,`free_shipping`,
+        `reduction_percent`,`reduction_amount`,`reduction_tax`,`reduction_currency`,`reduction_product`,`gift_product`,`gift_product_attribute`,`highlight`,`active`,
+        `date_add`,`date_upd`)
+
+        VALUES
+
+        ('0','NOW()','NOW() + INTERVAL 30 DAY','My Aggressor Points Redeemed','1','1','1','1','$code','0.00','0','1','0','0','0','0','0','0','0','0','0.00','$amount','0','1','0','0','0',
+        '0','1','NOW()','NOW()'
+        )
+        ";
+
+        print "<br>$sql";
 
       }
 
