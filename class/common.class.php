@@ -436,7 +436,7 @@ class Common {
             <tr><td colspan="2"><hr></td></tr>
 
               <td valign=top>
-                  <b>Awards & Certifications</b><br>
+                  <b>Awards & Certifications <?=$row['total_dives'];?></b><br>
 
                   <?php
                   if (($row['total_dives'] > 99) && ($row['total_dives'] < 200)) {
