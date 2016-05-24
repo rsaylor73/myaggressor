@@ -570,8 +570,6 @@ class Common {
           print '
           <div>
           <span class="fa fa-star fa-2x" style=" vertical-align: middle;"></span>
-          <span class="fa fa-star fa-2x" style=" vertical-align: middle;"></span>
-          <span class="fa fa-star fa-2x" style=" vertical-align: middle;"></span>
           <span class="my-text">All Star</span>
           </div>
           ';  
