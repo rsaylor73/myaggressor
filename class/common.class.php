@@ -437,11 +437,11 @@ class Common {
             <tr><td colspan="2"><hr></td></tr>
 
               <td valign=top>
-                  <b>Awards & Certifications <?=$total_dives;?></b><br>
+                  <b>Awards & Certifications</b><br>
 
                   <?php
                   if (($total_dives > 99) && ($total_dives < 200)) {
-                    print '<i class="fa fa-trophy" aria-hidden="true"><br>100</i>';
+                    print '<i class="fa fa-trophy fa-5x" aria-hidden="true"><br>100</i>';
                   }
                   if (($total_dives > 199) && ($total_dives < 300)) {
                     print '<i class="fa fa-trophy" aria-hidden="true"><br>100</i>';
