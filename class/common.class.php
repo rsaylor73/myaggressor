@@ -486,6 +486,9 @@ class Common {
                     $this->trophy(5000);
                   }
 
+
+                  $this->all_star();
+
                   ?>
 
 
