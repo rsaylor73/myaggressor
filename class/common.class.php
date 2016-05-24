@@ -493,7 +493,7 @@ class Common {
                   ?>
                   </td><td>
 
-                  <?php if ($vip > 99) { $this->vip() } ?>
+                  <?php if ($vip > 99) { $this->vip(); } ?>
 
                   </td></tr>
 
