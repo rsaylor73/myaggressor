@@ -272,6 +272,7 @@ class Common {
         if ($row['total_dives'] == "") {
           $row['total_dives'] = "0";
         }
+        $total_dives = $row['total_dives'];
 
         $age = floor((time() - strtotime($row['date_of_birth'])) / 31556926);
 
@@ -436,13 +437,13 @@ class Common {
             <tr><td colspan="2"><hr></td></tr>
 
               <td valign=top>
-                  <b>Awards & Certifications <?=$row['total_dives'];?></b><br>
+                  <b>Awards & Certifications <?=$total_dives;?></b><br>
 
                   <?php
-                  if (($row['total_dives'] > 99) && ($row['total_dives'] < 200)) {
+                  if (($total_dives > 99) && ($total_dives < 200)) {
                     print '<i class="fa fa-trophy" aria-hidden="true"><br>100</i>';
                   }
-                  if (($row['total_dives'] > 199) && ($row['total_dives'] < 300)) {
+                  if (($total_dives > 199) && ($total_dives < 300)) {
                     print '<i class="fa fa-trophy" aria-hidden="true"><br>100</i>';
                   }
 
