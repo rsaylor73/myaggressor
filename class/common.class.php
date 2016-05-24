@@ -566,7 +566,15 @@ class Common {
         while ($row = $result->fetch_assoc()) {
           $total++;
         }
-        print "$total";
+        if ($total > 2) {
+          print '
+          <div>
+          <i class="fa fa-star fa-3x" aria-hidden="true"></i><i class="fa fa-star fa-3x" aria-hidden="true"></i>
+          <span class="fa fa-star fa-3x" style=" vertical-align: middle;"></span>
+          <span class="my-text">All Star</span>
+          </div>
+          ';  
+        }
       }
 
       private function trophy($dives) {
