@@ -560,6 +560,9 @@ class Common {
 
         GROUP BY `i`.`charterID`
         ";
+
+print "<br>$sql<br>";
+
         $total = "0";
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
