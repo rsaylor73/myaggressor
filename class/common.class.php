@@ -489,7 +489,7 @@ class Common {
                   ?>
 
 
-                  <a href="#">View All</a><br>
+                  <br><a href="#">View All</a><br>
 
               </td>
               <td valign="top">
