@@ -536,6 +536,35 @@ class Common {
 
       }
 
+      private function all_star() {
+        $year = date("Y");
+        $today = date("Ymd");
+
+        $sql = "
+        SELECT
+          COUNT(`c`.`charterID`) AS 'total'
+
+        FROM
+          `inventory` i,
+          `charters` c
+
+        WHERE
+          `i`.`passengerID` = '$_SESSION[contactID]'
+          AND `i`.`charterID` = `c`.`charterID`
+          AND `c`.`start_date` < '$today'
+          AND DATE_FORMAT(`c`.`start_date`, '%Y') = '$year'
+
+
+        GROUP BY `i`.`charterID`
+        ";
+        $total = "0";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+          $total = $row['total'];
+        }
+        print "$total";
+      }
+
       private function trophy($dives) {
         print '
         <div>
