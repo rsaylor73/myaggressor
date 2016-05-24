@@ -446,6 +446,45 @@ class Common {
                   if (($total_dives > 199) && ($total_dives < 300)) {
                     $this->trophy(200);
                   }
+                  if (($total_dives > 299) && ($total_dives < 400)) {
+                    $this->trophy(300);
+                  }
+                  if (($total_dives > 399) && ($total_dives < 500)) {
+                    $this->trophy(400);
+                  }
+                  if (($total_dives > 499) && ($total_dives < 600)) {
+                    $this->trophy(500);
+                  }
+                  if (($total_dives > 599) && ($total_dives < 700)) {
+                    $this->trophy(600);
+                  }
+                  if (($total_dives > 699) && ($total_dives < 800)) {
+                    $this->trophy(700);
+                  }
+                  if (($total_dives > 799) && ($total_dives < 900)) {
+                    $this->trophy(800);
+                  }
+                  if (($total_dives > 899) && ($total_dives < 1000)) {
+                    $this->trophy(900);
+                  }
+                  if (($total_dives > 999) && ($total_dives < 1100)) {
+                    $this->trophy(1000);
+                  }
+                  if (($total_dives > 1249) && ($total_dives < 1500)) {
+                    $this->trophy(1250);
+                  }
+                  if (($total_dives > 1499) && ($total_dives < 1750)) {
+                    $this->trophy(1500);
+                  }
+                  if (($total_dives > 1749) && ($total_dives < 2000)) {
+                    $this->trophy(1750);
+                  }
+                  if (($total_dives > 1999) && ($total_dives < 2500)) {
+                    $this->trophy(2000);
+                  }
+                  if (($total_dives > 2499) && ($total_dives < 5000)) {
+                    $this->trophy(5000);
+                  }
 
                   ?>
 
