@@ -600,20 +600,15 @@ class Common {
           <span class="fa fa-anchor fa-2x" style=" vertical-align: middle;"></span>
           <span class="my-text">Vip</span>
           </div>
-
-        <div>
-        <span class="fa fa-anchor fa-2x" stlye=" vertical-align: middle;"></span>
-        <span class="my-text">VIP</span>
-        </div>
         ';
       }
 
       private function seven_seas() {
         print '
-        <div>
-        <span class="fa fa-ship fa-2x" stlye=" vertical-align: middle;"></span>
-        <span class="my-text">7 Seas</span>
-        </div>
+          <div>
+          <span class="fa fa-ship fa-2x" style=" vertical-align: middle;"></span>
+          <span class="my-text">7 Seas</span>
+          </div>
         ';
       }
 
