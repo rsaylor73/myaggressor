@@ -596,6 +596,11 @@ class Common {
 
       private function vip() {
         print '
+          <div>
+          <span class="fa fa-anchor fa-2x" style=" vertical-align: middle;"></span>
+          <span class="my-text">Vip</span>
+          </div>
+
         <div>
         <span class="fa fa-anchor fa-2x" stlye=" vertical-align: middle;"></span>
         <span class="my-text">VIP</span>
