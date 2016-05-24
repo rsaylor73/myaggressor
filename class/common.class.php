@@ -438,6 +438,7 @@ class Common {
 
               <td valign=top>
                   <b>Awards & Certifications</b><br>
+                  <table><tr><td>
 
                   <?php
                   if (($total_dives > 99) && ($total_dives < 200)) {
@@ -485,12 +486,14 @@ class Common {
                   if (($total_dives > 2499) && ($total_dives < 5000)) {
                     $this->trophy(5000);
                   }
-
+                  print "</td><td>";
 
                   $this->all_star();
 
                   ?>
+                  </td></tr>
 
+                  </table>
 
                   <br><a href="#">View All</a><br>
 
