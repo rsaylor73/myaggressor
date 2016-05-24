@@ -441,16 +441,10 @@ class Common {
 
                   <?php
                   if (($total_dives > 99) && ($total_dives < 200)) {
-                    print '<i class="fa fa-trophy fa-5x" aria-hidden="true"><br>100</i>';
+                    $this->trophy(100);
                   }
                   if (($total_dives > 199) && ($total_dives < 300)) {
-                    print '
-                    <div>
-                    <span class="fa fa-trophy fa-3x" style=" vertical-align: middle;"></span>
-                    <span class="my-text">200</span>
-                    </div>
-                    ';
-
+                    $this->trophy(200);
                   }
 
                   ?>
@@ -502,6 +496,14 @@ class Common {
 
       }
 
+      private function trophy($dives) {
+        print '
+        <div>
+        <span class="fa fa-trophy fa-3x" style=" vertical-align: middle;"></span>
+        <span class="my-text">'.$dives.'</span>
+        </div>
+        ';  
+      }
 
       public function redeem_form() {
         $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
