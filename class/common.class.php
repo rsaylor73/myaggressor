@@ -438,6 +438,17 @@ class Common {
               <td valign=top>
                   <b>Awards & Certifications</b><br>
 
+                  <?php
+                  if (($row['total_dives'] > 99) && ($row['total_dives'] < 200)) {
+                    print '<i class="fa fa-trophy" aria-hidden="true"><br>100</i>';
+                  }
+                  if (($row['total_dives'] > 199) && ($row['total_dives'] < 300)) {
+                    print '<i class="fa fa-trophy" aria-hidden="true"><br>100</i>';
+                  }
+
+                  ?>
+
+
                   <br><br>...<br><br>
                   <a href="#">View All</a><br>
 
