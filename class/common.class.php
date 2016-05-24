@@ -444,7 +444,7 @@ class Common {
                     print '<i class="fa fa-trophy fa-5x" aria-hidden="true"><br>100</i>';
                   }
                   if (($total_dives > 199) && ($total_dives < 300)) {
-                    print '<i class="fa fa-trophy" aria-hidden="true"><br>100</i>';
+                    print '<i class="fa fa-trophy fa-5x" aria-hidden="true"><br>100</i>';
                   }
 
                   ?>
