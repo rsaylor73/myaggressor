@@ -586,7 +586,7 @@ class Common {
       private function trophy($dives) {
         print '
         <div>
-        <span class="fa fa-trophy fa-3x" style=" vertical-align: middle;"></span>
+        <span class="fa fa-trophy fa-2x" style=" vertical-align: middle;"></span>
         <span class="my-text">'.$dives.'</span>
         </div>
         ';  
@@ -595,7 +595,7 @@ class Common {
       private function vip() {
         print '
         <div>
-        <span class="fa fa-anchor fa-3x" stlye=" vertical-align: middle;"></span>
+        <span class="fa fa-anchor fa-2x" stlye=" vertical-align: middle;"></span>
         <span class="my-text">VIP</span>
         </div>
         ';
