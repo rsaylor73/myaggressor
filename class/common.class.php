@@ -495,7 +495,9 @@ class Common {
 
                   <?php if ($vip > 99) { $this->vip(); } ?>
 
-                  </td></tr>
+                  </td><td>
+
+                  <?php if ($seven_seas > 99) { $this->seven_seas(); } ?>
 
                   </table>
 
@@ -597,6 +599,15 @@ class Common {
         <div>
         <span class="fa fa-anchor fa-2x" stlye=" vertical-align: middle;"></span>
         <span class="my-text">VIP</span>
+        </div>
+        ';
+      }
+
+      private function seven_seas() {
+        print '
+        <div>
+        <span class="fa fa-ship fa-2x" stlye=" vertical-align: middle;"></span>
+        <span class="my-text">7 Seas</span>
         </div>
         ';
       }
