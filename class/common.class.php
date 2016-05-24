@@ -491,6 +491,10 @@ class Common {
                   $this->all_star();
 
                   ?>
+                  </td><td>
+
+                  <?php if ($vip > 99) { $this->vip() } ?>
+
                   </td></tr>
 
                   </table>
@@ -586,6 +590,15 @@ class Common {
         <span class="my-text">'.$dives.'</span>
         </div>
         ';  
+      }
+
+      private function vip() {
+        print '
+        <div>
+        <span class="fa fa-anchor fa-3x" stlye=" vertical-align: middle;"></span>
+        <span class="my-text">VIP</span>
+        </div>
+        ';
       }
 
       public function redeem_form() {
