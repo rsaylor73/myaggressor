@@ -760,6 +760,7 @@ class Common {
                   print "</tr></table>";
 
                   print "<h2>All-Star Divers</h2>";
+                  print "Awarded to every guests who traveled with us for 3 trips or more within the year<br>";
                   $this->all_star();
 
 
