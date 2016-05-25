@@ -676,7 +676,7 @@ class Common {
 
                   print "<h2>Dive Milestone(s)</h2>";
                   print "<table class=\"table\">
-                  <tr>"
+                  <tr>";
 
                   if ($total_dives > 99) {
                     print "<td>";
