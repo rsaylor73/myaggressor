@@ -517,7 +517,7 @@ class Common {
                 <b>Creature Checklist</b><br><br>
 
                 <?php
-                $this->creature_list('creature','10');
+                $this->creature_list('creature','10','normal');
                 ?>
                 <br><br>
                 <a href="#">View All</a><br><br>
@@ -527,7 +527,7 @@ class Common {
                 <b>Most Wanted</b><br><br>
 
                 <?php
-                $this->creature_list('wanted','10');
+                $this->creature_list('wanted','10','random');
                 ?>
                 <br><br>
                 <a href="#">View All</a><br><br>
@@ -556,9 +556,15 @@ class Common {
 
       }
 
-      public function creature_list($type,$max) {
+      public function creature_list($type,$max,$order) {
         if ($max == "") {
           $max = "99999";
+        }
+
+        if ($order == "random") {
+          $orderby = "ORDER BY RAND()";
+        } else {
+          $orderby = "ORDER BY `title`";
         }
 
         print "<table class=\"table\">
@@ -566,7 +572,7 @@ class Common {
         <input type=\"hidden\" name=\"section\" value=\"$type\">
         ";
 
-        $sql = "SELECT `title`,`id` FROM `af_df_unified2`.`creature` ORDER BY `title` ASC LIMIT 0,$max";
+        $sql = "SELECT `title`,`id` FROM `af_df_unified2`.`creature` $order ASC LIMIT 0,$max";
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\"></td><td>$row[title]</td></tr>";
