@@ -515,7 +515,11 @@ class Common {
             <tr>
               <td valign=top>
                 <b>Creature Checklist</b><br><br>
-                Give list and checkboxes...<Br><br><br>
+
+                <?php
+                $this->creature_list('creature','10');
+                ?>
+
                 <a href="#">View All</a>&nbsp;&nbsp;<a href="#">Edit</a><br>
               </td>
 
@@ -547,6 +551,27 @@ class Common {
 
 
       }
+
+      public function creature_list($type,$max) {
+        if ($max == "") {
+          $max = "99999";
+        }
+
+        print "<table class=\"table\">
+        <form action=\"creature.php\" method=\"post\">
+        <input type=\"hidden\" name=\"section\" value=\"$type\">
+        ";
+
+        $sql = "SELECT `title`,`id` FROM `af_df_unified2`.`creature` ORDER BY `title` ASC LIMIT 0,$max";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+          print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\"></td><td>$row[title]</td></tr>";
+        }
+
+        print "</table><input type=\"submit\" value=\"Save\" class=\"btn btn-success\"></form>";
+
+      }
+
 
       private function all_star() {
         $year = date("Y");
