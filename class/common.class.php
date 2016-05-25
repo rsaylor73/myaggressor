@@ -668,7 +668,7 @@ class Common {
                       $sql = "SELECT `total_dives` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
                       $result = $this->new_mysql($sql);
                       while ($row = $result->fetch_assoc()) {
-                        $total_dives = $row['points'];
+                        $total_dives = $row['total_dives'];
                       }
                       if ($total_dives == "") {
                         $total_dives = "0";
