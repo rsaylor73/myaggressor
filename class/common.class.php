@@ -501,7 +501,7 @@ class Common {
 
                   </table>
 
-                  <br><a href="#">View All</a><br>
+                  <br><a href="viewallawards.php">View All</a><br>
 
               </td>
               <td valign="top">
@@ -651,6 +651,117 @@ class Common {
 
       }
 
+      public function viewallawards() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+        print "<br><span class=\"result-title-text\">Awards ($_SESSION[first] $_SESSION[last])</span><br><br>
+        <span class=\"details-description\">";
+
+                      $sql = "SELECT `points` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
+                      $result = $this->new_mysql($sql);
+                      while ($row = $result->fetch_assoc()) {
+                        $points = $row['points'];
+                      }
+                      if ($points == "") {
+                        $points = "0";
+                      }
+
+                  print "<h2>Dive Milestone(s)</h2>";
+                  print "<table class=\"table\">
+                  <tr>"
+
+                  if ($total_dives > 99) {
+                    print "<td>";
+                    $this->trophy(100);
+                    print "</td>";
+                  }
+                  if ($total_dives > 199) {
+                    print "<td>";
+                    $this->trophy(200);
+                    print "</td>";
+                  }
+                  if ($total_dives > 299) {
+                    print "<td>";
+                    $this->trophy(300);
+                    print "</td>";
+                  }
+                  if ($total_dives > 399) {
+                    print "<td>";
+                    $this->trophy(400);
+                    print "</td></tr>";
+                  }
+                  if ($total_dives > 499) {
+                    print "<tr><td>";
+                    $this->trophy(500);
+                    print "</td>";
+                  }
+                  if ($total_dives > 599) {
+                    print "<td>";
+                    $this->trophy(600);
+                    print "</td>";
+                  }
+                  if ($total_dives > 699) {
+                    print "<td>";
+                    $this->trophy(700);
+                    print "</td>";
+                  }
+                  if ($total_dives > 799) {
+                    print "<td>";
+                    $this->trophy(800);
+                    print "</td></tr>";
+                  }
+                  if ($total_dives > 899) {
+                    print "<tr><td>";
+                    $this->trophy(900);
+                    print "</td>";
+                  }
+                  if ($total_dives > 999) {
+                    print "<td>";
+                    $this->trophy(1000);
+                    print "</td>";
+                  }
+                  if ($total_dives > 1249) {
+                    print "<td>";
+                    $this->trophy(1250);
+                    print "</td>";
+                  }
+                  if ($total_dives > 1499) {
+                    print "<td>";
+                    $this->trophy(1500);
+                    print "</td></tr>";
+                  }
+                  if ($total_dives > 1749) {
+                    print "<tr><td>";
+                    $this->trophy(1750);
+                    print "</td>";
+                  }
+                  if ($total_dives > 1999) {
+                    print "<td>";
+                    $this->trophy(2000);
+                    print "</td>";
+                  }
+                  if ($total_dives > 2499) {
+                    print "<td>";
+                    $this->trophy(5000);
+                    print "</td>";
+                  }
+                  print "</tr></table>";
+
+
+
+        print "</span>";
+        $this->header_bot();
+        
+      }
+
       public function redeem_points() {
         $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $check_login = $this->check_login();
@@ -662,7 +773,7 @@ class Common {
             die;
         }
         $this->header_top();
-        print "<br><span class=\"result-title-text\">Dive Log ($_SESSION[first] $_SESSION[last])</span><br><br>
+        print "<br><span class=\"result-title-text\">Points ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
 
         $points = "0";
