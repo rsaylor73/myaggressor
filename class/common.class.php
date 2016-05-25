@@ -759,6 +759,10 @@ class Common {
                   }
                   print "</tr></table>";
 
+                  print "<h2>All-Star Divers</h2>";
+                  $this->all_star();
+
+
 
 
         print "</span>";
