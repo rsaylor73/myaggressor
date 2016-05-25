@@ -665,18 +665,22 @@ class Common {
         print "<br><span class=\"result-title-text\">Awards ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
 
-                      $sql = "SELECT `points` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
+                      $sql = "SELECT `total_dives` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
                       $result = $this->new_mysql($sql);
                       while ($row = $result->fetch_assoc()) {
-                        $points = $row['points'];
+                        $total_dives = $row['points'];
                       }
-                      if ($points == "") {
-                        $points = "0";
+                      if ($total_dives == "") {
+                        $total_dives = "0";
                       }
 
                   print "<h2>Dive Milestone(s)</h2>";
                   print "<table class=\"table\">
                   <tr>";
+
+                  if ($total_dives < 99) {
+                    print "<td>Keep diving. You will earn your first milestone at 100 dives.</td>";
+                  }
 
                   if ($total_dives > 99) {
                     print "<td>";
