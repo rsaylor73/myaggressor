@@ -674,6 +674,12 @@ class Common {
                         $total_dives = "0";
                       }
 
+                      $seven_seas = $this->seven_seas_status($_SESSION['contactID']);
+                      $seven_seas = $seven_seas * 10;
+
+                      $vip = $this->vip_status($_SESSION['contactID']);
+                      $vip = $vip * 10;
+
                   print "<h2>Dive Milestone(s)</h2>";
                   print "<table class=\"table\">
                   <tr>";
@@ -760,9 +766,16 @@ class Common {
                   print "</tr></table>";
 
                   print "<h2>All-Star Divers</h2>";
-                  print "Awarded to every guests who traveled with us for 3 trips or more within the year<br><br>";
+                  print "Awarded to every guest who traveled with Aggressor Fleet for 3 trips or more within the year<br><br>";
                   $this->all_star();
 
+                  print "<h2>VIP</h2>";
+                  print "Awarded to every guest who has been on 14 trips with Aggressor Fleet.<br><br>";
+                  if ($vip > 99) { $this->vip(); }
+
+                  print "<h2>Seven Seas</h2>";
+                  print "Awarded to every guest who has been to all 7 seas with Aggressor Fleet.<br><br>";
+                  if ($seven_seas > 99) { $this->seven_seas(); }
 
 
 
