@@ -572,7 +572,7 @@ class Common {
         <input type=\"hidden\" name=\"section\" value=\"$type\">
         ";
 
-        $sql = "SELECT `title`,`id` FROM `af_df_unified2`.`creature` $order ASC LIMIT 0,$max";
+        $sql = "SELECT `title`,`id` FROM `af_df_unified2`.`creature` $orderby ASC LIMIT 0,$max";
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\"></td><td>$row[title]</td></tr>";
