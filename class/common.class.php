@@ -519,14 +519,18 @@ class Common {
                 <?php
                 $this->creature_list('creature','10');
                 ?>
-
-                <a href="#">View All</a>&nbsp;&nbsp;<a href="#">Edit</a><br>
+                <br><br>
+                <a href="#">View All</a><br><br>
               </td>
 
               <td>
                 <b>Most Wanted</b><br><br>
-                Give list and checkbox<br><br><br>
-                <a href="#">Edit</a><br>
+
+                <?php
+                $this->creature_list('wanted','10');
+                ?>
+                <br><br>
+                <a href="#">View All</a><br><br>
               </td>
             </tr>
 
