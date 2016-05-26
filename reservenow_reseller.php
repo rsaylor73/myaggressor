@@ -102,6 +102,24 @@ require "settings.php";
 			die;
 		}
 
+		// switch contactID to primary_contactID if the user is a reseller 3rd party
+		$sql3 = "SELECT `contact_type` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
+		$result3 = $reservation->new_mysql($sql3);
+		while ($row3 = $result3->fetch_assoc()) {
+			$contact_type = $row3['contact_type'];
+		}
+
+		if ($contact_type == "reseller_third_party") {
+			$sql3 = "SELECT `primary_contactID` FROM `reseller_3rd_party` WHERE `resellerID` = '$_SESSION[resellerID]'";
+			$result3 = $reservation->new_mysql($sql3);
+			while ($row3 = $result3->fetch_assoc()) {
+				$primary_contactID = $row3['primary_contactID'];
+			}
+		} else {
+			$primary_contactID = $_SESSION['contactID'];
+		}
+
+
 		$sql2 = "
 	   INSERT INTO `reservations`
 	   (`reseller_agentID`,`charterID`,`reservation_date`,`userID`,`reservation_contactID`,
@@ -111,7 +129,7 @@ require "settings.php";
 				
 	   VALUES
 
-	   ('$reseller_agentID','$_GET[charter]','$today','176','$_SESSION[contactID]',
+	   ('$reseller_agentID','$_GET[charter]','$today','176','$primary_contactID',
 	   'Single','$deposit','$balance','$contact_name','23',
 	   '$total','0.00','0.00','0.00','$balance',
 	   '0.00','$pax','$status','$policy')

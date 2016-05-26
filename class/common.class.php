@@ -2366,6 +2366,37 @@ class Common {
 			$sql = "SELECT * FROM `reseller_3rd_party` WHERE `resellerID` = '$_SESSION[resellerID]'";
 			$result = $this->new_mysql($sql);
 			$row = $result->fetch_assoc();
+
+         $sql2 = "
+         SELECT
+            `c`.`contactID`,
+            `c`.`first`,
+            `c`.`last`
+
+         FROM
+            `resellers` r,
+            `reseller_agents` ra,
+            `contacts` c
+
+         WHERE
+            `r`.`resellerID` = '$_SESSION[resellerID]'
+            AND `r`.`resellerID` = `ra`.`resellerID`
+            AND `ra`.`reseller_agentID` = `c`.`reseller_agentID`
+            AND `c`.`contact_type` = 'reseller_manager'
+         ";
+         if ($row['primary_contactID'] == "") {
+            $primary_contactID = "<option value=\"\">-- Select Contact --</option>";
+         }  
+         $result2 = $this->new_mysql($sql2);
+         while ($row2 = $result2->fetch_assoc()) {
+            if ($row['primary_contactID'] == $row2['contactID']) {
+               $primary_contactID .= "<option selected value=\"$row2[contactID]\">$row2[first] $row2[last]</option>";
+            } else {
+               $primary_contactID .= "<option value=\"$row2[contactID]\">$row2[first] $row2[last]</option>";
+            }  
+         }  
+
+
 			print "$msg";
 			print "
 			<form action=\"update_company.php\" method=\"post\" enctype=\"multipart/form-data\">
@@ -2377,6 +2408,7 @@ class Common {
 			<tr><td>Country:</td><td><input type=\"text\" name=\"country\" value=\"$row[country]\" size=40></td></tr>
 			<tr><td>Zip Code:</td><td><input type=\"text\" name=\"zip\" value=\"$row[zip]\" size=40></td></tr>
 			<tr><td>Phone:</td><td><input type=\"text\" name=\"phone\" value=\"$row[phone]\" size=40></td></tr>
+         <tr><td>Primary Contact:</td><td><select name=\"primary_contactID\" required>$primary_contactID</select></td></tr>
 			<tr><td>Email:</td><td><input type=\"text\" name=\"email\" value=\"$row[email]\" size=40></td></tr>
 			<tr><td>Logo:</td><td><input type=\"file\" name=\"logo\">";
 			if ($row['logo'] != "") {
@@ -2421,12 +2453,12 @@ class Common {
 			if ($found == "1") {
 				// update
 				$sql = "UPDATE `reseller_3rd_party` SET `address1` = '$_POST[address1]', `address2` = '$_POST[address2]', `city` = '$_POST[city]', `state` = '$_POST[state]', `country` = '$_POST[country]',
-				`zip` = '$_POST[zip]', `phone` = '$_POST[phone]', `email` = '$_POST[email]', `default_commission` = '$_POST[default_commission]' $logo1 WHERE `resellerID` = '$_SESSION[resellerID]'";
+				`zip` = '$_POST[zip]', `phone` = '$_POST[phone]', `email` = '$_POST[email]', `default_commission` = '$_POST[default_commission]', `primary_contactID` = '$_POST[primary_contactID]' $logo1 WHERE `resellerID` = '$_SESSION[resellerID]'";
 
 			} else {
 				// insert
-				$sql = "INSERT INTO `reseller_3rd_party` (`resellerID`,`address1`,`address2`,`city`,`state`,`country`,`zip`,`phone`,`email`,`default_commission`$logo2a) VALUES
-				('$_SESSION[resellerID]','$_POST[address1]','$_POST[address2]','$_POST[city]','$_POST[state]','$_POST[country]','$_POST[zip]','$_POST[phone]','$_POST[email]','$_POST[default_commission]'$logo2b)";
+				$sql = "INSERT INTO `reseller_3rd_party` (`resellerID`,`address1`,`address2`,`city`,`state`,`country`,`zip`,`phone`,`email`,`default_commission`,`primary_contactID`$logo2a) VALUES
+				('$_SESSION[resellerID]','$_POST[address1]','$_POST[address2]','$_POST[city]','$_POST[state]','$_POST[country]','$_POST[zip]','$_POST[phone]','$_POST[email]','$_POST[default_commission]','$_POST[primary_contactID]'$logo2b)";
 			}
 
 			$result = $this->new_mysql($sql);
