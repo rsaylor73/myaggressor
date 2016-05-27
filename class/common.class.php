@@ -582,6 +582,32 @@ class Common {
 
       }
 
+      public function save_creature() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+        print "<br><span class=\"result-title-text\">Points ($_SESSION[first] $_SESSION[last])</span><br><br>
+        <span class=\"details-description\">";
+
+
+	print "Test<br><br>";
+
+        print "<pre>";
+        print_r($_POST);
+        print "</pre>";
+
+
+        print "</span>";
+        $this->header_bot();         
+      }
+
 
       private function all_star() {
         $year = date("Y");
