@@ -144,7 +144,7 @@ print '
        
      <table width="750" border="0" cellspacing="0" cellpadding="8">
        <tr>
-         <td width="353" rowspan="2"><strong><b>Mail Payments to:</b></strong><br />
+         <td width="353" rowspan="2"><strong><b>Send Payments to:</b></strong><br />
 ';
 print "
    $row3[company]<br>
@@ -163,7 +163,7 @@ print '
          <td height="26" align="right"><strong class="Sub-Title">Confirmation # '.$_GET['r'].'</strong></td>
        </tr>
        <tr>
-         <td align="right" valign="top"><p><strong>Invoice Date:</strong> '.$today.'</p></td>
+         <td align="right" valign="top"><p><strong>Invoice Date:</strong> '.$today.'</p>Rates are quoted in USD per person.</td>
        </tr>
        <tr>
          <td valign="middle"><strong>Email:</strong> <a href="mailto:'.$row3['email'].'?subject=Confirmation '.$_GET['r'].'">'.$row3['email'].'</a><br>
@@ -206,9 +206,9 @@ while ($row2 = $result->fetch_assoc()) {
          <td width="113"><b>Reservation Date</b></td>
          <td width="81" align="center"><p><strong>Departure</strong></p></td>
          <td width="76" align="center"><b>Return</b></td>
-         <td width="54"><b>Nights</b></td>
-         <td width="187"><b>Embark</b></td>
-         <td width="187"><b>Disembark</b></td>
+         <td width="54" align="center"><b>Nights</b></td>
+         <td width="187" align="center"><b>Embark</b></td>
+         <td width="187" align="center"><b>Disembark</b></td>
     </tr>
        <tr>
          <td align="center">'.$reservation_date.'</td>
@@ -235,7 +235,7 @@ print '
          <td align="center" width="90"><b>Price</b></td>
          <td align="center" width="90"><b>Adjustments</b></td>
          <td align="center" width="165"><b>Stateroom Type</b></td>
-         <td align="right" width="165"><div align="right"><b>Net Rate</b></div></td>
+         <td align="right" width="165"><div align="right"><b>Rate</b></div></td>
        </tr>
 ';
 
@@ -260,7 +260,7 @@ while ($row2 = $result->fetch_assoc()) {
          <td align="left">'.$row2['first'].' '.$row2['last'].'</td>
          <td align="center">$'.number_format($bunk_price,2,'.',',').'</td>
          <td align="center">$'.number_format($row2['discount'],2,'.',',').'</td>
-         <td align="center">'.$stateroom[1].' - '.$row3['cabin_type'].'</td>
+         <td align="center">'.$row3['cabin_type'].'</td>
          <td align="right"><div align="right">$'.number_format($net,2,'.',',').'</div></td>
        </tr>
   ';

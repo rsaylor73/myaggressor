@@ -2231,11 +2231,15 @@ class Common {
             `boats`.`name`,
             DATE_FORMAT(`charters`.`start_date`,'%b %e, %Y') AS 'start_date',
             `charters`.`nights`,
-	    `reseller_agents`.`first`,
-	    `reseller_agents`.`last`
+		    `reseller_agents`.`first`,
+		    `reseller_agents`.`last`,
+	         `c`.`contact_type`,
+				`c`.`company`
 
          FROM
             `reservations`,`charters`,`boats`,`reseller_agents`
+
+         LEFT JOIN `contacts` c ON `reseller_agents`.`reseller_agentID` = `c`.`reseller_agentID`
 
          WHERE
 			  `reservations`.`reseller_agentID` = `reseller_agents`.`reseller_agentID`
@@ -2294,6 +2298,8 @@ class Common {
          <tr>
             <td><b>Confirmation #</b></td>
 				<td><b>Agent</b></td>
+            <td><b>Type</b></td>
+				<td><b>Comp</b></td>
             <td><b>Yacht</b></td>
             <td><b>Embark Date</b></td>
             <td><b>Nights</b></td>
@@ -2314,7 +2320,7 @@ class Common {
 					case "reseller_manager":
 					case "reseller_agent":
 					//$invoice = "<a href=\"invoicer.php?r=$row[reservationID]\" target=_blank>Reseller Invoice</a>&nbsp;|&nbsp;<a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Client Invoice</a>";
-               $invoice = "<a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Aggressor Invoice</a> | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
+               $invoice = "<a href=\"invoice.php?r=$row[reservationID]\" target=_blank>AF Invoice</a> | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
 					break;
 
 					default:
@@ -2323,9 +2329,26 @@ class Common {
 
 				}
 
+            $type = "N/A";
+            switch ($row['contact_type']) {
+               case "reseller_manager":
+               $type = "Manager";
+               break;
+
+               case "reseller_agent":
+               $type = "Agent";
+               break;
+
+               case "reseller_third_party":
+               $type = "3rd Party";
+               break;
+            }
+
             print "<tr bgcolor=$bgcolor>
 					<td><a href=\"guests.php?res=$row[reservationID]&c=$_SESSION[contactID]\">$row[reservationID]</a></td>
 					<td>$row[first] $row[last]</td>
+					<td>$type</td>
+					<td>$row[company]</td>
 					<td>$row[name]</td>
 					<td>$row[start_date]</td>
 					<td>$row[nights]</td>
