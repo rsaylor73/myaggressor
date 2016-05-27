@@ -1376,7 +1376,7 @@ class Common {
 				$result = $this->new_mysql($sql);
 				while ($row = $result->fetch_assoc()) {
 					print "<br>Agents for <b>$row[company]</b><br><br>";
-					print "<input type=\"button\" name=\"new_agent\" value=\"Add New Agent\" onclick=\"document.location.href='add_agent.php'\">&nbsp;<input type=\"button\" name=\"company_info\" value=\"Company Logo\" onclick=\"document.location.href='company_info.php'\"><br><hr>";
+					print "<input type=\"button\" name=\"new_agent\" value=\"Add New Agent\" class=\"btn btn-primary\" onclick=\"document.location.href='add_agent.php'\">&nbsp;<input type=\"button\" name=\"company_info\" value=\"3rd Party Settings\" class=\"btn btn-primary\" onclick=\"document.location.href='company_info.php'\"><br><hr>";
 					$_SESSION['resellerID'] = $row['resellerID'];
 
 					// list agents
@@ -1757,11 +1757,11 @@ class Common {
 					$reseller_agentID = $this->linkID->insert_id;
 
 					$sql2 = "
-					INSERT INTO `contacts` (`first`,`last`,`address1`,`address2`,`city`,`state`,`province`,`zip`,`countryID`,`phone1`,`phone1_type`,`phone2`,`phone2_type`,`phone3`,`phone3_type`,`email`,`sex`,`date_of_birth`,`reseller_agentID`,`uuname`,`uupass`,`contact_type`)
+					INSERT INTO `contacts` (`first`,`last`,`address1`,`address2`,`city`,`state`,`province`,`zip`,`countryID`,`phone1`,`phone1_type`,`phone2`,`phone2_type`,`phone3`,`phone3_type`,`email`,`sex`,`date_of_birth`,`reseller_agentID`,`uuname`,`uupass`,`contact_type`,`company`)
 					VALUES
 					(
 					'$_POST[first]','$_POST[last]','$_POST[address1]','$_POST[address2]','$_POST[city]','$_POST[state]','$_POST[province]','$_POST[zip]','$_POST[country]','$_POST[phone1]','Home','$_POST[phone2]','Work','$_POST[phone3]','Mobile','$_POST[email]',
-					'$_POST[sex]','$dob','$reseller_agentID','$_POST[uuname]','$_POST[uupass]','$_POST[contact_type]'
+					'$_POST[sex]','$dob','$reseller_agentID','$_POST[uuname]','$_POST[uupass]','$_POST[contact_type]','$_POST[company]'
 					)
 					";
 					$result2 = $this->new_mysql($sql2);
@@ -2325,7 +2325,7 @@ class Common {
             <td><b>Confirmation #</b></td>
 				<td><b>Agent</b></td>
             <td><b>Type</b></td>
-				<td><b>Comp</b></td>
+				<td><b>Company</b></td>
             <td><b>Yacht</b></td>
             <td><b>Embark Date</b></td>
             <td><b>Nights</b></td>
@@ -2567,7 +2567,7 @@ class Common {
             <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
             <input type=\"hidden\" name=\"section\" value=\"update\">
 				<input type=\"hidden\" name=\"rr\" value=\"1\">
-            <table border=\"0\" width=90%>
+            <table class=\"table\">
             <tr><td width=\"200\">First Name:</td><td><input type=\"text\" name=\"first\" value=\"$row[first]\" size=40></td></tr>
             <tr><td>Last Name:</td><td><input type=\"text\" name=\"last\" value=\"$row[last]\" size=40></td></tr>
             <tr><td>Address 1:</td><td><input type=\"text\" name=\"address1\" value=\"$row[address1]\" size=40></td></tr>
@@ -2577,6 +2577,7 @@ class Common {
 				<tr><td>Province:</td><td><input type=\"text\" name=\"province\" size=40></td></tr>
             <tr><td>Zip:</td><td><input type=\"text\" name=\"zip\" value=\"$row[zip]\" size=40></td></tr>
             <tr><td>Country:</td><td><select name=\"country\">$countries</select></td></tr>
+            <tr><td>Company:</td><td><input type=\"text\" name=\"company\" size=\"40\"></td></tr>
 				<tr><td>Gender:</td><td><input type=\"radio\" name=\"sex\" value=\"male\" checked> Male <input type=\"radio\" name=\"sex\" value=\"female\"> Female</td></tr>
 				<tr><td>Birth Month:</td><td><select name=\"birth_month\">$months</select></td></tr>
 				<tr><td>Birth Day:</td><td><select name=\"birth_day\">$days</select></td></tr>
@@ -2594,7 +2595,7 @@ class Common {
             <option value=\"reseller_third_party\">Reseller Third Party</option>
             <option value=\"reseller_manager\">Reseller Manager</option></select></td></tr>";
 
-            print "<tr><td colspan=2><input type=\"submit\" value=\"Continue\" id=\"Continue\" disabled></td></tr>";
+            print "<tr><td colspan=2><input type=\"submit\" value=\"Continue\" id=\"Continue\" class=\"btn btn-primary\" disabled></td></tr>";
             print "</table>
             </form>";
 
