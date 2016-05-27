@@ -596,6 +596,9 @@ class Common {
         print "<br><span class=\"result-title-text\">Points ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
 
+
+	print "Test<br><br>";
+
         print "<pre>";
         print_r($_POST);
         print "</pre>";
