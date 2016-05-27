@@ -10,7 +10,7 @@ include "settings.php";
 include "header.php";
    $bg = "1";
    include "search.php";
-	if (($_GET['section'] == "") && ($_POST['section'] == "")) {
+	if ($_POST['section'] == "creature") {
 	   $common->save_creature();
 	}
 
