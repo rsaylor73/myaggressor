@@ -654,10 +654,47 @@ class Common {
           if ($row['cid'] == $row['id']) {
             $checked = "checked";
           }
-          print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\" $checked></td><td>$row[title]</td></tr>";
+          print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\" $checked></td><td>
+            <form name=\"myform$row[id]\" style=\"display:inline\">
+            <input type=\"hidden\" name=\"id\" value=\"$row[id]\">
+            <a href=\"javascript:void(0)\" onclick=\"show_creature(this.form)\" data-toggle=\"modal\" data-target=\"#myModal\">$row[title]</a></td></tr>";
         }
 
         print "</table><input type=\"submit\" value=\"Save\" class=\"btn btn-success\"></form>";
+
+        ?>
+        <script>
+        function show_creature() {
+
+        }
+        </script>
+
+        <?php
+
+        print '
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+           <!-- Modal content-->
+           <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><div id="load_creature_title"></div></h4>
+              </div>
+              <div class="modal-body">
+                <div id="load_creature_desc"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        ';
+
+
 
       }
 
