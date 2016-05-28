@@ -597,7 +597,7 @@ class Common {
         <span class=\"details-description\">";
 
         $sql = "DELETE FROM `creature_check_list` WHERE `contactID` = '$_SESSION[contactID]'";
-        $result = $this->mysql_query($sql);
+        $result = $this->new_mysql($sql);
 
         foreach ($_POST as $key=>$value) {
           $creatureID = substr($key, 2);
