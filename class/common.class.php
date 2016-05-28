@@ -655,7 +655,7 @@ class Common {
             $checked = "checked";
           }
           print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\" $checked></td><td>
-            <button type=\"button\" class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#myModal\">$row[title]</button>
+            <a href=\"#\" class=\"btn btn-lg btn-success\" data-toggle=\"modal\" data-target=\"#basicModal\">Click to open Modal</a>
             <form name=\"myform$row[id]\" style=\"display:inline\">
             <input type=\"hidden\" name=\"id\" value=\"$row[id]\">
             <a href=\"javascript:void(0)\" onclick=\"show_creature(this.form)\" data-toggle=\"modal\" data-target=\"#myModal\">$row[title]</a>
@@ -675,26 +675,23 @@ class Common {
         <?php
 
         print '
-        <!-- Modal -->
-        <div id="myModal" class="modal fade" role="dialog">
-          <div class="modal-dialog">
-
-           <!-- Modal content-->
-           <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><div id="load_creature_title"></div></h4>
-              </div>
-              <div class="modal-body">
-                <div id="load_creature_desc"></div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-
+    <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Basic Modal</h4>
+          </div>
+          <div class="modal-body">
+            <h3>Modal Body</h3>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
+      </div>
+    </div>
         ';
 
 
