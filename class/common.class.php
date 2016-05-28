@@ -610,6 +610,7 @@ class Common {
           SELECT 
             `c`.`title`,
             `c`.`id`,
+            `c`.`description`,
             `ccl`.`contactID`,
             `ccl`.`cid`
 
@@ -629,6 +630,7 @@ class Common {
           SELECT 
             `c`.`title`,
             `c`.`id`,
+            `c`.`description`,
             `ccl`.`contactID`,
             `ccl`.`cid`
 
@@ -668,7 +670,7 @@ class Common {
             <h4 class="modal-title" id="myModalLabel">'.$row['title'].'</h4>
           </div>
           <div class="modal-body">
-            <h3>Modal Body</h3>
+            '.$row['description'].'
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
