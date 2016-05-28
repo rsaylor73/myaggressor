@@ -6,25 +6,7 @@ session_start();
 <head>
 <title>Aggressor Fleet Online Reservation System</title>
 
-<script type="text/JavaScript">
-var screenwidth = screen.width;
-var screenheight = screen.height;
-
-//alert("Width: "+screenwidth + " Height: "+screenheight);
-
-if (screenwidth < 1281) {
-        document.write('<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />'); <?php // was style2 ?>
-		//alert(screenheight);
-}
-//if ((screenheight > 769) && (screenwidth < 1025)) {
-//        document.write('<link rel="stylesheet" href="style2.css" type="text/css" media="screen" />');
-//}
-if (screenwidth > 1280) {
-        document.write('<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />');
-		//alert(screenheight);
-}
-
-</script>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 
 
     <!-- Bootstrap core CSS -->
@@ -32,7 +14,7 @@ if (screenwidth > 1280) {
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <!-- Custom styles for this template -->
-    <link href="assets/css/main.css" rel="stylesheet">
+    <!--<link href="assets/css/main.css" rel="stylesheet">-->
 
 
 
