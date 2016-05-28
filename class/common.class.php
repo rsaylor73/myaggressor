@@ -600,9 +600,14 @@ class Common {
         $result = $this->new_mysql($sql);
 
         foreach ($_POST as $key=>$value) {
-          $creatureID = substr($key, 2);
-          $sql2 = "INSERT INTO `creature_check_list` (`contactID`,`cid`) VALUES ('$_SESSION[contactID]','$creatureID')";
-          $result2 = $this->new_mysql($sql2);
+
+          $cid = substr($key,2);
+          $y = "id";
+          $y .= $cid;
+          if ($_POST[$y] == "checked") {
+            $sql2 = "INSERT INTO `creature_check_list` (`contactID`,`cid`) VALUES ('$_SESSION[contactID]','$cid')";
+            $result2 = $this->new_mysql($sql2);
+          }
         }
 
         print "<br><br>The creature list was updated. Click <a href=\"portal.php\">here</a> to return to My Aggressor.<br><br>";
