@@ -1117,7 +1117,7 @@ class Common {
           <option value=\"2\">2 Stars</option>
           <option value=\"1\">1 Stars</option>
           </select></td></tr>
-        <tr><td colspan=2><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\"></td></tr>
+        <tr><td colspan=2><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\">&nbsp;&nbsp;<input type=\"button\" class=\"btn btn-warning\" value=\"Cancel\" onclick=\"document.location.href='portal.php'\"></td></tr>
         </table>
         </form>
         ";
