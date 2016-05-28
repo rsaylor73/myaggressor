@@ -655,6 +655,7 @@ class Common {
             $checked = "checked";
           }
           print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\" $checked></td><td>
+            <button type=\"button\" class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#myModal\">$row[title]</button>
             <form name=\"myform$row[id]\" style=\"display:inline\">
             <input type=\"hidden\" name=\"id\" value=\"$row[id]\">
             <a href=\"javascript:void(0)\" onclick=\"show_creature(this.form)\" data-toggle=\"modal\" data-target=\"#myModal\">$row[title]</a>
