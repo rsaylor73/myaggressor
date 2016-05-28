@@ -596,13 +596,16 @@ class Common {
         print "<br><span class=\"result-title-text\">Points ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
 
+        $sql = "DELETE FROM `creature_check_list` WHERE `contactID` = '$_SESSION[contactID]'";
+        $result = $this->mysql_query($sql);
 
-	print "Test<br><br>";
+        foreach ($_POST as $key=>$value) {
+          $creatureID = substr($key, 2);
+          $sql2 = "INSERT INTO `creature_check_list` (`contactID`,`cid`) VALUES ('$_SESSION[contactID]','$creatureID')";
+          $result2 = $this->new_mysql($sql2);
+        }
 
-        print "<pre>";
-        print_r($_POST);
-        print "</pre>";
-
+        print "<br><br>The creature list was updated. Click <a href=\"portal.php\">here</a> to return to My Aggressor.<br><br>";
 
         print "</span>";
         $this->header_bot();         
