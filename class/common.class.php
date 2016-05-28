@@ -657,7 +657,9 @@ class Common {
           print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\" $checked></td><td>
             <form name=\"myform$row[id]\" style=\"display:inline\">
             <input type=\"hidden\" name=\"id\" value=\"$row[id]\">
-            <a href=\"javascript:void(0)\" onclick=\"show_creature(this.form)\" data-toggle=\"modal\" data-target=\"#myModal\">$row[title]</a></td></tr>";
+            <a href=\"javascript:void(0)\" onclick=\"show_creature(this.form)\" data-toggle=\"modal\" data-target=\"#myModal\">$row[title]</a>
+            </form>
+            </td></tr>";
         }
 
         print "</table><input type=\"submit\" value=\"Save\" class=\"btn btn-success\"></form>";
