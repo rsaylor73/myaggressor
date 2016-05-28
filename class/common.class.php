@@ -591,7 +591,11 @@ class Common {
 
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
-          print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\"></td><td>$row[title]</td></tr>";
+          $checked = "";
+          if ($row['cid'] == $row['id']) {
+            $checked = "checked";
+          }
+          print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\" $checked></td><td>$row[title]</td></tr>";
         }
 
         print "</table><input type=\"submit\" value=\"Save\" class=\"btn btn-success\"></form>";
