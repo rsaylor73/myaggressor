@@ -13,6 +13,9 @@ include "header.php";
 	if ($_POST['section'] == "creature") {
 	   $common->save_creature();
 	}
+	if ($_POST['section'] == "wanted") {
+	   $common->save_wanted();
+	}
 
 
 

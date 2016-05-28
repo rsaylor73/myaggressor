@@ -581,7 +581,22 @@ class Common {
         }
 
         if ($type == "wanted") {
-          $sql = "SELECT `title`,`id` FROM `af_df_unified2`.`creature` ORDER BY `title` ASC LIMIT 0,$max";
+          $sql = "
+          SELECT 
+            `c`.`title`,
+            `c`.`id`,
+            `ccl`.`contactID`,
+            `ccl`.`cid`
+
+          FROM 
+            `af_df_unified2`.`creature` c
+
+          LEFT JOIN `reserve`.`wanted_check_list` ccl ON `c`.`id` = `ccl`.`cid` AND `ccl`.`contactID` = '41033'
+
+          ORDER BY -`ccl`.`cid` DESC
+
+          LIMIT 0,$max
+          ";
         }
 
         print "<table class=\"table\">
@@ -631,6 +646,40 @@ class Common {
         }
 
         print "<br><br>The creature list was updated. Click <a href=\"portal.php\">here</a> to return to My Aggressor.<br><br>";
+
+        print "</span>";
+        $this->header_bot();         
+      }
+
+      public function save_wanted() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+        print "<br><span class=\"result-title-text\">Wanted ($_SESSION[first] $_SESSION[last])</span><br><br>
+        <span class=\"details-description\">";
+
+        $sql = "DELETE FROM `wanted_check_list` WHERE `contactID` = '$_SESSION[contactID]'";
+        $result = $this->new_mysql($sql);
+
+        foreach ($_POST as $key=>$value) {
+
+          $cid = substr($key,2);
+          $y = "id";
+          $y .= $cid;
+          if ($_POST[$y] == "checked") {
+            $sql2 = "INSERT INTO `wanted_check_list` (`contactID`,`cid`) VALUES ('$_SESSION[contactID]','$cid')";
+            $result2 = $this->new_mysql($sql2);
+          }
+        }
+
+        print "<br><br>The wanted list was updated. Click <a href=\"portal.php\">here</a> to return to My Aggressor.<br><br>";
 
         print "</span>";
         $this->header_bot();         
