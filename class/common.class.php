@@ -561,10 +561,27 @@ class Common {
           $max = "99999";
         }
 
-        if ($order == "random") {
-          $orderby = "ORDER BY RAND()";
-        } else {
-          $orderby = "ORDER BY `title`";
+        if ($type == "creature") {
+          $sql = "
+          SELECT 
+            `c`.`title`,
+            `c`.`id`,
+            `ccl`.`contactID`,
+            `ccl`.`cid`
+
+          FROM 
+            `af_df_unified2`.`creature` c
+
+          LEFT JOIN `reserve`.`creature_check_list` ccl ON `c`.`id` = `ccl`.`cid` AND `ccl`.`contactID` = '41033'
+
+          ORDER BY -`ccl`.`cid` DESC
+
+          LIMIT 0,$max
+          ";
+        }
+
+        if ($type == "wanted") {
+          $sql = "SELECT `title`,`id` FROM `af_df_unified2`.`creature` ORDER BY `title` ASC LIMIT 0,$max";
         }
 
         print "<table class=\"table\">
@@ -572,7 +589,6 @@ class Common {
         <input type=\"hidden\" name=\"section\" value=\"$type\">
         ";
 
-        $sql = "SELECT `title`,`id` FROM `af_df_unified2`.`creature` $orderby ASC LIMIT 0,$max";
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\"></td><td>$row[title]</td></tr>";
