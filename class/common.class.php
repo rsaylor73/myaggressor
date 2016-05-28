@@ -593,7 +593,7 @@ class Common {
             die;
         }
         $this->header_top();
-        print "<br><span class=\"result-title-text\">Points ($_SESSION[first] $_SESSION[last])</span><br><br>
+        print "<br><span class=\"result-title-text\">Creatures ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
 
         $sql = "DELETE FROM `creature_check_list` WHERE `contactID` = '$_SESSION[contactID]'";
