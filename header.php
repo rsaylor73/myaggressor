@@ -34,9 +34,11 @@ session_start();
 	</script>
 
   <script>
+  /*
   $(function() {
     $( document ).tooltip();
   });
+  */
   </script>
   <style>
   label {
