@@ -567,8 +567,9 @@ class Common {
             die;
         }
         $this->header_top();
-        print "<br><span class=\"result-title-text\">Points ($_SESSION[first] $_SESSION[last])</span><br><br>
+        print "<br><span class=\"result-title-text\">Creature ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
+        print "<h2>Select up to 10</h2>";
 
         $this->creature_list('creature','999','normal');
 
@@ -587,7 +588,7 @@ class Common {
             die;
         }
         $this->header_top();
-        print "<br><span class=\"result-title-text\">Points ($_SESSION[first] $_SESSION[last])</span><br><br>
+        print "<br><span class=\"result-title-text\">Wanted ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
 
         $this->creature_list('wanted','999','normal');
