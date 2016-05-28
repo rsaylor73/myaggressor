@@ -520,17 +520,17 @@ class Common {
                 $this->creature_list('creature','10','normal');
                 ?>
                 <br><br>
-                <a href="#">View All</a><br><br>
+                <a href="viewallcreatures.php?section=creature">View All</a><br><br>
               </td>
 
               <td>
                 <b>Most Wanted</b><br><br>
 
                 <?php
-                $this->creature_list('wanted','10','random');
+                $this->creature_list('wanted','10','normal');
                 ?>
                 <br><br>
-                <a href="#">View All</a><br><br>
+                <a href="viewallcreatures.php?section=wanted">View All</a><br><br>
               </td>
             </tr>
 
@@ -554,6 +554,47 @@ class Common {
          <?php
 
 
+      }
+
+      public function view_all_creature() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+        print "<br><span class=\"result-title-text\">Points ($_SESSION[first] $_SESSION[last])</span><br><br>
+        <span class=\"details-description\">";
+
+        $this->creature_list('creature','999','normal');
+
+        print "</span>";
+        $this->header_bot();  
+      }
+
+      public function view_all_wanted() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+        print "<br><span class=\"result-title-text\">Points ($_SESSION[first] $_SESSION[last])</span><br><br>
+        <span class=\"details-description\">";
+
+        $this->creature_list('wanted','999','normal');
+
+
+        print "</span>";
+        $this->header_bot();  
       }
 
       public function creature_list($type,$max,$order) {
