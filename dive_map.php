@@ -128,7 +128,7 @@ while ($row4 = $result4->fetch_assoc()) {
         for (var i = 0; i < markers.length; i++) {
             var data = markers[i];
             var myLatlng = new google.maps.LatLng(data.lat, data.lng);
-            var iconBase = 'http://www.liveaboardfleet.net/admin/google/markers/';
+            var iconBase = 'https://www.liveaboardfleet.net/admin/google/markers/';
             var marker = new google.maps.Marker({
                 position: myLatlng,
                 map: map,
