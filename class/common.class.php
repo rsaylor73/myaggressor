@@ -655,10 +655,9 @@ class Common {
             $checked = "checked";
           }
           print "<td><input type=\"checkbox\" name=\"id$row[id]\" value=\"checked\" $checked></td><td>
-            <a href=\"#\" class=\"btn btn-lg btn-success\" data-toggle=\"modal\" data-target=\"#basicModal\">Click to open Modal</a>
             <form name=\"myform$row[id]\" style=\"display:inline\">
             <input type=\"hidden\" name=\"id\" value=\"$row[id]\">
-            <a href=\"javascript:void(0)\" onclick=\"show_creature(this.form)\" data-toggle=\"modal\" data-target=\"#myModal\">$row[title]</a>
+            <a href=\"#\" data-toggle=\"modal\" data-target=\"#basicModal\">$row[title]</a>
             </form>
             </td></tr>";
         }
