@@ -688,6 +688,41 @@ class Common {
 
       }
 
+      public function dive_countdown($reservationID) {
+        $today = date("Ymd");
+        $sql = "
+        SELECT
+          `b`.`name`,
+          DATEDIFF(`c`.`start_date`,'$today') AS 'days'
+
+        FROM
+          `reservations` r, `charters` c, `inventory` i, `boats` b
+
+        WHERE
+          `r`.`reservationID` = '$reservationID'
+          AND `r`.`charterID` = `c`.`charterID`
+          AND `r`.`reservationID` = `i`.`reservationID`
+          AND `i`.`passengerID` = '$_SESSION[contactID]'
+          AND `c`.`boatID` = `b`.`boatID`
+          AND `c`.`start_date` > '$today'
+
+        LIMIT 1
+        ";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+          print "<table border=0 width=200>
+          <tr bgcolor=\"#BAB8BB\">
+            <td valign=top><i class=\"fa fa-ship\" aria-hidden=\"true\"></i></td>
+            <td valign=top><font color=\#1D9D73\"><b>$row[name]</b><br>
+            $row[days] Days<br></td>
+          </tr>
+          </table>";  
+
+        }
+
+
+      }
+
       public function save_creature() {
         $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $check_login = $this->check_login();
