@@ -348,6 +348,6 @@ function selectAll(selectBox,selectAll) {
 
    <!-- resp -->
 </div>
-<div class="col-md-6">
+<div class="col-md-8">
 
 <!-- e resp -->
