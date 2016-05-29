@@ -161,12 +161,11 @@ form {
    position:relative;
    top:0px; 
    left:0px; 
-   width: 100%; 
+   width: 50%; 
    height: 950px;
 	background-repeat:no-repeat;
 	background-attachment:fixed;
    overflow: auto;
-	#background-image:url('../Goldfish.jpg');
 	background-color:#FFFFFF;
 }
 
