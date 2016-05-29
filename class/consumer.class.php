@@ -16,6 +16,9 @@ class Reservation {
 
 			$options = "";
 			$boats = array();
+      print "<pre>";
+      print_r($_GET['boats']);
+      print "</pre>";
 			foreach ($_GET['boats'] as $boat) {
 				$boats[$boat] = $boat;
 			}
