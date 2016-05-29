@@ -152,10 +152,9 @@ session_start();
 <nav class="navbar navbar-default" role="navigation">
 <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                +1-706-993-2531<br>
+                1-800-348-2628<br>
+                info@aggressor.com
                 </button>
 </div>
 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
