@@ -320,6 +320,7 @@ function selectAll(selectBox,selectAll) {
 		AND `r`.`show_as_suspended` != '1'
 
 	";
+	print "$sql";
 	$result = $common->new_mysql($sql);
 	while ($row = $result->fetch_assoc()) {
 		$common->dive_countdown($reservationID);
