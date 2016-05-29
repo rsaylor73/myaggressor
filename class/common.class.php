@@ -505,7 +505,9 @@ class Common {
 
               </td>
               <td valign="top">
-                <br><br>Photo ADD HERE<br><br>
+              <?php
+              $this->random_special();
+              ?>
               </td>
 
             </tr>
@@ -686,6 +688,29 @@ class Common {
         print "</table><input type=\"submit\" value=\"Save\" class=\"btn btn-success\"></form>";
 
 
+      }
+
+      public function random_special() {
+        $today = date("Ymd");
+        $sql = "
+        SELECT `af_df_unified2`.`specials`.*
+      
+        FROM `af_df_unified2`.`specials`
+
+        WHERE
+          `af_df_unified2`.`specials`.`start_date` <= '$today'
+          AND `af_df_unified2`.`specials`.`end_date` >= '$today'
+          AND `af_df_unified2`.`specials`.`type` = 'Specials'
+          AND `af_df_unified2`.`specials`.`myaggressor` != ""
+
+        ORDER BY RAND()
+
+        LIMIT 1
+        ";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+          print "$row[myaggressor]";
+        }
       }
 
       public function dive_countdown($reservationID) {
