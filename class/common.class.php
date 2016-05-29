@@ -711,12 +711,12 @@ class Common {
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "<table border=0 width=200>
-          <tr bgcolor=\"#BAB8BB\">
+          <tr>
             <td valign=top><i class=\"fa fa-ship\" aria-hidden=\"true\"></i></td>
-            <td valign=top><font color=\#1D9D73\"><b>$row[name]</b><br>
-            $row[days] Days<br></td>
+            <td valign=top><br><b>$row[name]</b><br><br>
+            $row[days] Days<br><br></td>
           </tr>
-          </table>";  
+          </table><br><br>";  
 
         }
 
