@@ -691,7 +691,7 @@ class Common {
       }
 
       public function random_special() {
-        $today = date("Ymd");
+        $today = date("Y-m-d");
         $sql = "
         SELECT `af_df_unified2`.`specials`.*
       
