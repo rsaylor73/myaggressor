@@ -144,7 +144,8 @@ session_start();
 
 <body>
 
-
+<?php
+/*
 <!-- resp -->
 <div class="row">
 <div class="col-md-12">
@@ -163,4 +164,5 @@ session_start();
 </div>
 </div>
 <!-- e resp -->
-
+*/
+?>
