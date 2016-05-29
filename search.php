@@ -25,7 +25,7 @@ if ($bg == "1") {
 
 <!-- resp -->
 <div class="row">
-<div class="col-md-4">
+<div class="col-sm-4">
 <!-- e resp -->
 
 <div id="toparea2">&nbsp;</div>
@@ -348,6 +348,6 @@ function selectAll(selectBox,selectAll) {
 
    <!-- resp -->
 	</div>
-	<div class="col-md-8">
+	<div class="col-sm-8">
 
 <!-- e resp -->
