@@ -701,12 +701,13 @@ class Common {
           `af_df_unified2`.`specials`.`start_date` <= '$today'
           AND `af_df_unified2`.`specials`.`end_date` >= '$today'
           AND `af_df_unified2`.`specials`.`type` = 'Specials'
-          AND `af_df_unified2`.`specials`.`myaggressor` != ""
+          AND `af_df_unified2`.`specials`.`myaggressor` != ''
 
         ORDER BY RAND()
 
         LIMIT 1
         ";
+
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "$row[myaggressor]";
