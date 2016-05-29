@@ -302,31 +302,34 @@ function selectAll(selectBox,selectAll) {
 
 
 	<?php
+	$check_login2 = $common->check_login();
+        if ($check_login2 == "TRUE") {
 
-	$today = date("Ymd");
+		$today = date("Ymd");
 
-	$sql = "
-	SELECT
-		`r`.`reservationID`
+		$sql = "
+		SELECT
+			`r`.`reservationID`
 
-	FROM
-		`inventory` i, `charters` c, `reservations` r
+		FROM
+			`inventory` i, `charters` c, `reservations` r
 
-	WHERE
-		`i`.`passengerID` = '$_SESSION[contactID]'
-		AND `i`.`charterID` = `c`.`charterID`
-		AND `c`.`start_date` > '$today'
-		AND `i`.`reservationID` = `r`.`reservationID`
-		AND `r`.`show_as_suspended` != '1'
+		WHERE
+			`i`.`passengerID` = '$_SESSION[contactID]'
+			AND `i`.`charterID` = `c`.`charterID`
+			AND `c`.`start_date` > '$today'
+			AND `i`.`reservationID` = `r`.`reservationID`
+			AND `r`.`show_as_suspended` != '1'
 
-	ORDER BY `c`.`start_date` ASC
+		ORDER BY `c`.`start_date` ASC
 
-	LIMIT 3
+		LIMIT 3
 
-	";
-	$result = $common->new_mysql($sql);
-	while ($row = $result->fetch_assoc()) {
-		$common->dive_countdown($row['reservationID']);
+		";
+		$result = $common->new_mysql($sql);
+		while ($row = $result->fetch_assoc()) {
+			$common->dive_countdown($row['reservationID']);
+		}
 	}
 	?>
 
