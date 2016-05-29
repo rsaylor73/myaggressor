@@ -707,6 +707,7 @@ class Common {
 
         LIMIT 1
         ";
+        print "$sql";
 
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
