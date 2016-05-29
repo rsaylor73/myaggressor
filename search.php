@@ -321,6 +321,8 @@ function selectAll(selectBox,selectAll) {
 
 	ORDER BY `c`.`start_date` ASC
 
+	LIMIT 3
+
 	";
 	$result = $common->new_mysql($sql);
 	while ($row = $result->fetch_assoc()) {
