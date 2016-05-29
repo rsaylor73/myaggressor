@@ -711,7 +711,7 @@ class Common {
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "<br>
-          <table border=1 width=200><tr><td><br>
+          <table border=1 width=200 class=\"rcorners1\"><tr><td><br>
           <table border=0 width=200>
           <tr>
             <td valign=top><i class=\"fa fa-ship\" aria-hidden=\"true\"></i></td>
