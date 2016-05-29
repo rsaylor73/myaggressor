@@ -22,6 +22,12 @@ ay:block;scrolling=No;" marginheight="0" marginwidth="0"></iframe>
 }
 if ($bg == "1") {
 ?>
+
+<!-- resp -->
+<div class="row">
+<div class="col-md-4">
+<!-- e resp -->
+
 <div id="toparea2">&nbsp;</div>
 <?php
 }
@@ -338,3 +344,10 @@ function selectAll(selectBox,selectAll) {
 
    </div>
    <!-- end -->
+
+
+   <!-- resp -->
+</div>
+<div class="col-md-6">
+
+<!-- e resp -->

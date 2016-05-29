@@ -17,5 +17,5 @@ include "header.php";
 	if ($_POST['section'] == "update") {
 		$common->save_update_profile();
 	}
-
+include "footer.php";
 ?>
