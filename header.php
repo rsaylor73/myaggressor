@@ -151,12 +151,12 @@ session_start();
 
 <nav class="navbar navbar-default" role="navigation">
 <div class="navbar-header">
-                <span class="navbar-toggle" data-toggle="collapse">
+                <div class="navbar-toggle" data-toggle="collapse">
                 Aggressor Fleet<br>
                 +1-706-993-2531<br>
                 1-800-348-2628<br>
                 info@aggressor.com
-                </span>
+                </div>
 </div>
 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
