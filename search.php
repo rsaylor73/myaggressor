@@ -323,7 +323,7 @@ function selectAll(selectBox,selectAll) {
 	print "$sql";
 	$result = $common->new_mysql($sql);
 	while ($row = $result->fetch_assoc()) {
-		$common->dive_countdown($reservationID);
+		$common->dive_countdown($row['reservationID']);
 	}
 	?>
 
