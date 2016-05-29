@@ -707,11 +707,9 @@ class Common {
 
         LIMIT 1
         ";
-        print "$sql";
-
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
-          print "$row[myaggressor]";
+          print "<a href=\"http://www.aggressor.com/specials.php#$row[anchor]\" target=_blank>$row[myaggressor]</a>";
         }
       }
 
