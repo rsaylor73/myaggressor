@@ -24,10 +24,6 @@ include "search.php";
 
 
 
-<?php
-//include "footer.php";
-?>
-
 
 <!-- Google Code for Remarketing Tag -->
 <!--------------------------------------------------

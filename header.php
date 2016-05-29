@@ -145,15 +145,22 @@ session_start();
 <body>
 
 
-
-
+<!-- resp -->
+<div class="row">
+<div class="col-md-12">
+<!-- e resp -->
 
 
 <div id="page-header">
-
   <div id="logo_start">
 	<img src="af-df_hdr_logo.png" align="left" alt=""/>
 	  <br>
     <span class="details-title-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+1-706-993-2531</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:info@aggressor.com"><span class="details-title-text">info@aggressor.com</span></a>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(USA &amp; CAN) <span class="details-title-text">1-800-348-2628</span>
   </div>
 </div>
+
+<!-- resp -->
+</div>
+</div>
+<!-- e resp -->
+
