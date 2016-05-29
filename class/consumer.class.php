@@ -16,7 +16,7 @@ class Reservation {
 
 			$options = "";
 			$boats = array();
-			@foreach ($_GET['boats'] as $boat) {
+			foreach ($_GET['boats'] as $boat) {
 				$boats[$boat] = $boat;
 			}
 			$sql = "SELECT * FROM `reserve`.`boats` WHERE `reserve`.`boats`.`status` = 'Active' AND `reserve`.`boats`.`boatID` NOT IN ('39') ORDER BY `reserve`.`boats`.`name` ASC";
