@@ -319,7 +319,7 @@ function selectAll(selectBox,selectAll) {
 		AND `i`.`reservationID` = `r`.`reservationID`
 		AND `r`.`show_as_suspended` != '1'
 
-	ORDER BY `c`.`start_date` DESC
+	ORDER BY `c`.`start_date` ASC
 
 	";
 	$result = $common->new_mysql($sql);
