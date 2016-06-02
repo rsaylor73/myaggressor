@@ -1968,11 +1968,11 @@ class Common {
 					$reseller_agentID = $this->linkID->insert_id;
 
 					$sql2 = "
-					INSERT INTO `contacts` (`first`,`last`,`address1`,`address2`,`city`,`state`,`province`,`zip`,`countryID`,`phone1`,`phone1_type`,`phone2`,`phone2_type`,`phone3`,`phone3_type`,`email`,`sex`,`date_of_birth`,`reseller_agentID`,`uuname`,`uupass`,`contact_type`,`company`)
+					INSERT INTO `contacts` (`first`,`last`,`address1`,`address2`,`city`,`state`,`province`,`zip`,`countryID`,`phone1`,`phone1_type`,`phone2`,`phone2_type`,`phone3`,`phone3_type`,`email`,`sex`,`date_of_birth`,`reseller_agentID`,`uuname`,`uupass`,`contact_type`,`company`,`commission`)
 					VALUES
 					(
 					'$_POST[first]','$_POST[last]','$_POST[address1]','$_POST[address2]','$_POST[city]','$_POST[state]','$_POST[province]','$_POST[zip]','$_POST[country]','$_POST[phone1]','Home','$_POST[phone2]','Work','$_POST[phone3]','Mobile','$_POST[email]',
-					'$_POST[sex]','$dob','$reseller_agentID','$_POST[uuname]','$_POST[uupass]','$_POST[contact_type]','$_POST[company]'
+					'$_POST[sex]','$dob','$reseller_agentID','$_POST[uuname]','$_POST[uupass]','$_POST[contact_type]','$_POST[company]','$_POST[commission]'
 					)
 					";
 					$result2 = $this->new_mysql($sql2);
@@ -2789,6 +2789,7 @@ class Common {
             <tr><td>Zip:</td><td><input type=\"text\" name=\"zip\" value=\"$row[zip]\" size=40></td></tr>
             <tr><td>Country:</td><td><select name=\"country\">$countries</select></td></tr>
             <tr><td>Company:</td><td><input type=\"text\" name=\"company\" size=\"40\"></td></tr>
+            <tr><td align=\"top\">Commission:<br>3rd party only</td><td align=\"top\"><input type=\"text\" name=\"commission\" value=\"0\" size=\"40\">%</td></tr>
 				<tr><td>Gender:</td><td><input type=\"radio\" name=\"sex\" value=\"male\" checked> Male <input type=\"radio\" name=\"sex\" value=\"female\"> Female</td></tr>
 				<tr><td>Birth Month:</td><td><select name=\"birth_month\">$months</select></td></tr>
 				<tr><td>Birth Day:</td><td><select name=\"birth_day\">$days</select></td></tr>
@@ -2837,7 +2838,8 @@ class Common {
 				`countries`.`country`,
 				`ra`.*,
 				`c`.`company`,
-				`c`.`contactID`
+				`c`.`contactID`,
+				`c`.`commission`
 
 			FROM
 				`reseller_agents` ra, `contacts` c
@@ -2871,6 +2873,8 @@ class Common {
 				<tr><td>Country:</td><td><select name=\"country\">$countries</select></td></tr>
             <tr><td>Company:</td><td><input type=\"text\" name=\"company\" size=40 value=\"$row[company]\"></td></tr>
 				";
+            print "<tr><td valign=top>Commission:<br>3rd party only</td><td valign=top><input type=\"text\" name=\"commission\" value=\"$row[commission]\" size=40>%</td></tr>";
+
 				if ($row['phone1_type'] != "") {
 					print "<tr><td>$row[phone1_type] Phone:</td><td><input type=\"text\" name=\"phone1\" value=\"$row[phone1]\" size=40></td></tr>";
 				}
@@ -3000,7 +3004,7 @@ class Common {
 			if ($result == "TRUE") {
 
             if ($_POST['contactID'] != "") {
-               $sql2 = "UPDATE `contacts` SET `company` = '$_POST[company]' WHERE `contactID` = '$_POST[contactID]'";
+               $sql2 = "UPDATE `contacts` SET `company` = '$_POST[company]', `commission` = '$_POST[commission]' WHERE `contactID` = '$_POST[contactID]'";
                $result2 = $this->new_mysql($sql2);
             }
 

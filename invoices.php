@@ -39,6 +39,31 @@ WHERE
 
 ";
 
+// get agent comm
+$sql_a = "
+SELECT
+	`c`.`commission` AS 'agent_commission'
+
+FROM
+	`reservations` r,
+	`reseller_agents` ra,
+	`contacts` c
+
+WHERE
+	`r`.`reservationID` = '$_GET[r]'
+	AND `r`.`reseller_agentID` = `ra`.`reseller_agentID`
+	AND `ra`.`reseller_agentID` = `c`.`reseller_agentID`
+
+";
+$result_a = $common->new_mysql($sql_a);
+$row_a = $result_a->fetch_assoc();
+$agent_commission = $row_a['agent_commission'];
+
+
+// `ct`.`commission` AS 'agent_commission'
+
+
+
 $result = $common->new_mysql($sql);
 $row3 = $result->fetch_assoc();
 
@@ -190,7 +215,6 @@ while ($row2 = $result->fetch_assoc()) {
 	 $disembarkment = $row2['disembarkment'];
 	 $end_date = $row2['end_date'];
 	 $itinerary = $row2['itinerary'];
-	 
 
     print '
     <table width="750" cellpadding="4" cellspacing="0">
@@ -242,7 +266,13 @@ print '
 $pax = 0;
 $result = $common->new_mysql($sql);
 while ($row2 = $result->fetch_assoc()) {
-  $default_commission = $row['default_commission'] * .01;
+  $default_commission = $row3['default_commission'] * .01;
+
+
+	if ($agent_commission > 0) {
+		$default_commission = $agent_commission * .01;
+	}
+
   $comm = $row2['bunk_price'] * $default_commission;
   $bunk_price = $row2['bunk_price'] - $comm;
   $stateroom = explode("-",$row2['bunk']);
