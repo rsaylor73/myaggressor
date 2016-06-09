@@ -1671,6 +1671,12 @@ class Common {
          print "<br><span class=\"result-title-text\">My Reservations ($_SESSION[first] $_SESSION[last])</span><br><br>
          <span class=\"details-description\">";
 
+         if ($_SESSION['contact_type'] == "reseller_third_party") {
+            $s1 = "`reservations`.`reseller_agentID` = '$_SESSION[reseller_agentID]'";
+         } else {
+            $s1 = "`reservations`.`reservation_contactID` = '$_SESSION[contactID]'";
+         }
+
 			$sql = "
 			SELECT
 				`reservations`.`reservationID`,
@@ -1682,7 +1688,7 @@ class Common {
 				`reservations`,`charters`,`boats`
 
 			WHERE
-				`reservations`.`reservation_contactID` = '$_SESSION[contactID]'
+				$s1
 				AND `reservations`.`charterID` = `charters`.`charterID`
 				AND `charters`.`boatID` = `boats`.`boatID`
 				AND `reservations`.`show_as_suspended` = '0'
