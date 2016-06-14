@@ -1587,7 +1587,11 @@ class Common {
 				$result = $this->new_mysql($sql);
 				while ($row = $result->fetch_assoc()) {
 					print "<br>Agents for <b>$row[company]</b><br><br>";
-					print "<input type=\"button\" name=\"new_agent\" value=\"Add New Agent\" class=\"btn btn-primary\" onclick=\"document.location.href='add_agent.php'\">&nbsp;<input type=\"button\" name=\"company_info\" value=\"3rd Party Settings\" class=\"btn btn-primary\" onclick=\"document.location.href='company_info.php'\"><br><hr>";
+					print "<input type=\"button\" name=\"new_agent\" value=\"Add New Agent\" class=\"btn btn-primary\" onclick=\"document.location.href='add_agent.php'\">&nbsp;
+					<input type=\"button\" name=\"company_info\" value=\"Your Company Info\" class=\"btn btn-primary\" onclick=\"document.location.href='company_info.php'\">&nbsp;
+					<input type=\"button\" name=\"help\" onclick=\"window.open('reseller_3rd_agents_help.html','_blank','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=800,height=600,left = 600,top = 250')\" 
+                                        value=\"How do I add a 3rd Party Reseller?\" class=\"btn btn-primary\">
+					<br><hr>";
 					$_SESSION['resellerID'] = $row['resellerID'];
 
 					// list agents
@@ -2619,7 +2623,7 @@ class Common {
 		public function company_info($msg) {
          $this->header_top();
 
-         print "<br><span class=\"result-title-text\">Company Info</span><br><br>
+         print "<br><span class=\"result-title-text\">Your Company Information to Appear On 3rd Party Invoice</span><br><br>
          <span class=\"details-description\">";
 
 			if ($_SESSION['contact_type'] != "reseller_manager") {
@@ -2676,7 +2680,8 @@ class Common {
 			<tr><td>Phone:</td><td><input type=\"text\" name=\"phone\" value=\"$row[phone]\" size=40></td></tr>
          <tr><td>Primary Contact:</td><td><select name=\"primary_contactID\" required>$primary_contactID</select></td></tr>
 			<tr><td>Email:</td><td><input type=\"text\" name=\"email\" value=\"$row[email]\" size=40></td></tr>
-			<tr><td>Logo:</td><td><input type=\"file\" name=\"logo\">";
+			<tr><td colspan=2>Upload Company Logo Size: 750 px wide by 125 px high in .jpg, .gif, or .png.</td></tr>
+			<tr><td valign=top>Logo:</td><td><input type=\"file\" name=\"logo\">";
 			if ($row['logo'] != "") {
 				print "<br><img src=\"logo/$row[logo]\" width=300>";
 			}
@@ -2738,86 +2743,87 @@ class Common {
 		}
 
 
-		public function add_agents() {
+
+                public function add_agents() {
          $this->header_top();
          print "<br><span class=\"result-title-text\">Add Agent</span><br><br>
          <span class=\"details-description\">";
 
-				// check if user is a reseller manager
-				$cont = $this->is_reseller();
-				$this->eval_reseller($cont);
+                                // check if user is a reseller manager
+                                $cont = $this->is_reseller();
+                                $this->eval_reseller($cont);
 
             $countries = $this->country_list($row['countryID']);
 
-				$months = "
-				<option value=\"01\">Jan</option>
-				<option value=\"02\">Feb</option>
-				<option value=\"03\">Mar</option>
-				<option value=\"04\">Apr</option>
-				<option value=\"05\">May</option>
-				<option value=\"06\">Jun</option>
-				<option value=\"07\">Jul</option>
-				<option value=\"08\">Aug</option>
-				<option value=\"09\">Sep</option>
-				<option value=\"10\">Oct</option>
-				<option value=\"11\">Nov</option>
-				<option value=\"12\">Dec</option>
-				";
+                                $months = "
+                                <option value=\"01\">Jan</option>
+                                <option value=\"02\">Feb</option>
+                                <option value=\"03\">Mar</option>
+                                <option value=\"04\">Apr</option>
+                                <option value=\"05\">May</option>
+                                <option value=\"06\">Jun</option>
+                                <option value=\"07\">Jul</option>
+                                <option value=\"08\">Aug</option>
+                                <option value=\"09\">Sep</option>
+                                <option value=\"10\">Oct</option>
+                                <option value=\"11\">Nov</option>
+                                <option value=\"12\">Dec</option>
+                                ";
 
-				for ($i=1; $i < 32; $i++) {
-					if ($i < 10) {
-						$days .= "<option value=\"0$i\">$i</option>";
-					} else {
-						$days .= "<option value=\"$i\">$i</option>";
-					}
-				}
+                                for ($i=1; $i < 32; $i++) {
+                                        if ($i < 10) {
+                                                $days .= "<option value=\"0$i\">$i</option>";
+                                        } else {
+                                                $days .= "<option value=\"$i\">$i</option>";
+                                        }
+                                }
 
-				$year_end = date("Y");
-				$year_end = $year_end - 16;
-				$year_start = $year_end - 80;
+                                $year_end = date("Y");
+                                $year_end = $year_end - 16;
+                                $year_start = $year_end - 80;
 
-				for ($i=$year_start; $i < $year_end; $i++) {
-					$years .= "<option>$i</option>";
-				}
+                                for ($i=$year_start; $i < $year_end; $i++) {
+                                        $years .= "<option>$i</option>";
+                                }
+                $t1 = "<font color=red>*</font>";
 
             print "<form action=\"agent_save.php\" name=\"myform\" method=\"post\">
             <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
             <input type=\"hidden\" name=\"section\" value=\"update\">
-				<input type=\"hidden\" name=\"rr\" value=\"1\">
-            <table class=\"table\">
-            <tr><td width=\"200\">First Name:</td><td><input type=\"text\" name=\"first\" value=\"$row[first]\" size=40></td></tr>
-            <tr><td>Last Name:</td><td><input type=\"text\" name=\"last\" value=\"$row[last]\" size=40></td></tr>
-            <tr><td>Address 1:</td><td><input type=\"text\" name=\"address1\" value=\"$row[address1]\" size=40></td></tr>
+                                <input type=\"hidden\" name=\"rr\" value=\"1\">
+            <table border=\"0\" width=90%>
+            <tr><td width=\"200\">First Name:</td><td><input type=\"text\" name=\"first\" value=\"$row[first]\" size=40> $t1</td></tr>
+            <tr><td>Last Name:</td><td><input type=\"text\" name=\"last\" value=\"$row[last]\" size=40> $t1</td></tr>
+            <tr><td>Address 1:</td><td><input type=\"text\" name=\"address1\" value=\"$row[address1]\" size=40> $t1</td></tr>
             <tr><td>Address 2:</td><td><input type=\"text\" name=\"address2\" value=\"$row[address2]\" size=40></td></tr>
-            <tr><td>City:</td><td><input type=\"text\" name=\"city\" value=\"$row[city]\" size=40></td></tr>
+            <tr><td>City:</td><td><input type=\"text\" name=\"city\" value=\"$row[city]\" size=40> $t1</td></tr>
             <tr><td>State: Only for the US</td><td><input type=\"text\" name=\"state\" value=\"$row[state]\" size=40></td></tr>
-				<tr><td>Province:</td><td><input type=\"text\" name=\"province\" size=40></td></tr>
+                                <tr><td>Province:</td><td><input type=\"text\" name=\"province\" size=40></td></tr>
             <tr><td>Zip:</td><td><input type=\"text\" name=\"zip\" value=\"$row[zip]\" size=40></td></tr>
-            <tr><td>Country:</td><td><select name=\"country\">$countries</select></td></tr>
-            <tr><td>Company:</td><td><input type=\"text\" name=\"company\" size=\"40\"></td></tr>
-            <tr><td align=\"top\">Commission:<br>3rd party only</td><td align=\"top\"><input type=\"text\" name=\"commission\" value=\"0\" size=\"40\">%</td></tr>
-				<tr><td>Gender:</td><td><input type=\"radio\" name=\"sex\" value=\"male\" checked> Male <input type=\"radio\" name=\"sex\" value=\"female\"> Female</td></tr>
-				<tr><td>Birth Month:</td><td><select name=\"birth_month\">$months</select></td></tr>
-				<tr><td>Birth Day:</td><td><select name=\"birth_day\">$days</select></td></tr>
-				<tr><td>Birth Year:</td><td><select name=\"birth_year\">$years</select></td></tr>
+            <tr><td>Country:</td><td><select name=\"country\" required><option selected value=\"\">Select Country</option>$countries</select> $t1</td></tr>
+                                <tr><td>Company:</td><td><input type=\"text\" name=\"company\" size=\"40\"></td></tr>
+                                <tr><td align=\"top\">Commission:<br>3rd party only</td><td align=\"top\"><input type=\"text\" name=\"commission\" value=\"0\" size=\"40\">%</td></tr>
+                                <tr><td>Gender:</td><td><input type=\"radio\" name=\"sex\" value=\"male\" checked> Male <input type=\"radio\" name=\"sex\" value=\"female\"> Female $t1</td></tr>
+                                <tr><td>Birth Month:</td><td><select name=\"birth_month\">$months</select></td></tr>
+                                <tr><td>Birth Day:</td><td><select name=\"birth_day\">$days</select></td></tr>
+                                <tr><td>Birth Year:</td><td><select name=\"birth_year\">$years</select> $t1</td></tr>
             ";
-            print "<tr><td>Home Phone:</td><td><input type=\"text\" name=\"phone1\" value=\"$row[phone1]\" size=40></td></tr>";
-            print "<tr><td>Work Phone:</td><td><input type=\"text\" name=\"phone2\" value=\"$row[phone2]\" size=40></td></tr>";
-            print "<tr><td>Cell Phone:</td><td><input type=\"text\" name=\"phone3\" value=\"$row[phone3]\" size=40></td></tr>";
-            print "<tr><td>Email:</td><td><input type=\"text\" name=\"email\" value=\"$row[email]\" size=40></td></tr>";
-				print "<tr><td>Username:</td><td><input type=\"text\" name=\"uuname\" value=\"$row2[uuname]\" onblur=\"check_uuname(this.form)\" size=40>&nbsp;<div id=\"info1\" style=\"display:inline\"></div></td></tr>";
+            print "<tr><td>Work Phone:</td><td><input type=\"text\" name=\"phone2\" value=\"$row[phone2]\" required size=40> $t1</td></tr>";
+            print "<tr><td>Cell Phone:</td><td><input type=\"text\" name=\"phone3\" value=\"$row[phone3]\" required size=40> $t1</td></tr>";
+            print "<tr><td>Email:</td><td><input type=\"text\" name=\"email\" value=\"$row[email]\" required size=40> $t1</td></tr>";
+                                print "<tr><td>Username:</td><td><input type=\"text\" name=\"uuname\" value=\"$row2[uuname]\" onblur=\"check_uuname(this.form)\" size=40 required>&nbsp;<div id=\"info1\" style=\"display:inline\"></div> $t1</td></tr>";
             print "
-            <tr><td>Password:</td><td><input type=\"text\" name=\"uupass\" value=\"$row2[uupass]\" size=40></td></tr>
+            <tr><td>Password:</td><td><input type=\"text\" name=\"uupass\" value=\"$row2[uupass]\" required size=40> $t1</td></tr>
             <tr><td>Reseller Type:</td><td><select name=\"contact_type\">";
             print "<option value=\"reseller_agent\">Reseller Agent</option>
             <option value=\"reseller_third_party\">Reseller Third Party</option>
             <option value=\"reseller_manager\">Reseller Manager</option></select></td></tr>";
 
-            print "<tr><td colspan=2><input type=\"submit\" value=\"Continue\" id=\"Continue\" class=\"btn btn-primary\" disabled></td></tr>";
-            print "</table>
+            print "<tr><td colspan=2><input type=\"submit\" value=\"Continue\" id=\"Continue\" disabled> (Please complete all fields <font color=red>*</font>)</td></tr>";
+            print "</table><br><br>
             </form>";
 
-			?>
+                        ?>
                                 <script>
                                  function check_uuname(myform) {
                                         $.get('check_uuname.php',
@@ -2826,13 +2832,12 @@ class Common {
                                                 $("#info1").html(php_msg);
                                         });
                                  }
-											</script>
-			<?php
+                                                                                        </script>
+                        <?php
          print "</span>";
          $this->header_bot();
 
-		}
-
+                }
 
 		public function edit_agents() {
          $this->header_top();
@@ -2869,6 +2874,7 @@ class Common {
 				<input type=\"hidden\" name=\"section\" value=\"update\">
             <input type=\"hidden\" name=\"contactID\" value=\"$row[contactID]\">
 				<table border=\"0\" width=90%>
+                                <tr><td width=\"200\">Status:</td><td><select name=\"status\"><option selected value=\"$row[status]\">$row[status]<option>Active</option><option>Inactive</option></select></td></tr>
 				<tr><td width=\"200\">First Name:</td><td><input type=\"text\" name=\"first\" value=\"$row[first]\" size=40></td></tr>
 				<tr><td>Last Name:</td><td><input type=\"text\" name=\"last\" value=\"$row[last]\" size=40></td></tr>
 				<tr><td>Address 1:</td><td><input type=\"text\" name=\"address1\" value=\"$row[address1]\" size=40></td></tr>
@@ -2994,6 +3000,7 @@ class Common {
 
 			$sql = "
 			UPDATE `reseller_agents` SET
+	                `status` = '$_POST[status]',
 			`first` = '$_POST[first]',
 			`last` = '$_POST[last]',
 			`address1` = '$_POST[address1]',
