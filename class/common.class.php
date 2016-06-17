@@ -2932,13 +2932,13 @@ class Common {
 					<tr><td>Reseller Type:</td><td><select name=\"contact_type\">";
 					if ($row2['contact_type'] != "") {
                                                 if ($row2['contact_type'] == "reseller_agent") {
-                                                        print "<option selecte value=\">$row2[contact_type]\">Reseller Agent (Default)</option>";
+                                                        print "<option selecte value=\"$row2[contact_type]\">Reseller Agent (Default)</option>";
                                                 }
                                                 if ($row2['contact_type'] == "reseller_manager") {
-                                                        print "<option selecte value=\">$row2[contact_type]\">Reseller Manager (Default)</option>";
+                                                        print "<option selecte value=\"$row2[contact_type]\">Reseller Manager (Default)</option>";
                                                 }
                                                 if ($row2['contact_type'] == "reseller_third_party") {
-                                                        print "<option selecte value=\">$row2[contact_type]\">Reseller Third Party (Default)</option>";
+                                                        print "<option selecte value=\"$row2[contact_type]\">Reseller Third Party (Default)</option>";
                                                 }
 					}
 					print "<option value=\"reseller_agent\">Reseller Agent</option>
