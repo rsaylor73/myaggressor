@@ -11,11 +11,13 @@ if($_SERVER["HTTPS"] != "on")
 
 include "settings.php";
 
-
 switch ($ip) {
 	case "98.142.222.59":
 	case "45.16.74.253":
 	case "50.193.242.188":
+	case "98.142.222.26":
+	case "98.142.222.27":
+	case "98.142.222.28":
 	// ok
 	break;
 
@@ -40,9 +42,14 @@ WHERE
 ";
 
 // get agent comm
+
+// agent_commission is groups and agent_commission2 is indivigual
+
 $sql_a = "
 SELECT
-	`c`.`commission` AS 'agent_commission'
+	`c`.`commission` AS 'agent_commission',
+        `c`.`commission2` AS 'agent_commission2'
+
 
 FROM
 	`reservations` r,
@@ -58,6 +65,7 @@ WHERE
 $result_a = $common->new_mysql($sql_a);
 $row_a = $result_a->fetch_assoc();
 $agent_commission = $row_a['agent_commission'];
+$agent_commission2 = $row_a['agent_commission2'];
 
 
 // `ct`.`commission` AS 'agent_commission'
@@ -104,6 +112,7 @@ SELECT
    `i`.`bunk_price` + `c`.`add_on_price_commissionable` AS 'bunk_price',
    `b`.`name`,
    `b`.`boatID`,
+	`r`.`reservation_type`,
 	`c`.`embarkment`,
 	`c`.`disembarkment`,
 	`c`.`itinerary`,
@@ -208,7 +217,8 @@ while ($row2 = $result->fetch_assoc()) {
 
   if ($boat == "") {
 	 // vars here
-    $charter_date = $row2['charter_date'];
+	$charter_date = $row2['charter_date'];
+	$reservation_type = $row2['reservation_type'];
 	 $nights = $row2['nights'];
 	 $reservation_date = $row2['reservation_date'];
 	 $embarkment = $row2['embarkment'];
@@ -269,10 +279,20 @@ while ($row2 = $result->fetch_assoc()) {
   $default_commission = $row3['default_commission'] * .01;
 
 
-	if ($agent_commission > 0) {
-		$default_commission = $agent_commission * .01;
-	}
+		switch ($reservation_type) {
+			case "Whole Boat":
+			case "Half Boat":
+			if ($agent_commission > 0) {
+				$default_commission = $agent_commission * .01;
+			}
+			break;
 
+			case "Single":
+			if ($agent_commission2 > 0) {
+				$default_commission = $agent_commission2 * .01;
+			}
+			break;
+		}
   $comm = $row2['bunk_price'] * $default_commission;
   $bunk_price = $row2['bunk_price'] - $comm;
   $stateroom = explode("-",$row2['bunk']);
@@ -315,6 +335,17 @@ print '
          <td align="right"><b>Total Due:</b> $'.number_format($total,2,'.',',').'</td>
        </tr>
      </table>
+<br>
+Guests will receive a link to complete the GIS (Guest Information System) which is required to be cleared for boarding. If wiring funds or mailing a check directly to the Aggressor Fleet Reservations Office,  (both must include charter date, yacht, and confirmation number) wire notifications must be sent to accounting@aggressor.com prior to the wire being received to make sure funds are credited to the correct reservation. 
+<br><br>
+Wire Transfer Instructions<br>
+Regions Bank, 1219 Augusta West Parkway Augusta, Georgia 30909 USA<br>
+Swift # UPNBUS44 ABA # 062005690 Telex # 6737871 UPB MIA<br>
+For Credit to: WayneWorks Marine LLC, 209 Hudson Trace, Augusta, Georgia 30907<br>
+Account # 0094403821 <br>
+<br>
+Do your clients qualify for a &#39;Money Saving Special&#39;? Go to www.aggressor.com and view the rates page for the list. The week before you travel, download a "Know Before You Go" that may include last minute destination updates.
+
 </body>
 </html>
 ';
