@@ -48,7 +48,8 @@ WHERE
 $sql_a = "
 SELECT
 	`c`.`commission` AS 'agent_commission',
-        `c`.`commission2` AS 'agent_commission2'
+        `c`.`commission2` AS 'agent_commission2',
+	`r`.`reservation_status`
 
 
 FROM
@@ -66,7 +67,7 @@ $result_a = $common->new_mysql($sql_a);
 $row_a = $result_a->fetch_assoc();
 $agent_commission = $row_a['agent_commission'];
 $agent_commission2 = $row_a['agent_commission2'];
-
+$reservation_status = $row_a['reservation_status'];
 
 // `ct`.`commission` AS 'agent_commission'
 
@@ -281,26 +282,34 @@ while ($row2 = $result->fetch_assoc()) {
 
 		switch ($reservation_type) {
 			case "Whole Boat":
+			case "whole boat":
 			case "Half Boat":
+			case "half boat":
+			$type_text = "Group";
 			if ($agent_commission > 0) {
 				$default_commission = $agent_commission * .01;
 			}
 			break;
 
 			case "Single":
+			$type_text = "Single";
 			if ($agent_commission2 > 0) {
 				$default_commission = $agent_commission2 * .01;
 			}
 			break;
 		}
-  $comm = $row2['bunk_price'] * $default_commission;
-  $bunk_price = $row2['bunk_price'] - $comm;
-  $stateroom = explode("-",$row2['bunk']);
+	//print "Test: $reservation_type | $default_commission<br>";
+	
+	$row2['bunk_price'] = $row2['bunk_price'] - $row2['discount'];
+
+	//$comm = $row2['bunk_price'] * $default_commission;
+	$bunk_price = $row2['bunk_price'];
+	$stateroom = explode("-",$row2['bunk']);
 
   $sql3 = "SELECT `cabin_type` FROM `bunks` WHERE `boatID` = '$row2[boatID]' AND CONCAT(`cabin`,`bunk`) = '$stateroom[1]'";
   $result3 = $common->new_mysql($sql3);
   $row3 = $result3->fetch_assoc();
-  $net = $bunk_price - $row2['discount'];
+  $net = $bunk_price;
   $total = $total + $bunk_price;
   $total_discount = $total_discount + $row2['discount'];
   $pax++;
@@ -316,7 +325,20 @@ while ($row2 = $result->fetch_assoc()) {
   ';
 }
 
-$total = $total - $total_discount;
+$total = $total;
+
+$comm = $total * $default_commission;
+$net = $total - $comm;
+
+switch ($reservation_status) {
+	case "PAID IN FULL":
+	$stat = "Paid";
+	break;
+
+	default:
+	$stat = "Balance Due";
+	break;
+}
 
 print '
        <tr>
@@ -335,6 +357,24 @@ print '
          <td align="right"><b>Total Due:</b> $'.number_format($total,2,'.',',').'</td>
        </tr>
      </table>
+
+
+
+     <table width="750" cellpadding="4" cellspacing="0">
+       <tr>
+         <td bgcolor="#D2E4F0" colspan="6"><span class="Sub-Title">Balance Summary</span></td>
+       </tr>
+	<tr>
+		<td align="left"><b>Reservation Type</b></td><td align="center">'.$type_text.'</td>
+		<td align="left"><b>Total Net Due</b></td><td>$'.number_format($net,2,'.',',').'</td>
+		<td align="left"><b>Payment Status</b></td><td>'.$stat.'</td>
+
+
+	</tr>
+
+     </table>
+
+
 <br>
 Guests will receive a link to complete the GIS (Guest Information System) which is required to be cleared for boarding. If wiring funds or mailing a check directly to the Aggressor Fleet Reservations Office,  (both must include charter date, yacht, and confirmation number) wire notifications must be sent to accounting@aggressor.com prior to the wire being received to make sure funds are credited to the correct reservation. 
 <br><br>
