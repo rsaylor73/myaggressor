@@ -1444,25 +1444,21 @@ class Common {
            Agent Resources to assist you with marketing Aggressor Fleet.</p>
            <blockquote>
              <blockquote>
-               <blockquote>
                  <p><strong>You have access to:</strong><br />
                    &nbsp;&nbsp;&#8226; Download logos &amp; banners to use on your website<br />
                    &nbsp;&nbsp;&#8226; Download high resolution destination photos &amp; HD videos<br />
                    &nbsp;&nbsp;&#8226; Download high resolution yacht photos &amp; floor plan layouts<br />
                    &nbsp;&nbsp;&#8226; View our year round group charter/FREE spaces </p>
-               </blockquote></blockquote></blockquote>
+               </blockquote></blockquote>
 
 
 							</td>
 			        </tr>
 			        <tr>
-						<!--
-			          <td width="200" align="center"><img name="ProfilePagetextresellers02" src="buttons/bt-DEMAspecials.png" width="188" height="32" id="ProfilePagetextresellers02" alt="" onclick="window.open('https://www.aggressor.com/reservations/DEMA-GroupSpecial.pdf')" /></td>
-						-->
                   <td width="200" align="center"><a href="http://www.aggressor.com/resellerspecials.php" target=_blank><img src="buttons/bt-newdeals.png" border="0"></a></td>
 
 			          <td width="200" align="center"><a href="http://www.liveaboardfleet.com/Reseller-Images/Resellers-Images.html" target="_blank"><img name="ProfilePagetextresellers03" src="buttons/bt-imagegallery.png" width="188" height="32" id="ProfilePagetextresellers03" alt="" /></a></td>
-			          <td width="200" align="center"><a href="ComplimentarySpaces.pdf" target="_blank"><img name="ProfilePagetextresellers04" src="buttons/bt-groupspecials.png" width="188" height="32" id="ProfilePagetextresellers04" alt="" /></a></td>
+			          <td width="200" align="center"></td>
 			        </tr>
 			        <tr>
 			          <td colspan="3"><p style="text-align: center">If you have any questions, please email <a href="sales@aggressor.com">sales@aggressor.com</a> or call +706-933-2531 <br />
