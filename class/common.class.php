@@ -76,7 +76,30 @@ class Common {
          print "<div id=\"result_pos3\">";
 		}
 
-      public function dive_map() {
+      public function dive_map($width,$height,$bot='yes') {
+
+	    ?>
+
+		<script language="javascript" type="text/javascript">
+		<!--
+		/****************************************************
+		     Author: Eric King
+		     Url: http://redrival.com/eak/index.shtml
+		     This script is free to use as long as this info is left in
+		     Featured on Dynamic Drive script library (http://www.dynamicdrive.com)
+		****************************************************/
+		var win=null;
+		function NewWindow(mypage,myname,w,h,scroll,pos){
+		if(pos=="random"){LeftPosition=(screen.width)?Math.floor(Math.random()*(screen.width-w)):100;TopPosition=(screen.height)?Math.floor(Math.random()*((screen.height-h)-75)):100;}
+		if(pos=="center"){LeftPosition=(screen.width)?(screen.width-w)/2:100;TopPosition=(screen.height)?(screen.height-h)/2:100;}
+		else if((pos!="center" && pos!="random") || pos==null){LeftPosition=0;TopPosition=20}
+		settings='width='+w+',height='+h+',top='+TopPosition+',left='+LeftPosition+',scrollbars='+scroll+',location=no,directories=no,status=no,menubar=no,toolbar=no,resizable=no';
+		win=window.open(mypage,myname,settings);}
+		// -->
+		</script>
+
+	    <?php
+
             print "
             <div id=\"result_wrapper\">
                <div id=\"result_pos1\">
@@ -95,13 +118,28 @@ class Common {
                         </tr>
                         <tr>
                            <td>
+				";
+				if ($bot == "yes") {
+				print "
                               <table border=\"0\" width=\"950\" cellpadding=\"0\" cellspacing=\"0\" background=\"bt-bck.jpg\" height=\"30\">
                                  <tr>
-                                    <td width=\"263\" class=\"details-top\">&nbsp;&nbsp;MyAggressor</td>
+                                    <td width=\"263\" class=\"details-top\">&nbsp;&nbsp;
+
+
+					<a class=\"btn\" href=\"map.php\" style=\"text-decoration : none; color : #000000;\" 
+					onclick=\"NewWindow(this.href,'My Aggressor','1050','650','no','center');return false\" onfocus=\"this.blur()\">
+					<i class=\"fa fa-external-link\"></i>
+					</a>
+
+
+					&nbsp;&nbsp;MyAggressor</td>
                                     <td width=\"303\" class=\"details-top\">&nbsp;</td>
                                     <td width=\"283\" align=\"right\" class=\"details-top\">&nbsp;</td>
                                  </tr>
-                              </table> 
+                              </table>
+				";
+				}
+				print " 
                            </td>
                         </tr>
                      </table>
@@ -425,7 +463,7 @@ class Common {
 
                       <b>Boutique Points</b><br><br>
                       <font size="12"><?=$points;?></font><br><br><br>
-                      <a href="redeem.php"><i class="fa fa-minus" aria-hidden="true"></i> Redeem</a>&nbsp;&nbsp;<a href="http://www.liveaboardboutique.com/" target=_blank><i class="fa fa-cart-plus" aria-hidden="true"></i> Shop</a><br>
+                      <a href="redeem.php"><i class="fa fa-minus" aria-hidden="true"></i> Redeem</a>&nbsp;&nbsp;<br>
 
                     </td>
                   </tr>
@@ -1479,7 +1517,7 @@ class Common {
       }
 
       public function my_profile() {
-            $this->dive_map();
+            $this->dive_map('950','225');
             switch ($_SESSION['contact_type']) {
                case "consumer":
                $this->myaggressor();

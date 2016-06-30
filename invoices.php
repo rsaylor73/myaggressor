@@ -360,19 +360,17 @@ print '
 
 
 
-     <table width="750" cellpadding="4" cellspacing="0">
+    <table width="750" cellpadding="4" cellspacing="0">
+      <tr>
+        <td bgcolor="#D2E4F0" colspan="3"><span class="Sub-Title">Balance Summary</span></td>
+      </tr>
        <tr>
-         <td bgcolor="#D2E4F0" colspan="6"><span class="Sub-Title">Balance Summary</span></td>
+               <td align="right" colspan="3"><div align="right"><b>Total Net Due:</b> $'.number_format($net,2,'.',',').'</div></td>
+
+
        </tr>
-	<tr>
-		<td align="left"><b>Reservation Type</b></td><td align="center">'.$type_text.'</td>
-		<td align="left"><b>Total Net Due</b></td><td>$'.number_format($net,2,'.',',').'</td>
-		<td align="left"><b>Payment Status</b></td><td>'.$stat.'</td>
 
-
-	</tr>
-
-     </table>
+    </table>
 
 
 <br>

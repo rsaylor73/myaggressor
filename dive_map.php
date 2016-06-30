@@ -115,7 +115,7 @@ while ($row4 = $result4->fetch_assoc()) {
     }
     function LoadMap() {
         var mapOptions = {
-            center: new google.maps.LatLng(0,0),
+            center: new google.maps.LatLng(0,40),
             zoom: 2,
             disableDefaultUI: true,
             mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -147,7 +147,7 @@ while ($row4 = $result4->fetch_assoc()) {
         }
     }
 </script>
-<div id="dvMap" style="width: 950px; height: 225px">
+<div id="dvMap" style="width: <?=$width;?>px; height: <?=$height;?>px">
 </div>
 
 <?php
