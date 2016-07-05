@@ -12,6 +12,7 @@ class Common {
                 return $result;
         }
 
+
       public function check_login() {
 
          if (($_SESSION['uuname'] != "") && ($_SESSION['uupass'] != "")) {
@@ -20,6 +21,27 @@ class Common {
             while ($row = $result->fetch_assoc()) {
                $status = "TRUE";
 
+               // check if user is a reseller and active
+               if ($row['contact_type'] != "consumer") {
+                  if ($row['reseller_agentID'] == "") {
+                     $stop = "1";
+                  } else {
+                     $sql2 = "SELECT `waiver`,`status` FROM `reseller_agents` WHERE `reseller_agentID` = '$row[reseller_agentID]'";
+                     $result2 = $this->new_mysql($sql2);
+                     while ($row2 = $result2->fetch_assoc()) {
+                        if ($row2['status'] == "Inactive") {
+                           $stop = "1";
+                        }
+                        // waiver
+                        if ($row2['waiver'] == "No") {
+                                $this->eula();
+                                die;
+                        }
+                     }
+                  }
+               }
+
+
             }
             if ($status != "TRUE") {
                $status = "FALSE";
@@ -27,8 +49,63 @@ class Common {
          } else {
             $status = "FALSE";
          }
+
+         // if other error
+         if ($stop == "1") {
+            $status = "FALSE";
+         }
+
          return $status;
       }
+
+
+        public function eula() {
+                $eula = "
+Important Notice:  By submitting this application, you agree to abide by all terms and conditions of Aggressor Fleet, including specifically your obligation to insure that all signatures of an ultimate customer for Aggressor Fleet products and services executes all required documents including all Liability Release forms.  By submitting this application, you agree that you will not be authorized to sign your customer's name to any form or agreement which is part of the sales process, including the Liability Release waiver.  By submitting this application, you agree to indemnify Aggressor Fleet against all costs and expenses incurred by reason of the failure of your customer to execute any such form.";
+
+                $this->header_top();
+                $ip = $_SERVER['REMOTE_ADDR'];
+                $today = date("M  j, Y");
+                print "<br><span class=\"result-title-text\">Reseller and Agent Terms of Agreement</span><br><br>
+                <span class=\"details-description\">";
+
+                print "<form action=\"agree.php\" method=\"post\">";
+                print "<input type=\"hidden\" name=\"r\" value=\"3\">";
+
+                print "<textarea cols=100 rows=10>$eula</textarea><br>";
+
+                print "<br>Name: $_SESSION[first] $_SESSION[middle] $_SESSION[last]<br>
+                IP Address: $ip<br>
+                Date: $today<br><br>
+                <input type=\"image\" src=\"buttons/bt-agree.png\" value=\"I Agree\"><br>";
+                print "</form>";
+                print "</span>";
+
+                $this->header_bot();
+        }
+
+        public function agree() {
+                $this->header_top();
+                print "<br><span class=\"result-title-text\">Reseller and Agent Terms of Agreement</span><br><br>
+                <span class=\"details-description\">";
+
+                // To do - create PDF doc
+                if ($_POST['r'] == "") {
+                        print "<br><br><font color=red>Error: please click back and try again.</font><br><br>";
+                        print "</span>";
+                        $this->header_bot();
+                        die;
+                } else {
+                        $ip = $_SERVER['REMOTE_ADDR'];
+                        $sql = "UPDATE `reserve`.`reseller_agents` SET `waiver` = 'Yes', `ip_address` = '$ip', `timestamp` = NOW() WHERE `reseller_agentID` = '$_SESSION[reseller_agentID]'";
+                        $result = $this->new_mysql($sql);
+                        print "<br><br>Thank you for accepting the terms and condition of Aggressor Fleet. We will not ask you to agree to the terms again unless they change. You may now continue to your profile.<br><br>";
+
+                }
+
+                print "</span>";
+                $this->header_bot();
+        }
 
 
 		public function login() {
@@ -1348,8 +1425,12 @@ class Common {
         }
         $this->header_top();
 
+	$description = $this->linkID->real_escape_string($_POST['description']);
+        $dive_buddies = $this->linkID->real_escape_string($_POST['dive_buddies']);
+
+
         $sql = "INSERT INTO `dive_log` (`contactID`,`dive_date`,`site`,`dive_buddies`,`max_depth`,`bottom_time`,`description`,`rating`) VALUES
-        ('$_SESSION[contactID]','$_POST[dive_date]','$_POST[site]','$_POST[dive_buddies]','$_POST[max_depth]','$_POST[bottom_time]','$_POST[description]','$_POST[rating]')
+        ('$_SESSION[contactID]','$_POST[dive_date]','$_POST[site]','$dive_buddies','$_POST[max_depth]','$_POST[bottom_time]','$description','$_POST[rating]')
         ";
         $result = $this->new_mysql($sql);
         if ($result == "TRUE") {

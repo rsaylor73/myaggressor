@@ -25,15 +25,16 @@ if ($bg == "1") {
 
 <!-- resp -->
 <div class="row">
-<div class="col-sm-4">
+<div class="col-sm-2">
 <!-- e resp -->
 
-<div id="toparea2">&nbsp;</div>
+<!--<div id="toparea2">&nbsp;</div>-->
+
 <?php
 }
 ?>
 	
-	<div id="reservation-box-outline"></div>
+<div id="reservation-box-outline"></div>
    <form name="MyForm" id="MyForm" method="get" action="checkreservations.php" onsubmit="return validateForm()">
    <div id="reservation-box-inline-wrapper">
 
@@ -348,6 +349,6 @@ function selectAll(selectBox,selectAll) {
 
    <!-- resp -->
 	</div>
-	<div class="col-sm-8">
+	<div class="col-sm-5">
 
 <!-- e resp -->
