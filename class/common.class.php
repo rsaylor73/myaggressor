@@ -1514,7 +1514,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 
                 public function reseller_portal_view() {
                         print ' 
-
+			<br>
                         <table width="817" border="0" cellspacing="0" cellpadding="0">
                          <tbody>
                            <tr>
@@ -1556,7 +1556,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
                                 $extra_msg = " authorized by $_SESSION[company]";
                         }
                         print '
-                             <td valign="top"><strong>Welcome '.$_SESSION['first'].' '.$_SESSION['last'].$extra_msg.' to the Reseller Reservation System.</strong> We have provided the following 
+                             <td valign="top"><strong><br>Welcome '.$_SESSION['first'].' '.$_SESSION['last'].$extra_msg.' to the Reseller Reservation System.</strong> We have provided the following 
                                    Agent Resources to assist you with marketing Aggressor Fleet.
                         ';
                         $sql_r = "SELECT `msg` FROM `reserve`.`reseller_message` WHERE `id` = '1'";
