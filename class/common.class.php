@@ -1512,86 +1512,67 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 		}
 
 
-		public function reseller_portal_view() {
-			?>
+                public function reseller_portal_view() {
+                        print ' 
 
-			<table width="817" border="0" cellspacing="0" cellpadding="0">
-			  <tbody>
-			    <tr>
-			      <td valign="top"><table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="217">
-			        <tr>
-			          <td height="47"><img name="ProfilePageMenu01" src="buttons/bt-updateprofile.png" width="185" height="32" id="ProfilePageMenu01" alt="" onclick="document.location.href='profile.php';" /></td>
-			        </tr>
-			        <tr>
-			          <td height="47"><img name="ProfilePageMenu02" src="buttons/bt-myreservations.png" width="185" height="32" id="ProfilePageMenu02" alt="" onclick="document.location.href='myreservations.php';" /></td>
-			        </tr>
-				<?php
-				if ($_SESSION['contact_type'] != "reseller_third_party") {
-				?>
-			        <tr>
-			          <td height="47"><img name="ProfilePageMenu03" src="buttons/bt-allreservations.png" width="185" height="32" id="ProfilePageMenu03" alt="" onclick="document.location.href='agentreservations.php';" /></td>
-			        </tr>
-				<?php
-				}
-				if ($_SESSION['contact_type'] == "reseller_manager") {
-				?>
-			        <tr>
-			          <td height="47"><img name="ProfilePageMenu04" src="buttons/bt-manage-agents.png" width="185" height="32" id="ProfilePageMenu04" alt="" onclick="document.location.href='agents.php';" /></td>
-			        </tr>
-				<?php
-				}
-				?>
-			        <tr>
-			          <td height="47">&nbsp;</td>
-			        </tr>
-			        <tr>
-			          <td height="47">&nbsp;</td>
-			        </tr>
-			      </table></td>
-			      <td valign="top"><table text-align:="text-align:" center;="center;"" bgcolor="#ffffff" border="0" cellpadding="8" cellspacing="0" width="600">
-			        <tr>
-			          <td colspan="3">
+                        <table width="817" border="0" cellspacing="0" cellpadding="0">
+                         <tbody>
+                           <tr>
+                             <td valign="top"><table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="217">
+                               <tr>
+                                 <td height="47"><img name="ProfilePageMenu01" src="buttons/bt-updateprofile.png" width="185" height="32" id="ProfilePageMenu01" alt="" onclick="document.location.href=\'profile.php\';" /></td>
+                               </tr>
+                               <tr>
+                                 <td height="47"><img name="ProfilePageMenu02" src="buttons/bt-myreservations.png" width="185" height="32" id="ProfilePageMenu02" alt="" onclick="document.location.href=\'myreservations.php\';" /></td>
+                               </tr>
+                        ';
+
+                        if ($_SESSION['contact_type'] != "reseller_third_party") {
+                                print '
+                                <tr>
+                                <td height="47"><img name="ProfilePageMenu03" src="buttons/bt-allreservations.png" width="185" height="32" id="ProfilePageMenu03" alt="" onclick="document.location.href=\'agentreservations.php\';" /></td>
+                                </tr>
+                                ';
+                        }
+                        if ($_SESSION['contact_type'] == "reseller_manager") {
+                                print '
+                               <tr>
+                                 <td height="47"><img name="ProfilePageMenu04" src="buttons/bt-manage-agents.png" width="185" height="32" id="ProfilePageMenu04" alt="" onclick="document.location.href=\'agents.php\';" /></td>
+                               </tr>
+                                ';
+                        }
+                        print '
+                        
+                               <tr>
+                                 <td height="47">&nbsp;</td>
+                               </tr>
+                               <tr>
+                                 <td height="47">&nbsp;</td>
+                               </tr>
+                             </table></td>
+                                ';
+
+                        if ($_SESSION['contact_type'] == "reseller_third_party") {
+                                $extra_msg = " authorized by $_SESSION[company]";
+                        }
+                        print '
+                             <td valign="top"><strong>Welcome '.$_SESSION['first'].' '.$_SESSION['last'].$extra_msg.' to the Reseller Reservation System.</strong> We have provided the following 
+                                   Agent Resources to assist you with marketing Aggressor Fleet.
+                        ';
+                        $sql_r = "SELECT `msg` FROM `reserve`.`reseller_message` WHERE `id` = '1'";
+                        $result_r = $this->new_mysql($sql_r);
+                        while ($row_r = $result_r->fetch_assoc()) {
+                                print "$row_r[msg]";
+                        }
+                        print '
+                          </td>
+                           </tr>
+                         </tbody>
+                        </table>
+                        ';
+                }
 
 
-<?php
-   if ($_SESSION['contact_type'] == "reseller_third_party") {
-      $extra_msg = " authorized by $_SESSION[company]";
-   }
-?>
-
-				<p><strong>Welcome <?=$_SESSION['first'];?> <?=$_SESSION['last'];?><?=$extra_msg;?> to the Reseller Reservation System.</strong> We have provided the following 
-           Agent Resources to assist you with marketing Aggressor Fleet.</p>
-           <blockquote>
-             <blockquote>
-                 <p><strong>You have access to:</strong><br />
-                   &nbsp;&nbsp;&#8226; Download logos &amp; banners to use on your website<br />
-                   &nbsp;&nbsp;&#8226; Download high resolution destination photos &amp; HD videos<br />
-                   &nbsp;&nbsp;&#8226; Download high resolution yacht photos &amp; floor plan layouts<br />
-                   &nbsp;&nbsp;&#8226; View our year round group charter/FREE spaces </p>
-               </blockquote></blockquote>
-
-
-							</td>
-			        </tr>
-			        <tr>
-                  <td width="200" align="center"><a href="http://www.aggressor.com/resellerspecials.php" target=_blank><img src="buttons/bt-newdeals.png" border="0"></a></td>
-
-			          <td width="200" align="center"><a href="http://www.liveaboardfleet.com/Reseller-Images/Resellers-Images.html" target="_blank"><img name="ProfilePagetextresellers03" src="buttons/bt-imagegallery.png" width="188" height="32" id="ProfilePagetextresellers03" alt="" /></a></td>
-			          <td width="200" align="center"></td>
-			        </tr>
-			        <tr>
-			          <td colspan="3"><p style="text-align: center">If you have any questions, please email <a href="sales@aggressor.com">sales@aggressor.com</a> or call +706-933-2531 <br />
-			            <p style="text-align: center; font-size: 11px;">The download and use of all images and videos provided by WayneWorks Marine, LLC <br />
-			              dba Aggressor Fleet , are subject to agreement of our <a href="terms.html" target=_blank>Terms and Conditions</a>.</p></td>
-			        </tr>
-			      </table></td>
-			    </tr>
-			  </tbody>
-			</table>
-
-			<?php
-
-		}
 
       public function show_reseller_menu() {
                $this->reseller_portal_view();
