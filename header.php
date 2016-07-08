@@ -147,28 +147,28 @@ session_start();
 <!-- resp -->
 <div class="row">
 	<div class="col-sm-8">
-	<!-- e resp -->
-	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-	<div class="navbar-header">
-        	 <div class="navbar-toggle" data-toggle="collapse">
+		<!-- e resp -->
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="navbar-header">
+        		<div class="navbar-toggle" data-toggle="collapse">
                 	Aggressor Fleet<br>
 	                +1-706-993-2531<br>
         	        1-800-348-2628<br>
 	                info@aggressor.com
-		</div>
-	</div>
-	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		<div id="page-header">
-			<div id="logo_start">
-				<img src="af-df_hdr_logo.png" align="left" alt=""/>
-				<br>
-				<span class="details-title-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+1-706-993-2531</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:info@aggressor.com"><span class="details-title-text">info@aggressor.com</span></a>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(USA &amp; CAN) <span class="details-title-text">1-800-348-2628</span>
 			</div>
 		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<div id="page-header">
+				<div id="logo_start">
+					<img src="af-df_hdr_logo.png" align="left" alt=""/>
+					<br>
+					<span class="details-title-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+1-706-993-2531</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:info@aggressor.com"><span class="details-title-text">info@aggressor.com</span></a>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(USA &amp; CAN) <span class="details-title-text">1-800-348-2628</span>
+				</div>
+			</div>
+		</div>
+		</nav>
+		<!-- resp -->
 	</div>
-	</nav>
-	<!-- resp -->
+	<br><br><br><br>
 </div>
-<br><br><br><br>
-<!--</div>-->
 <!-- e resp -->

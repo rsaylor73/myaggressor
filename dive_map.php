@@ -147,8 +147,9 @@ while ($row4 = $result4->fetch_assoc()) {
         }
     }
 </script>
-<div id="dvMap" style="width: <?=$width;?>px; height: <?=$height;?>px">
-</div>
+
+<div id="dvMap" style="width: <?=$width;?>px; height: <?=$height;?>px"></div>
+
 
 <?php
 }

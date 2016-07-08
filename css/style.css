@@ -8,6 +8,18 @@ body {
 	background-image: url(url);
 }
 
+.ui-helper-hidden-accessible {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+/*
 .row > div {
     margin-top:10px;
     padding: 20px;
@@ -16,6 +28,7 @@ body {
     -moz-outline-radius: 10px;
     -webkit-outline-radius: 10px;
 }
+*/
 
 a:link {text-decoration:none;}
 a:visited {text-decoration:none;}
@@ -178,13 +191,18 @@ form {
 	background-color:#FFFFFF;
 }
 
+.btn_custom {
+    width: 200px !important;
+    height: 32px !important;
+}
+
 /* This is the outer shell of the box on index.php */
 #reservation-box-outline {
-	position: absolute;
-	top: 102px;
-	left: 80px;
+	position: relative;
+	top: 20px;
+	left: 20px;
 	height: 700px;
-	width: 268px;
+	width: 200px;
 	background-color: #FFFFFF;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -199,10 +217,10 @@ form {
 }
 
 #reservation-box-inline-wrapper {
-	position: absolute;
+   position: absolute;
    top: 120px;
-   left: 94px;
-   width: 400px;
+   left: 25px;
+   width: 300px;
    overflow: hidden;
 }
 	#reservation-box-inline {

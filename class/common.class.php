@@ -181,7 +181,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
             <div id=\"result_wrapper\">
                <div id=\"result_pos1\">
                   <div id=\"result_pos2\">
-                     <br>
+                     
                      <table border=\"0\" width=\"950\" cellpadding=\"0\" cellspacing=\"0\">
                         <tr>
                            <td>
@@ -404,10 +404,6 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         $vip = $this->vip_status($_SESSION['contactID']);
         $vip = $vip * 10;
         ?>
-
-
-
-
 
 
 
@@ -1579,7 +1575,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
       }
 
       public function my_profile() {
-            $this->dive_map('950','225');
+            $this->dive_map('950','275');
             switch ($_SESSION['contact_type']) {
                case "consumer":
                $this->myaggressor();

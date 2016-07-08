@@ -4032,62 +4032,8 @@ class Reservation {
 
 
 	public function logout() {
-
-			session_destroy();
-         print '
-         <div id="toparea2">&nbsp;</div>
-         ';
-
-
-         print "
-         <div id=\"result_wrapper\">
-            <div id=\"result_pos1\">
-               <div id=\"result_pos2\">
-                  <div id=\"logo2\">
-                  </div>
-                  ";
-
-
-         print "
-         <table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\">
-         <tr>
-            <td>
-					<br>
-               <img src=\"../ResImages/generic-DTW.jpg\" width=\"850\">
-            </td>
-         </tr>
-         <tr><td>
-                  
-            <table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\" background=\"bt-bck.jpg\" height=\"30\">
-               <tr>
-                  <td width=\"263\" class=\"details-top\">&nbsp;&nbsp;&nbsp;</td>
-                  
-                  <td width=\"303\" class=\"details-top\">$description</td>
-            
-
-                  <td width=\"283\" align=\"right\" class=\"details-top\"></td>
-               </tr>
-            </table> 
-                  
-         </td></tr>
-         </table>
-         <div style=\"clear:both;\"></div>
-         ";
-
-                  print "<br><br><font color=green size=4>You have been logged out.</font>";
-
-                  print "<br><br>
-						<p align=center>
-                  <span class=\"details-title-text\">
-						Thank you for visiting the Aggressor Fleet<br>Online Reservation System.
-						<br><br>
-						<a href=\"http://www.aggressor.com\"><img src=\"buttons/bt-website-home.png\" border=0></a><br><br>
-						<a href=\"index.php\"><img src=\"buttons/bt-another-res.png\" border=0></a>
-                  </span>
-						</p>
-                  <br><br>";
-
-
+		session_destroy();
+		print '<meta http-equiv="refresh" content="0; url=portal.php">';
 	}
 
 
