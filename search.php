@@ -19,8 +19,10 @@ ay:block;scrolling=No;" marginheight="0" marginwidth="0"></iframe>
    <!-- Sets a transparent box -->
 </div>
 <?php
+include "search_home.php";
 }
 if ($bg == "1") {
+
 ?>
 
 <!-- resp -->
@@ -236,12 +238,9 @@ if ($bg == "1") {
 		</div>
 	</div>
 
-
-
-
-<?php
-}
-?>
+	<?php
+	}
+	?>
 
    <!-- resp -->
 	<div class="col-md-8">
