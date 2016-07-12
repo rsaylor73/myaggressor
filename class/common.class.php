@@ -1297,19 +1297,38 @@ Important Notice:  By submitting this application, you agree to abide by all ter
             die;
         }
         $this->header_top();
+
+	$sql = "SELECT `name`,`boatID` FROM `reserve`.`boats` WHERE `status` = 'Active' ORDER BY `name` ASC";
+	$result = $this->new_mysql($sql);
+	while ($row = $result->fetch_assoc()) {
+		$boats .= "<option value=\"$row[boatID]\">$row[name]</option>";
+	}
+
         print "<br><span class=\"result-title-text\">Dive Log ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
         // content
 
+	for ($x=1; $x < 7; $x++) {
+		$hours .= "<option>$x</option>";
+	}
+
+	for ($x=1; $x < 60; $x++) {
+		$minutes .= "<option>$x</option>";
+	}
+
         print "
-        <form action=\"adddivelog.php\" method=\"post\">
+        <form action=\"adddivelog.php\" method=\"post\" name=\"myform\" id=\"myform\" enctype=\"multipart/form-data\">
         <input type=\"hidden\" name=\"section\" value=\"save\">
         <table class=\"table\">
+	<tr><td>Dive Trip:</td><td><select name=\"boatID\" required onchange=\"get_itinerary(this.form)\" style=\"width:250px;\"><option selected value=\"\">--Select--</option>$boats</select></td></tr>
+	<tr id=\"itinerary\" style=\"display:none\"></tr>
         <tr><td>Dive Date:</td><td><input type=\"text\" name=\"dive_date\" id=\"dive_date\" size=\"40\" required></td></tr>
         <tr><td>Dive Site:</td><td><input type=\"text\" name=\"site\" size=\"40\" required></td></tr>
         <tr><td>Dive Buddies:</td><td><textarea name=\"dive_buddies\" cols=40 rows=5></textarea></td></tr>
         <tr><td>Max Depth:</td><td><input type=\"text\" name=\"max_depth\" size=\"40\"></td></tr>
-        <tr><td>Bottom Time:</td><td><input type=\"text\" name=\"bottom_time\" size=\"40\"></td></tr>
+        <tr><td>Bottom Time:</td><td><select name=\"bottom_time_hours\">$hours</select> Hour(s)&nbsp;&nbsp;&nbsp; <select name=\"bottom_time_mins\">$minutes</select> Minute(s)</td></tr>
+	<tr><td>Water Temp:</td><td><input type=\"text\" name=\"water_temp\" size=\"40\"></td></tr>
+	<tr><td>Air Temp:</td><td><input type=\"text\" name=\"air_temp\" size=\"40\"></td></tr>
         <tr><td>Describe Your Dive:</td><td><textarea name=\"description\" cols=40 rows=10></textarea></td></tr>
         <tr><td>Rate This Dive:</td><td><select name=\"rating\">
           <option selected value=\"5\">5 Stars</option>
@@ -1318,10 +1337,24 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           <option value=\"2\">2 Stars</option>
           <option value=\"1\">1 Stars</option>
           </select></td></tr>
+	<tr><td>Upload Image:</td><td><input type=\"file\" name=\"dive_image\"></td></tr>
         <tr><td colspan=2><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\">&nbsp;&nbsp;<input type=\"button\" class=\"btn btn-warning\" value=\"Cancel\" onclick=\"document.location.href='portal.php'\"></td></tr>
         </table>
         </form>
         ";
+
+	?>
+	<script>
+        function get_itinerary(myform) {
+	        $.get('get_itinerary.php',
+                $(myform).serialize(),
+                function(php_msg) {
+         	       $("#itinerary").html(php_msg);
+                });
+		document.getElementById('itinerary').style.display='table-row';
+        }
+	</script>
+	<?php
 
         // end content
         print "</span>";
@@ -1343,20 +1376,54 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         <span class=\"details-description\">";
         // content
 
-        $sql = "SELECT * FROM `dive_log` WHERE `id` = '$_GET[id]' AND `contactID` = '$_SESSION[contactID]'";
+        $sql = "
+	SELECT 
+		`d`.*,
+		`b`.`name`
+
+	FROM 
+		`dive_log` d
+
+	LEFT JOIN `boats` b ON `d`.`boatID` = `b`.`boatID`
+
+	WHERE 
+		`d`.`id` = '$_GET[id]' 
+		AND `d`.`contactID` = '$_SESSION[contactID]'
+
+	";
         $result = $this->new_mysql($sql);
         $row = $result->fetch_assoc();
 
+	if ($row['bottom_time_hours'] != "") {
+		$hours .= "<option selected>$row[bottom_time_hours]</option>";
+	}
+        for ($x=1; $x < 7; $x++) {
+                $hours .= "<option>$x</option>";
+        }
+
+	if ($row['bottom_time_mins'] != "") {
+		$minutes .= "<option selected>$row[bottom_time_mins]</option>";
+	}
+        for ($x=1; $x < 60; $x++) {
+                $minutes .= "<option>$x</option>";
+        }
+
         print "
-        <form action=\"adddivelog.php\" method=\"post\">
+        <form action=\"adddivelog.php\" method=\"post\" enctype=\"multipart/form-data\">
         <input type=\"hidden\" name=\"section\" value=\"update\">
         <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
         <table class=\"table\">
+	<tr><td>Dive Trip:</td><td>$row[name]</td></tr>
+	<tr><td>Itinerary:</td><td>$row[itinerary]</td></tr>
         <tr><td>Dive Date:</td><td><input type=\"text\" name=\"dive_date\" id=\"dive_date\" value=\"$row[dive_date]\" size=\"40\" required></td></tr>
         <tr><td>Dive Site:</td><td><input type=\"text\" name=\"site\" size=\"40\" value=\"$row[site]\" required></td></tr>
         <tr><td>Dive Buddies:</td><td><textarea name=\"dive_buddies\" cols=40 rows=5>$row[dive_buddies]</textarea></td></tr>
         <tr><td>Max Depth:</td><td><input type=\"text\" name=\"max_depth\" value=\"$row[max_depth]\" size=\"40\"></td></tr>
-        <tr><td>Bottom Time:</td><td><input type=\"text\" name=\"bottom_time\" value=\"$row[bottom_time]\" size=\"40\"></td></tr>
+
+        <tr><td>Bottom Time:</td><td><select name=\"bottom_time_hours\">$hours</select> Hour(s)&nbsp;&nbsp;&nbsp; <select name=\"bottom_time_mins\">$minutes</select> Minute(s)</td></tr>
+        <tr><td>Water Temp:</td><td><input type=\"text\" name=\"water_temp\" value=\"$row[water_temp]\" size=\"40\"></td></tr>
+        <tr><td>Air Temp:</td><td><input type=\"text\" name=\"air_temp\" value=\"$row[air_temp]\" size=\"40\"></td></tr>
+
         <tr><td>Describe Your Dive:</td><td><textarea name=\"description\" cols=40 rows=10>$row[description]</textarea></td></tr>
         <tr><td>Rate This Dive:</td><td><select name=\"rating\">
           <option selected value=\"$row[rating]\">$row[rating] Stars</option>
@@ -1366,6 +1433,15 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           <option value=\"2\">2 Stars</option>
           <option value=\"1\">1 Stars</option>
           </select></td></tr>
+
+        <tr><td valign=top>Upload Image:</td><td valign=top><input type=\"file\" name=\"dive_image\">
+	";
+	if ($row['dive_image'] != "") {
+		print "<br><img src=\".divelogimages/$row[dive_image]\" width=\"300\">";
+	}
+	print "
+	</td></tr>
+
         <tr><td colspan=2><input type=\"submit\" value=\"Update\" class=\"btn btn-primary\"> <input type=\"checkbox\" name=\"delete\" value=\"yes\" onclick=\"return confirm('You are about to delete your Dive Log. Click OK to continue.')\"> Delete Log</td></tr>
         </table>
         </form>
@@ -1380,8 +1456,33 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         if ($_POST['delete'] == "yes") {
           $sql = "DELETE FROM `dive_log` WHERE `id` = '$_POST[id]' AND `contactID` = '$_SESSION[contactID]'";
         } else {
+
+	        // upload image
+        	$fileName = $_FILES['dive_image']['name'];
+	        $tmpName  = $_FILES['dive_image']['tmp_name'];
+        	$fileSize = $_FILES['dive_image']['size'];
+	        $fileType = $_FILES['dive_image']['type'];
+        	if ($fileName != "") {
+	                $ext = $this->file_types($fileType);
+        	        if ($ext == "1") {
+                	        print "Supported file types are<br>GIF, PNG, JPG<br>";
+	                } else {
+	                        $today = date("Ymd");
+        	                $new_file = date("U");
+                	        $new_file .= rand(50,500);
+                        	$new_file .= $ext;
+	                        move_uploaded_file("$tmpName", ".divelogimages/$new_file");
+        	                chmod(".divelogimages/$new_file", 0644);
+				$sql_dive_img = ",`dive_image` = '$new_file'";
+	                }
+	        }
+
+
           $sql = "UPDATE `dive_log` SET `dive_date` = '$_POST[dive_date]', `site` = '$_POST[site]', `dive_buddies` = '$_POST[dive_buddies]', `max_depth` = '$_POST[max_depth]', 
-          `bottom_time` = '$_POST[bottom_time]', `description` = '$_POST[description]', `rating` = '$_POST[rating]' WHERE `id` = '$_POST[id]' AND `contactID` = '$_SESSION[contactID]'
+          `description` = '$_POST[description]', `rating` = '$_POST[rating]', `bottom_time_hours` = '$_POST[bottom_time_hours]', `bottom_time_mins` = '$_POST[bottom_time_mins]',
+	  `water_temp` = '$_POST[water_temp]', `air_temp` = '$_POST[air_temp]' $sql_dive_img
+
+	  WHERE `id` = '$_POST[id]' AND `contactID` = '$_SESSION[contactID]'
           ";
         }
 
@@ -1398,7 +1499,13 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 
         $result = $this->new_mysql($sql);
         if ($result == "TRUE") {
-          print "<br><br>Your dive log was updated. Click <a href=\"portal.php\">here</a> to continue.<br><br>";
+          print "<br><br>Your dive log was updated. Loading...<br>";
+	  ?>
+		<script>
+		setTimeout(function() { document.location.href='adddivelog.php?section=edit&id=<?=$_POST['id'];?>'},2000);
+		</script>
+	  <?php
+
         } else {
           print "<br><br><font color=red>There was an error updating your dive log.</font><br><br>";
         }
@@ -1421,12 +1528,33 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         }
         $this->header_top();
 
+
+	// upload image
+        $fileName = $_FILES['dive_image']['name'];
+        $tmpName  = $_FILES['dive_image']['tmp_name'];
+        $fileSize = $_FILES['dive_image']['size'];
+        $fileType = $_FILES['dive_image']['type'];
+        if ($fileName != "") {
+        	$ext = $this->file_types($fileType);
+		if ($ext == "1") {
+			print "Supported file types are<br>GIF, PNG, JPG<br>";
+                } else {
+			$today = date("Ymd");
+	            	$new_file = date("U");
+        	        $new_file .= rand(50,500);
+	                $new_file .= $ext;
+        	        move_uploaded_file("$tmpName", ".divelogimages/$new_file");
+	                chmod(".divelogimages/$new_file", 0644);
+                }
+	}
+
 	$description = $this->linkID->real_escape_string($_POST['description']);
         $dive_buddies = $this->linkID->real_escape_string($_POST['dive_buddies']);
 
 
-        $sql = "INSERT INTO `dive_log` (`contactID`,`dive_date`,`site`,`dive_buddies`,`max_depth`,`bottom_time`,`description`,`rating`) VALUES
-        ('$_SESSION[contactID]','$_POST[dive_date]','$_POST[site]','$dive_buddies','$_POST[max_depth]','$_POST[bottom_time]','$description','$_POST[rating]')
+        $sql = "INSERT INTO `dive_log` (`contactID`,`dive_date`,`site`,`dive_buddies`,`max_depth`,`description`,`rating`,`boatID`,`itinerary`,`bottom_time_hours`,`bottom_time_mins`,`water_temp`,`air_temp`,`dive_image`) VALUES
+        ('$_SESSION[contactID]','$_POST[dive_date]','$_POST[site]','$dive_buddies','$_POST[max_depth]','$description','$_POST[rating]','$_POST[boatID]','$_POST[itinerary]','$_POST[bottom_time_hours]','$_POST[bottom_time_mins]',
+	'$_POST[water_temp]','$_POST[air_temp]','$new_file')
         ";
         $result = $this->new_mysql($sql);
         if ($result == "TRUE") {
