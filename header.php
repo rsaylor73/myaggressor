@@ -18,7 +18,7 @@ session_start();
 
 
 
-  <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">-->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <!--<script src="https://code.jquery.com/jquery.js"></script>-->
   <script src="js/bootstrap.min.js"></script>
@@ -149,25 +149,6 @@ session_start();
 	<div class="col-sm-8">
 		<!-- e resp -->
 
-<!--
-
-		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-		<div class="navbar-header">
-        		<div class="navbar-toggle" data-toggle="collapse">
-				<img src="af-df_hdr_logo.png" align="left" alt=""/>
-			</div>
-		</div>
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<div id="page-header">
-					<img src="af-df_hdr_logo.png" align="left" alt=""/>
-					<br>
-					<span class="details-title-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+1-706-993-2531</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:info@aggressor.com"><span class="details-title-text">info@aggressor.com</span></a>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(USA &amp; CAN) <span class="details-title-text">1-800-348-2628</span>
-			</div>
-		</div>
-		</nav>
-
--->
-
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -178,7 +159,7 @@ session_start();
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#"><img src="af-df_hdr_logo.png" align="left" alt=""/></a>
+      <a class="navbar-brand" href="#"><img src="af-df_hdr_logo.png" height="64" align="left" alt=""/></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->

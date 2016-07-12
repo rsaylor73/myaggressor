@@ -259,8 +259,8 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           $vip++;
         } 
 
-        // based on 100 / 14
-        $total = $vip * "7.14285714285714";
+        // based on 100 / 15
+        $total = $vip * "6.66666666666667";
         if ($total > "100") {
           $total = "100";
         }
@@ -730,7 +730,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           FROM 
             `af_df_unified2`.`creature` c
 
-          LEFT JOIN `reserve`.`creature_check_list` ccl ON `c`.`id` = `ccl`.`cid` AND `ccl`.`contactID` = '41033'
+          LEFT JOIN `reserve`.`creature_check_list` ccl ON `c`.`id` = `ccl`.`cid` AND `ccl`.`contactID` = '$_SESSION[contactID]'
 
           ORDER BY -`ccl`.`cid` DESC
 
@@ -750,7 +750,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           FROM 
             `af_df_unified2`.`creature` c
 
-          LEFT JOIN `reserve`.`wanted_check_list` ccl ON `c`.`id` = `ccl`.`cid` AND `ccl`.`contactID` = '41033'
+          LEFT JOIN `reserve`.`wanted_check_list` ccl ON `c`.`id` = `ccl`.`cid` AND `ccl`.`contactID` = '$_SESSION[contactID]'
 
           ORDER BY -`ccl`.`cid` DESC
 
@@ -876,7 +876,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         print "<br><span class=\"result-title-text\">Creatures ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
 
-        $sql = "DELETE FROM `creature_check_list` WHERE `contactID` = '$_SESSION[contactID]'";
+        $sql = "DELETE FROM `reserve`.`creature_check_list` WHERE `contactID` = '$_SESSION[contactID]'";
         $result = $this->new_mysql($sql);
 
         foreach ($_POST as $key=>$value) {
@@ -885,7 +885,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           $y = "id";
           $y .= $cid;
           if ($_POST[$y] == "checked") {
-            $sql2 = "INSERT INTO `creature_check_list` (`contactID`,`cid`) VALUES ('$_SESSION[contactID]','$cid')";
+            $sql2 = "INSERT INTO `reserve`.`creature_check_list` (`contactID`,`cid`) VALUES ('$_SESSION[contactID]','$cid')";
             $result2 = $this->new_mysql($sql2);
           }
         }
@@ -910,7 +910,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         print "<br><span class=\"result-title-text\">Wanted ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
 
-        $sql = "DELETE FROM `wanted_check_list` WHERE `contactID` = '$_SESSION[contactID]'";
+        $sql = "DELETE FROM `reserve`.`wanted_check_list` WHERE `contactID` = '$_SESSION[contactID]'";
         $result = $this->new_mysql($sql);
 
         foreach ($_POST as $key=>$value) {
@@ -919,7 +919,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           $y = "id";
           $y .= $cid;
           if ($_POST[$y] == "checked") {
-            $sql2 = "INSERT INTO `wanted_check_list` (`contactID`,`cid`) VALUES ('$_SESSION[contactID]','$cid')";
+            $sql2 = "INSERT INTO `reserve`.`wanted_check_list` (`contactID`,`cid`) VALUES ('$_SESSION[contactID]','$cid')";
             $result2 = $this->new_mysql($sql2);
           }
         }
@@ -1148,16 +1148,48 @@ Important Notice:  By submitting this application, you agree to abide by all ter
                   }
                   print "</tr></table>";
 
+			if ($_GET['part'] == "d") {
+				$sql = "DELETE FROM `reserve`.`iron_divers` WHERE `id` = '$_GET[i]' AND `contactID` = '$_SESSION[contactID]'";
+				$result = $this->new_mysql($sql);
+			}
+
+		  print "<h2>Iron Divers <input type=\"button\" class=\"btn btn-primary\" value=\"Add\" onclick=\"document.location.href='newirondiver.php'\"></h2>
+		  Self-Awarded to every guest who completed the requirements while on an Aggressor Fleet yacht.<br><br>";
+
+			$sql = "
+			SELECT
+				`b`.`name`,
+				DATE_FORMAT(`id`.`date`, '%m/%d/%Y') AS 'date',
+				`id`.`id`
+			FROM
+				`reserve`.`iron_divers` id, `reserve`.`boats` b
+
+			WHERE
+				`id`.`boatID` = `b`.`boatID`
+				AND `id`.`contactID` = '$_SESSION[contactID]'
+
+			ORDER BY `b`.`name` ASC
+			";
+			$result = $this->new_mysql($sql);
+			while ($row = $result->fetch_assoc()) {
+				print "<a href=\"viewallawards.php?part=d&i=$row[id]\">
+                                <i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>&nbsp;&nbsp;&nbsp;$row[name] Iron Diver<br>";
+				$d = "1";
+			}
+			if ($d == "") {
+				print "<font color=blue>You do not have any Iron Diver awards.</font><br>";
+			}
+
                   print "<h2>All-Star Divers</h2>";
                   print "Awarded to every guest who traveled with Aggressor Fleet for 3 trips or more within the year<br><br>";
                   $this->all_star();
 
                   print "<h2>VIP</h2>";
-                  print "Awarded to every guest who has been on 14 trips with Aggressor Fleet.<br><br>";
+                  print "Awarded to every guest who has been on 15 trips with Aggressor Fleet.<br><br>";
                   if ($vip > 99) { $this->vip(); }
 
                   print "<h2>Seven Seas</h2>";
-                  print "Awarded to every guest who has been to all 7 seas with Aggressor Fleet.<br><br>";
+                  print "Awarded to every guest who has been to at least 7 seas with Aggressor Fleet.<br><br>";
                   if ($seven_seas > 99) { $this->seven_seas(); }
 
 
@@ -1166,6 +1198,67 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         $this->header_bot();
         
       }
+
+	public function newirondiver() {
+	        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        	$check_login = $this->check_login();
+	        if ($check_login == "FALSE") {
+        	    // show login/register
+	            //include "class/consummer.class.php";
+        	    $reservation = new Reservation($linkID);
+	            $reservation->login_screen($uri);
+        	    die;
+	        }
+	        $this->header_top();
+        	print "<br><span class=\"result-title-text\">New Iron Diver ($_SESSION[first] $_SESSION[last])</span><br><br>
+	        <span class=\"details-description\">";
+
+		$options = "<option value=\"\">--Select--</option>";
+		$sql = "SELECT `name`,`boatID` FROM `reserve`.`boats` WHERE `status` = 'Active' ORDER BY `name` ASC";
+		$result = $this->new_mysql($sql);
+		while ($row = $result->fetch_assoc()) {
+			$options .= "<option value=\"$row[boatID]\">$row[name] Iron Diver</option>";
+		}
+
+		print "
+		<form action=\"newirondiver.php\" method=\"post\">
+		<input type=\"hidden\" name=\"section\" value=\"save\">
+		<table class=\"table\">
+		<tr><td>Select Yacht:</td><td><select name=\"boatID\" required>$options</select></td></tr>
+		<tr><td colspan=2><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\"></td></tr>
+		</table>
+		</form>";
+		
+	        print "</span>";
+        	$this->header_bot();
+	}
+
+	public function saveirondiver() {
+	        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        	$check_login = $this->check_login();
+	        if ($check_login == "FALSE") {
+        	    // show login/register
+	            //include "class/consummer.class.php";
+        	    $reservation = new Reservation($linkID);
+	            $reservation->login_screen($uri);
+	            die;
+	        }
+        	$this->header_top();
+	        print "<br><span class=\"result-title-text\">New Iron Diver ($_SESSION[first] $_SESSION[last])</span><br><br>
+        	<span class=\"details-description\">";
+
+		$today = date("Ymd");
+		$sql = "INSERT INTO `reserve`.`iron_divers` (`boatID`,`contactID`,`date`) VALUES ('$_POST[boatID]','$_SESSION[contactID]','$today')";
+		$result = $this->new_mysql($sql);
+		if ($result == "TRUE") {
+			print "<br><br>Your Iron Diver award was added. Click <a href=\"viewallawards.php\">here</a> to continue.<br>";
+		} else {
+			print "<br><br><font color=red>There was an error saving your award.</font><br><br>";
+		}
+
+	        print "</span>";
+        	$this->header_bot();   
+	}
 
       public function redeem_points() {
         $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
