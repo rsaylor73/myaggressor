@@ -27,8 +27,9 @@ if ($bg == "1") {
 
 <!-- resp -->
 <div class="row">
-	<div class="col-md-2">
+	<div class="col-md-2 hidden-sm hidden-xs">
 	<table border=0 width=100%><tr><td>&nbsp;&nbsp;</td><td>
+
 
 		<form name="MyForm" id="MyForm" method="get" action="checkreservations.php" onsubmit="return validateForm()">
 		<table width=240 border=0 cellpadding=2 cellspacing=0>
@@ -216,6 +217,7 @@ if ($bg == "1") {
 
 
 	</td></tr></table>
+
 	<!-- end col -->
 	</div>
 
