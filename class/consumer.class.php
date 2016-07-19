@@ -33,45 +33,28 @@ class Reservation {
 			return $options;
 		}
 
-      public function check_login() {
+                public function check_login() {
 
-         if (($_SESSION['uuname'] != "") && ($_SESSION['uupass'] != "")) {
-            $sql = "SELECT * FROM `contacts` WHERE `uuname` = '$_SESSION[uuname]' AND `uupass` = '$_SESSION[uupass]'";
-            $result = $this->new_mysql($sql);
-            while ($row = $result->fetch_assoc()) {
-               $status = "TRUE";
-
-               // check if user is a reseller and active
-               if ($row['contact_type'] != "consumer") {
-                  if ($row['reseller_agentID'] == "") {
-                     $stop = "1";
-                  } else {
-                     $sql2 = "SELECT `status` FROM `reseller_agents` WHERE `reseller_agentID` = '$row[reseller_agentID]'";
-                     $result2 = $this->new_mysql($sql2);
-                     while ($row2 = $result2->fetch_assoc()) {
-                        if ($row2['status'] == "Inactive") {
-                           $stop = "1";
+                        if (($_SESSION['uuname'] != "") && ($_SESSION['uupass'] != "")) {
+                                $sql = "SELECT * FROM `contacts` WHERE `uuname` = '$_SESSION[uuname]' AND `uupass` = '$_SESSION[uupass]'";
+                                $result = $this->new_mysql($sql);
+                                while ($row = $result->fetch_assoc()) {
+                                        $status = "TRUE";
+                                        if ($row['donotbook'] == "Y") {
+                                                return "FALSE";
+                                        }
+                                }
+                                if ($status != "TRUE") {
+                                        $status = "FALSE";
+                                }
+                        } else {
+                                $status = "FALSE";
                         }
-                     }
-                  }
-               }
+
+                        return $status;
+                }
 
 
-            }
-            if ($status != "TRUE") {
-               $status = "FALSE";
-            }
-         } else {
-            $status = "FALSE";
-         }
-
-         // if other error
-         if ($stop == "1") {
-            $status = "FALSE";
-         }
-
-         return $status;
-      }
 
 		public function return_url_parts() {
 				if (is_array($_GET['boats'])) {
@@ -129,7 +112,27 @@ class Reservation {
 					</span><br><br>
 					<div id=\"login-scr\" align=\"center\">
 					<form name=\"myform\" id=\"myform\">
-					<table border=0 width=\"800\" cellpadding=0 cellspacing=3>
+					<table border=0 width=\"800\" cellpadding=0 cellspacing=3>";
+
+					if ($_SESSION['contactID'] != "") {
+	                                        $sql = "SELECT `donotbook` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
+        	                                $result = $this->new_mysql($sql);
+                	                        while ($row = $result->fetch_assoc()) {
+                        	                        $donotbook = $row['donotbook'];
+                                	        }
+					}
+                                        if ($donotbook == "Y") {
+                                                print "
+                                                                <table border=\"0\" width=\"500\" cellpadding=\"3\" class=\"details-description\">
+                                                                <tr><td><font color=red>
+                                                                <b>Your account has been disabled. <br>Please contact a reservation agent directly at 1-800-348-2628</b></font>
+                                                                </td></tr>
+                                                                </table>
+                                                ";
+                                                die;
+
+                                        } else {
+						print "
 						<tr>
 							<td valign=top width=\"300\"><img src=\"30Year-Blue-300px.png\" width=\"250\"></td>
 							<td valign=top width=\"450\">
@@ -153,6 +156,9 @@ class Reservation {
 								</table>
 							</td>
 						</tr>
+						";
+					}
+					print "
 					</table>
 					</form>
 					</div>
