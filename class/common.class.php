@@ -109,13 +109,13 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 
 
 		public function login() {
-	      $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-         $check_login = $this->check_login();
-         if ($check_login == "FALSE") {
-            // show login/register
+	        	$uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		         $check_login = $this->check_login();
+		         if ($check_login == "FALSE") {
+			         // show login/register
 				//include "class/consummer.class.php";
 				$reservation = new Reservation($linkID);
-            $reservation->login_screen($uri);
+		                $reservation->login_screen($uri);
 				die;
 			} else {
 				$this->my_profile();
@@ -229,7 +229,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 
 
 		public function header_bot() {
-          print "</div></div></div></div>";
+          print "<br><br></div></div></div></div>";
 		}
 
     public function vip_status($contactID) {
@@ -267,6 +267,43 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         return $total;
 
     }
+
+    public function vip_status_plus($contactID) {
+        $today = date("Ymd");
+
+        $sql = "
+        SELECT
+          `c`.`charterID`
+
+        FROM
+          `inventory` i,
+          `reservations` r,
+          `charters` c
+
+        WHERE
+          `i`.`passengerID` = '$contactID'
+          AND `i`.`reservationID` = `r`.`reservationID`
+          AND `r`.`show_as_suspended` != '1'
+          AND `i`.`charterID` = `c`.`charterID`
+          AND `c`.`start_date` < '$today'
+
+        GROUP BY `c`.`charterID`
+        ";
+        $vip = "0";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+          $vip++;
+        }
+
+        // based on 100 / 25
+        $total = $vip * "4";
+        if ($total > "100") {
+          $total = "100";
+        }
+        return $total;
+
+    }
+
 
     public function seven_seas_status($contactID) {
 
@@ -379,6 +416,99 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 
     }
 
+	public function wishlist() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+
+	if ($_GET['a'] == "d") {
+		$sql = "DELETE FROM `wish_list` WHERE `id` = '$_GET[i]' AND `contactID` = '$_SESSION[contactID]'";
+		$result = $this->new_mysql($sql);
+	}
+
+        $sql = "SELECT `name`,`boatID` FROM `reserve`.`boats` WHERE `status` = 'Active' ORDER BY `name` ASC";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+                $boats .= "<option value=\"$row[boatID]\">$row[name]</option>";
+        }
+
+        print "<br><span class=\"result-title-text\">Wish List ($_SESSION[first] $_SESSION[last])</span><br><br>
+        <span class=\"details-description\">";
+        // content
+
+        for ($x=1; $x < 7; $x++) {
+                $hours .= "<option>$x</option>";
+        }
+
+        for ($x=1; $x < 60; $x++) {
+                $minutes .= "<option>$x</option>";
+        }
+
+        print "
+        <form action=\"adddwishlist.php\" method=\"post\" name=\"myform\" id=\"myform\" enctype=\"multipart/form-data\">
+        <input type=\"hidden\" name=\"section\" value=\"save\">
+	Please select a <b>destination</b> and a <b>itinerary</b>.<br><br>
+        <table class=\"table\">
+        <tr><td width=300>Yacht:</td><td><select name=\"boatID\" required onchange=\"get_itinerary(this.form)\" style=\"width:250px;\"><option selected value=\"\">--Select--</option>$boats</select></td></tr>
+        <tr id=\"itinerary\" style=\"display:none\"></tr>
+        <tr><td colspan=2><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\">&nbsp;&nbsp;<input type=\"button\" class=\"btn btn-warning\" value=\"Cancel\" onclick=\"document.location.href='portal.php'\"></td></tr>
+        </table>
+        </form>
+        ";
+
+
+	$sql = "
+	SELECT
+		`d`.`description`,
+		`b`.`name`,
+		`w`.`id`
+
+	FROM
+		`wish_list` w, `boats` b, `destinations` d
+
+	WHERE
+		`w`.`contactID` = '$_SESSION[contactID]'
+		AND `w`.`boatID` = `b`.`boatID`
+		AND `w`.`itinerary` = `d`.`destinationID`
+	";
+
+	print "<table class=\"table\">";
+
+	$result = $this->new_mysql($sql);
+	while ($row = $result->fetch_assoc()) {
+		print "<tr><td>$row[name]</td><td>$row[description]</td><td><input type=\"button\" class=\"btn btn-danger\" onclick=\"
+		if(confirm('You are about to delete $row[name] - $row[description] from your wish list. Click OK to continue.')) {
+		document.location.href='wishlist.php?a=d&i=$row[id]'
+		};
+		\" value=\"Delete\"></td></tr>";
+	}
+
+	print "</table>";
+
+        ?>
+        <script>
+        function get_itinerary(myform) {
+                $.get('get_itinerary2.php',
+                $(myform).serialize(),
+                function(php_msg) {
+                       $("#itinerary").html(php_msg);
+                });
+                document.getElementById('itinerary').style.display='table-row';
+        }
+        </script>
+	<?php
+
+	print "</span></div>";
+
+	}
+
       public function myaggressor() {
 
         $sql = "SELECT * FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
@@ -403,6 +533,10 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 
         $vip = $this->vip_status($_SESSION['contactID']);
         $vip = $vip * 10;
+
+	$vip_plus = $this->vip_status_plus($_SESSION['contactID']);
+	$vip_plus = $vip_plus * 10;
+
         ?>
 
 
@@ -427,7 +561,10 @@ Important Notice:  By submitting this application, you agree to abide by all ter
          ?>
          </span></center>
          <input type="button" style="width:200px;" value="Update Profile" class="btn btn-primary" onclick="document.location.href='profile.php';"><br><br>
-         <input type="button" style="width:200px;" value="My Reservations" class="btn btn-primary" onclick="document.location.href='myreservations.php';"><br>
+         <input type="button" style="width:200px;" value="My Reservations" class="btn btn-primary" onclick="document.location.href='myreservations.php';"><br><br>
+         <input type="button" style="width:200px;" value="Wish List" class="btn btn-primary" onclick="document.location.href='wishlist.php';"><br>
+	
+
 
          <?php
            switch ($_SESSION['contact_type']) {
@@ -440,7 +577,63 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           ?>
 
 
+        <br><b>Awards & Certifications</b><br>
+                  <?php
+                  if (($total_dives > 99) && ($total_dives < 200)) {
+                    $this->trophy(100);
+                  }
+                  if (($total_dives > 199) && ($total_dives < 300)) {
+                    $this->trophy(200);
+                  }
+                  if (($total_dives > 299) && ($total_dives < 400)) {
+                    $this->trophy(300);
+                  }
+                  if (($total_dives > 399) && ($total_dives < 500)) {
+                    $this->trophy(400);
+                  }
+                  if (($total_dives > 499) && ($total_dives < 600)) {
+                    $this->trophy(500);
+                  }
+                  if (($total_dives > 599) && ($total_dives < 700)) {
+                    $this->trophy(600);
+                  }
+                  if (($total_dives > 699) && ($total_dives < 800)) {
+                    $this->trophy(700);
+                  }
+                  if (($total_dives > 799) && ($total_dives < 900)) {
+                    $this->trophy(800);
+                  }
+                  if (($total_dives > 899) && ($total_dives < 1000)) {
+                    $this->trophy(900);
+                  }
+                  if (($total_dives > 999) && ($total_dives < 1100)) {
+                    $this->trophy(1000);
+                  }
+                  if (($total_dives > 1249) && ($total_dives < 1500)) {
+                    $this->trophy(1250);
+                  }
+                  if (($total_dives > 1499) && ($total_dives < 1750)) {
+                    $this->trophy(1500);
+                  }
+                  if (($total_dives > 1749) && ($total_dives < 2000)) {
+                    $this->trophy(1750);
+                  }
+                  if (($total_dives > 1999) && ($total_dives < 2500)) {
+                    $this->trophy(2000);
+                  }
+                  if (($total_dives > 2499) && ($total_dives < 5000)) {
+                    $this->trophy(5000);
+                  }
 
+                $this->all_star();
+
+                if ($vip > 99) { $this->vip(); }
+                if ($vip_plus > 99) { $this->vip_plus(); }
+                if ($seven_seas > 99) { $this->seven_seas(); }
+
+                ?>
+
+		<br><a href="viewallawards.php">View All</a>
          </td>
        </tr>
 
@@ -448,7 +641,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
  
      </table></td>
      <td align="center" valign="top">
-        <table text-align:="text-align:" center;="center;"" bgcolor="#ffffff" border="0" cellpadding="8" cellspacing="0" width="800">
+        <table text-align:="text-align:" center;="center;"" bgcolor="#ffffff" border="0" cellpadding="8" cellspacing="0" width="740">
         <tr>
           <td colspan="2">
           
@@ -461,10 +654,25 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           </div>
           
           </td>
-          <td>
-            <a href="https://www.facebook.com/AggressorFleet.DancerFleet" target=_blank><i class="fa fa-facebook fa-4x" aria-hidden="true"></i></a>
+        </tr>
+
+
+        <tr>
+          <td colspan="2">
+          
+          <span id="myaggressor">VIP<i>plus</i> Progress Bar</span><br>
+
+          <div class="progress">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?=$vip_plus;?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$vip_plus;?>%;">
+              <span class="sr-only"><?=$vip_plus;?>% Complete</span>
+            </div>
+          </div>
+          
           </td>
         </tr>
+
+
+
         <tr>
           <td colspan="2">
           
@@ -474,9 +682,6 @@ Important Notice:  By submitting this application, you agree to abide by all ter
               <span class="sr-only"><?=$seven_seas;?>% Complete</span>
             </div>
           </div>        
-          </td>
-          <td>
-            <a href="https://twitter.com/aggressorfleet" target=_blank><i class="fa fa-twitter fa-4x" aria-hidden="true"></i></a>
           </td>
         </tr>
 
@@ -547,75 +752,8 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 
             <tr><td colspan="2"><hr></td></tr>
 
-              <td valign=top>
-                  <b>Awards & Certifications</b><br>
-                  <table><tr><td>
+              <td valign=top colspan="2">
 
-                  <?php
-                  if (($total_dives > 99) && ($total_dives < 200)) {
-                    $this->trophy(100);
-                  }
-                  if (($total_dives > 199) && ($total_dives < 300)) {
-                    $this->trophy(200);
-                  }
-                  if (($total_dives > 299) && ($total_dives < 400)) {
-                    $this->trophy(300);
-                  }
-                  if (($total_dives > 399) && ($total_dives < 500)) {
-                    $this->trophy(400);
-                  }
-                  if (($total_dives > 499) && ($total_dives < 600)) {
-                    $this->trophy(500);
-                  }
-                  if (($total_dives > 599) && ($total_dives < 700)) {
-                    $this->trophy(600);
-                  }
-                  if (($total_dives > 699) && ($total_dives < 800)) {
-                    $this->trophy(700);
-                  }
-                  if (($total_dives > 799) && ($total_dives < 900)) {
-                    $this->trophy(800);
-                  }
-                  if (($total_dives > 899) && ($total_dives < 1000)) {
-                    $this->trophy(900);
-                  }
-                  if (($total_dives > 999) && ($total_dives < 1100)) {
-                    $this->trophy(1000);
-                  }
-                  if (($total_dives > 1249) && ($total_dives < 1500)) {
-                    $this->trophy(1250);
-                  }
-                  if (($total_dives > 1499) && ($total_dives < 1750)) {
-                    $this->trophy(1500);
-                  }
-                  if (($total_dives > 1749) && ($total_dives < 2000)) {
-                    $this->trophy(1750);
-                  }
-                  if (($total_dives > 1999) && ($total_dives < 2500)) {
-                    $this->trophy(2000);
-                  }
-                  if (($total_dives > 2499) && ($total_dives < 5000)) {
-                    $this->trophy(5000);
-                  }
-                  print "</td><td>";
-
-                  $this->all_star();
-
-                  ?>
-                  </td><td>
-
-                  <?php if ($vip > 99) { $this->vip(); } ?>
-
-                  </td><td>
-
-                  <?php if ($seven_seas > 99) { $this->seven_seas(); } ?>
-
-                  </table>
-
-                  <br><a href="viewallawards.php">View All</a><br>
-
-              </td>
-              <td valign="top">
               <?php
               $this->random_special();
               ?>
@@ -890,7 +1028,13 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           }
         }
 
-        print "<br><br>The creature list was updated. Click <a href=\"portal.php\">here</a> to return to My Aggressor.<br><br>";
+        print "<br><br>The creature list was updated. Loading...<br><br>";
+
+	?>
+                <script>
+                setTimeout(function() { document.location.href='portal.php'},2000);
+                </script>
+	<?php
 
         print "</span>";
         $this->header_bot();         
@@ -924,8 +1068,12 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           }
         }
 
-        print "<br><br>The wanted list was updated. Click <a href=\"portal.php\">here</a> to return to My Aggressor.<br><br>";
-
+        print "<br><br>The wanted list was updated. Loading...<br><br>";
+	?>
+                <script>
+                setTimeout(function() { document.location.href='portal.php'},2000);
+                </script>
+	<?php
         print "</span>";
         $this->header_bot();         
       }
@@ -981,7 +1129,16 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         print '
           <div>
           <span class="fa fa-anchor fa-2x" style=" vertical-align: middle;"></span>
-          <span class="my-text">Vip</span>
+          <span class="my-text">VIP</span>
+          </div>
+        ';
+      }
+
+      private function vip_plus() {
+        print '
+          <div>
+          <span class="fa fa-anchor fa-2x" style=" vertical-align: middle;"></span>
+          <span class="my-text">VIP<i>plus</i></span>
           </div>
         ';
       }
@@ -1062,6 +1219,9 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 
                       $vip = $this->vip_status($_SESSION['contactID']);
                       $vip = $vip * 10;
+
+                      $vip_plus = $this->vip_status_plus($_SESSION['contactID']);
+                      $vip_plus = $vip_plus * 10;
 
                   print "<h2>Dive Milestone(s)</h2>";
                   print "<table class=\"table\">
@@ -1187,6 +1347,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
                   print "<h2>VIP</h2>";
                   print "Awarded to every guest who has been on 15 trips with Aggressor Fleet.<br><br>";
                   if ($vip > 99) { $this->vip(); }
+                  if ($vip_plus > 99) { $this->vip_plus(); }
 
                   print "<h2>Seven Seas</h2>";
                   print "Awarded to every guest who has been to at least 7 seas with Aggressor Fleet.<br><br>";
@@ -1251,7 +1412,12 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 		$sql = "INSERT INTO `reserve`.`iron_divers` (`boatID`,`contactID`,`date`) VALUES ('$_POST[boatID]','$_SESSION[contactID]','$today')";
 		$result = $this->new_mysql($sql);
 		if ($result == "TRUE") {
-			print "<br><br>Your Iron Diver award was added. Click <a href=\"viewallawards.php\">here</a> to continue.<br>";
+			print "<br><br>Your Iron Diver award was added. Loading...<br>";
+			?>
+	                <script>
+        	        setTimeout(function() { document.location.href='portal.php'},2000);
+                	</script>
+			<?php
 		} else {
 			print "<br><br><font color=red>There was an error saving your award.</font><br><br>";
 		}
@@ -1595,7 +1761,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
           print "<br><br>Your dive log was updated. Loading...<br>";
 	  ?>
 		<script>
-		setTimeout(function() { document.location.href='adddivelog.php?section=edit&id=<?=$_POST['id'];?>'},2000);
+		setTimeout(function() { document.location.href='portal.php'},2000);
 		</script>
 	  <?php
 
@@ -1607,6 +1773,39 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         $this->header_bot();
 
       }
+
+	public function save_wishlist() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+
+	$today = date("Ymd");
+        $sql = "INSERT INTO `wish_list` (`contactID`,`boatID`,`itinerary`,`date`) VALUES
+        ('$_SESSION[contactID]','$_POST[boatID]','$_POST[destination]','$today')
+        ";
+        $result = $this->new_mysql($sql);
+        if ($result == "TRUE") {
+          print "<br><br>Your wish list was added. Loading...<br><br>";
+                ?>
+                <script>
+                setTimeout(function() { document.location.href='portal.php'},2000);
+                </script>
+                <?php
+        } else {
+          print "<br><br><font color=red>There was an error saving your wish list.</font><br><br>";
+        }
+
+        print "</span>";
+        $this->header_bot();
+      }
+
 
       public function save_divelog() {
 
@@ -1651,7 +1850,12 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         ";
         $result = $this->new_mysql($sql);
         if ($result == "TRUE") {
-          print "<br><br>Your dive log was added. Click <a href=\"portal.php\">here</a> to continue.<br><br>";
+          print "<br><br>Your dive log was added. Loading...<br><br>";
+		?>
+                <script>
+                setTimeout(function() { document.location.href='portal.php'},2000);
+                </script>
+		<?php
         } else {
           print "<br><br><font color=red>There was an error saving your dive log.</font><br><br>";
         }
@@ -2010,7 +2214,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 				AND `charters`.`boatID` = `boats`.`boatID`
 				AND `reservations`.`show_as_suspended` = '0'
 
-			ORDER BY `charters`.`start_date` ASC
+			ORDER BY `charters`.`start_date` DESC
 			";
 
 			print "<table border=0 width=99%>
@@ -2029,17 +2233,17 @@ Important Notice:  By submitting this application, you agree to abide by all ter
                case "reseller_manager":
                case "reseller_agent":
                //$invoice = "<a href=\"invoicer.php?r=$row[reservationID]\" target=_blank>Reseller Invoice</a>&nbsp;|&nbsp;<a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Client Invoice</a>";
-               $invoice = "<a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Aggressor Invoice</a> | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
+               $invoice = " | <a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Aggressor Invoice</a> | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
                break;
 
-               default:
-               $invoice = "<a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
+               case "reseller_third_party":
+               $invoice = " | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
                break;
 
             }
 
 				print "<tr><td>$row[reservationID]</td><td>$row[name]</td><td>$row[start_date]</td><td>$row[nights]</td><td><a href=\"guests.php?res=$row[reservationID]&c=$_SESSION[contactID]\">Assign Guests</a> | 
-				<a href=\"gis.php?res=$row[reservationID]\">GIS</a>$invoice</td></tr>";
+				<a href=\"gis.php?res=$row[reservationID]\">GIS</a> $invoice</td></tr>";
 				$found = "1";
 			}
 			if ($found != "1") {

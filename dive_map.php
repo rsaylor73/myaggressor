@@ -38,6 +38,40 @@ while ($row4 = $result4->fetch_assoc()) {
 
 }
 
+// wish list
+$sql4 = "
+SELECT
+    `d`.`latitude`,
+    `d`.`longitude`,
+    `d`.`description`,
+    `b`.`name`
+
+FROM
+	`wish_list` wl,
+	`boats` b,
+	`destinations` d
+
+WHERE
+	`wl`.`contactID` = '$_SESSION[contactID]'
+	AND `wl`.`boatID` = `b`.`boatID`
+	AND `wl`.`itinerary` = `d`.`destinationID` 
+
+";
+$result4 = $this->new_mysql($sql4);
+while ($row4 = $result4->fetch_assoc()) {
+    $markers .= "
+    {
+        \"title\": '$row4[name]',
+        \"lat\": '$row4[latitude]',
+        \"lng\": '$row4[longitude]',
+        \"description\": 'Wish list on $row4[name] at $row4[description]',
+        \"icon\": \"FlagStar.png\"
+    },
+    ";
+
+}
+
+
 // find past
 $sql4 = "
 SELECT
@@ -147,7 +181,7 @@ while ($row4 = $result4->fetch_assoc()) {
         }
     }
 </script>
-
+<br><br>
 <div id="dvMap" style="width: <?=$width;?>px; height: <?=$height;?>px"></div>
 
 

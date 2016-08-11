@@ -216,6 +216,32 @@ if ($bg == "1") {
 		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="img-creditcards.png" width="194" height="62" alt=""/></p>
 
 
+	<?php
+	$check_login2 = $common->check_login();
+        if ($check_login2 == "TRUE") {
+		$today = date("Ymd");
+		$sql = "
+		SELECT
+			`r`.`reservationID`
+		FROM
+			`inventory` i, `charters` c, `reservations` r
+		WHERE
+			`i`.`passengerID` = '$_SESSION[contactID]'
+			AND `i`.`charterID` = `c`.`charterID`
+			AND `c`.`start_date` > '$today'
+			AND `i`.`reservationID` = `r`.`reservationID`
+			AND `r`.`show_as_suspended` != '1'
+		ORDER BY `c`.`start_date` ASC
+		";
+		$result = $common->new_mysql($sql);
+		while ($row = $result->fetch_assoc()) {
+			$common->dive_countdown($row['reservationID']);
+		}
+	}
+	?>
+
+
+
 	</td></tr></table>
 
 	<!-- end col -->

@@ -2,8 +2,8 @@
 include "settings.php";
 include "header_guest.php";
 include "header.php";
-
-include "search2.php";
+$bg = "1";
+include "search.php";
 ?>
 
 
@@ -15,7 +15,6 @@ window.onbeforeunload = function() { return "The use of the brower's back button
 */
 ?>
 
-<div id="toparea2">&nbsp;</div>
 <?php
 
 if ($_GET['logout'] == "logout") {
@@ -545,7 +544,7 @@ If you are a returning guest, enter your name and birth month to search for your
 
 
 				print "</div></div>";
-		print "</div></div></div>";
+		print "</div></div>";
 
 }
 

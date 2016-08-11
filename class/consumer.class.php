@@ -113,25 +113,6 @@ class Reservation {
 					<div id=\"login-scr\" align=\"center\">
 					<form name=\"myform\" id=\"myform\">
 					<table border=0 width=\"800\" cellpadding=0 cellspacing=3>";
-
-					if ($_SESSION['contactID'] != "") {
-	                                        $sql = "SELECT `donotbook` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
-        	                                $result = $this->new_mysql($sql);
-                	                        while ($row = $result->fetch_assoc()) {
-                        	                        $donotbook = $row['donotbook'];
-                                	        }
-					}
-                                        if ($donotbook == "Y") {
-                                                print "
-                                                                <table border=\"0\" width=\"500\" cellpadding=\"3\" class=\"details-description\">
-                                                                <tr><td><font color=red>
-                                                                <b>Your account has been disabled. <br>Please contact a reservation agent directly at 1-800-348-2628</b></font>
-                                                                </td></tr>
-                                                                </table>
-                                                ";
-                                                die;
-
-                                        } else {
 						print "
 						<tr>
 							<td valign=top width=\"300\"><img src=\"30Year-Blue-300px.png\" width=\"250\"></td>
@@ -157,7 +138,6 @@ class Reservation {
 							</td>
 						</tr>
 						";
-					}
 					print "
 					</table>
 					</form>
@@ -3418,25 +3398,6 @@ class Reservation {
 
 				";
 
-				$result = $this->new_mysql($sql);
-				while ($row = $result->fetch_assoc()) {
-					$row['ask_referral'] = "TRUE";
-					if (($row['conversion_question'] == "") && ($row['ask_referral'] == "TRUE")) {
-						print "
-							<table border=1 width=90%>
-								<tr><td>
-									<table border=0 width=100%>
-										<tr><td>
-											<br>
-											<b>We detected you last booked with <font color=blue><u>$row[company]</u></font>. Do you still do business with $row[company]? <input type=\"checkbox\" name=\"agent_$row[resellerID]\"> (<font color=blue>Click the checkbox if you still do business with this company</font>)</b>
-											<br>
-										</td></tr>
-									</table>
-								</td></tr>
-							</table><br><br>
-						";
-					}
-				}
 
 				print "
 				<span class=\"details-description\">

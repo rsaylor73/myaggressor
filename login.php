@@ -4,10 +4,23 @@ include "settings.php";
 $err = "1";
 
 if (($_GET['uuname'] != "") && ($_GET['uupass'] != "")) {
-	$sql = "SELECT `first`,`last`,`uuname`,`uupass`,`contactID`,`email`,`sex`, `contact_type`,`reseller_agentID` FROM `contacts` WHERE `uuname` = '$_GET[uuname]' AND `uupass` = '$_GET[uupass]'";
+	$sql = "SELECT `first`,`last`,`uuname`,`uupass`,`contactID`,`email`,`sex`, `contact_type`,`reseller_agentID`,`donotbook` FROM `contacts` WHERE `uuname` = '$_GET[uuname]' AND `uupass` = '$_GET[uupass]'";
 
 	$result = $reservation->new_mysql($sql);
 	while ($row = $result->fetch_assoc()) {
+
+                $donotbook = $row['donotbook'];
+                if ($donotbook == "Y") {
+                        print "
+                        <table border=\"0\" width=\"500\" cellpadding=\"3\" class=\"details-description\">
+                        <tr><td><font color=red>
+                        <b>Your account has been disabled. <br>Please contact a reservation agent directly at 1-800-348-2628</b></font>
+                        </td></tr>
+                        </table>
+                        ";
+                        die;
+                }
+
 		$err = "0";
 		$_SESSION['uuname'] = $row['uuname'];
 		$_SESSION['uupass'] = $row['uupass'];
