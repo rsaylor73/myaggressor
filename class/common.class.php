@@ -1326,7 +1326,7 @@ Important Notice:  By submitting this application, you agree to abide by all ter
                         $result = $this->new_mysql($sql);
                         while ($row = $result->fetch_assoc()) {
                                 print "<a href=\"viewallawards.php?part=d2&i=$row[id]\">
-                                <i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>&nbsp;&nbsp;&nbsp;$row[certification]r<br>";
+                                <i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>&nbsp;&nbsp;&nbsp;$row[certification]<br>";
                                 $d2 = "1";
                         }
                         if ($d2 == "") {
