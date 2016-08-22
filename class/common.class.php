@@ -1313,6 +1313,26 @@ Important Notice:  By submitting this application, you agree to abide by all ter
 				$result = $this->new_mysql($sql);
 			}
 
+			if ($_GET['part'] == "d2") {
+				$sql = "DELETE FROM `reserve`.`dive_certifications` WHERE `id` = '$_GET[i]' AND `contactID` = '$_SESSION[contactID]'";
+                                $result = $this->new_mysql($sql);
+                        }
+
+
+                  print "<h2>Dive Certifications <input type=\"button\" class=\"btn btn-primary\" value=\"Add\" onclick=\"document.location.href='newdivecertification.php'\"></h2>
+                  Self-Awarded to every guest who completed the requirements while on an Aggressor Fleet yacht.<br><br>";
+
+			$sql = "SELECT * FROM `dive_certifications` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `certification` ASC";
+                        $result = $this->new_mysql($sql);
+                        while ($row = $result->fetch_assoc()) {
+                                print "<a href=\"viewallawards.php?part=d2&i=$row[id]\">
+                                <i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>&nbsp;&nbsp;&nbsp;$row[certification]r<br>";
+                                $d2 = "1";
+                        }
+                        if ($d2 == "") {
+                                print "<font color=blue>You do not have any Dive Certifications.</font><br>";
+                        }
+
 		  print "<h2>Iron Divers <input type=\"button\" class=\"btn btn-primary\" value=\"Add\" onclick=\"document.location.href='newirondiver.php'\"></h2>
 		  Self-Awarded to every guest who completed the requirements while on an Aggressor Fleet yacht.<br><br>";
 
@@ -1359,6 +1379,81 @@ Important Notice:  By submitting this application, you agree to abide by all ter
         $this->header_bot();
         
       }
+
+	public function newdivecert() {
+                $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                $check_login = $this->check_login();
+                if ($check_login == "FALSE") {
+                    // show login/register
+                    //include "class/consummer.class.php";
+                    $reservation = new Reservation($linkID);
+                    $reservation->login_screen($uri);
+                    die;
+                }
+                $this->header_top();
+                print "<br><span class=\"result-title-text\">New Dive Certification ($_SESSION[first] $_SESSION[last])</span><br><br>
+                <span class=\"details-description\">";
+
+                $options = "<option value=\"\">--Select--</option>i";
+		$options .= "
+			<option>Non-Diver</option>
+			<optin>Junior Open Water</option>
+			<option>Open Water</option>
+			<option>Advanced Open Water</option>
+			<option>Rescue Diver</option>
+			<option>Master Suba Diver</option>
+			<option>Dive Master</option>
+			<option>Assistant Instructor</option>
+			<option>Instructor</option>
+			<option>Instructor Trainer</option>
+			<option>Nitrox</option>
+		";
+
+
+                print "
+                <form action=\"newdivecertification.php\" method=\"post\">
+                <input type=\"hidden\" name=\"section\" value=\"save\">
+                <table class=\"table\">
+                <tr><td>Certification Type:</td><td><select name=\"cert\" required>$options</select></td></tr>
+                <tr><td colspan=2><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\"></td></tr>
+                </table>
+                </form>";
+
+                print "</span>";
+                $this->header_bot();
+	}
+
+	public function savedivecert() {
+                $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                $check_login = $this->check_login();
+                if ($check_login == "FALSE") {
+                    // show login/register
+                    //include "class/consummer.class.php";
+                    $reservation = new Reservation($linkID);
+                    $reservation->login_screen($uri);
+                    die;
+                }
+                $this->header_top();
+                print "<br><span class=\"result-title-text\">New Dive Certification ($_SESSION[first] $_SESSION[last])</span><br><br>
+                <span class=\"details-description\">";
+
+                $today = date("Ymd");
+                $sql = "INSERT INTO `reserve`.`dive_certifications` (`contactID`,`certification`,`date`) VALUES ('$_SESSION[contactID]','$_POST[cert]','$today')";
+                $result = $this->new_mysql($sql);
+                if ($result == "TRUE") {
+                        print "<br><br>Your Dive Certification was added. Loading...<br>";
+                        ?>
+                        <script>
+                        setTimeout(function() { document.location.href='portal.php'},2000);
+                        </script>
+                        <?php
+                } else {
+                        print "<br><br><font color=red>There was an error saving your certification.</font><br><br>";
+                }
+
+                print "</span>";
+                $this->header_bot();
+	}
 
 	public function newirondiver() {
 	        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";

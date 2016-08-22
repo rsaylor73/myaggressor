@@ -19,7 +19,7 @@ class Reservation {
 			foreach ($_GET['boats'] as $boat) {
 				$boats[$boat] = $boat;
 			}
-			$sql = "SELECT * FROM `reserve`.`boats` WHERE `reserve`.`boats`.`status` = 'Active' AND `reserve`.`boats`.`boatID` NOT IN ('36','37','39') ORDER BY `reserve`.`boats`.`name` ASC";
+			$sql = "SELECT * FROM `reserve`.`boats` WHERE `reserve`.`boats`.`status` = 'Active' AND `reserve`.`boats`.`boatID` NOT IN ('36','37','39','21') ORDER BY `reserve`.`boats`.`name` ASC";
 			$result = $this->new_mysql($sql);
 			while($row = $result->fetch_assoc()) {
 				$i = $row['boatID'];
@@ -130,7 +130,12 @@ class Reservation {
 									<a href=\"javascript:void(0)\" onclick=\"alert('If you have forgotten your user name, click <register> and you will be able to reset your account after validating your identity.')\">Forgot Username</a>
 									</td></tr>
 
-									<tr><td colspan=2 align=center><br>If you are new to Aggressor Fleet<br> please create an online account.<br><br>
+									<tr><td colspan=2 align=center>
+
+<b>Are you an agent and need assistance with your log in? Email <a href=\"mailto:sales@aggressor.com\">sales@aggressor.com</a> or call +305-677-0695</b><br>
+
+
+<br>If you are new to Aggressor Fleet<br> please create an online account.<br><br>
 <a href=\"javascript:void(0)\" onclick=\"location.href='register.php?$varU'\"><img src=\"buttons/bt-register.png\" border=0></a>
 									</td></tr>
 
