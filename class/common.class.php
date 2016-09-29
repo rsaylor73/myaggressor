@@ -60,8 +60,12 @@ class Common {
 
 
         public function eula() {
-                $eula = "
-Important Notice:  By submitting this application, you agree to abide by all terms and conditions of Aggressor Fleet, including specifically your obligation to insure that all signatures of an ultimate customer for Aggressor Fleet products and services executes all required documents including all Liability Release forms.  By submitting this application, you agree that you will not be authorized to sign your customer's name to any form or agreement which is part of the sales process, including the Liability Release waiver.  By submitting this application, you agree to indemnify Aggressor Fleet against all costs and expenses incurred by reason of the failure of your customer to execute any such form.";
+                $sql = "SELECT `tos_web` FROM `af_df_unified2`.`auto_emails` WHERE `id` = '1'";
+                $result = $this->new_mysql($sql);
+                while ($row = $result->fetch_assoc()) {
+                        $eula = $row['tos_web'];
+                }
+
 
                 $this->header_top();
                 $ip = $_SERVER['REMOTE_ADDR'];
@@ -3732,6 +3736,22 @@ Important Notice:  By submitting this application, you agree to abide by all ter
             }
          }
 
+        // update RSS pw
+         if (($_POST['contactID'] != "") && ($_POST['uuname'] == "") && ($_POST['uupass'] != "")) {
+
+            $sql = "SELECT `contacts`.`contactID` FROM `contacts` WHERE `contacts`.`reseller_agentID` = '$_POST[id]' LIMIT 1";
+            $result = $this->new_mysql($sql);
+            while ($row = $result->fetch_assoc()) {
+               $sql2 = "UPDATE `contacts` SET `uupass` = '$_POST[uupass]',`contact_type` = '$_POST[contact_type]' WHERE `contactID` = '$row[contactID]'";
+               $result2 = $this->new_mysql($sql2);
+
+                if ($_POST['contactID'] == $_SESSION['contactID']) {
+                        print "<br><br><font color=green>You updated your own password. You have been logged out. Please log back in.</font><br><br>";
+                        session_destroy();
+                }
+
+            }
+         }
 
 
 

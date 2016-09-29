@@ -6,7 +6,13 @@ if (($_GET['temp_data'] == $_SESSION['temp_data']) && ($_GET['temp_data'] != "")
 
 	$d = array();
 	foreach ($_GET as $key=>$value) {
-		$d[$key] = preg_replace('/[^A-Za-z0-9\-@. ]/', '', $value);
+		if ($key != "email") {
+			// 9/23/2016 - corrected bug where email was having valid chars stripped. - RBD
+			$d[$key] = preg_replace('/[^A-Za-z0-9\-@. ]/', '', $value);
+		} else {
+			// this sets the email value
+			$d[$key] = $value;
+		}
 	}
 
 	$date_created = date("Ymd");
@@ -27,7 +33,7 @@ if (($_GET['temp_data'] == $_SESSION['temp_data']) && ($_GET['temp_data'] != "")
 		print "<br><br>Your account has been created. You can now login by clicking <a href=\"$_SESSION[uri]\">here</a><br><br>\n";
 	} else {
 		print "<br><br><font color=red>There was an error creating your account. An email with the error has been sent to the IT department.<br><br>";
-		mail('robert@wayneworks.com','AF/DF Registration Error',$sql);
+		mail('support@wayneworks.com','AF Registration Error',$sql);
 	}
 	print "</span>";
 } else {
