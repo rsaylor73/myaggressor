@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css?family=Bad+Script|Open+Sans|Raleway");
+
+
 body {
 	overflow-x:hidden;
 	margin-left: 0px;
@@ -691,4 +694,20 @@ hr {
 }.cart:active {
 	position:relative;
 	top:1px;
+}
+.Section-Titles {
+	font-family: 'Bad Script', Palatino Linotype, sans-serif;
+	font-size: 24px;
+	color: #FF0000;
+	font-weight: bold;
+}
+.Specials-TT {
+	font-family: Tahoma, Verdana, Geneva, sans-serif;
+	font-size: 15px;
+	font-weight: bold;
+	color: #1B76B5;
+}
+.TEXT-BLUE {
+	font-family: Tahoma, Verdana, Geneva, sans-serif;
+	color: #1B76B5;
 }

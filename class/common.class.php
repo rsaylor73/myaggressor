@@ -60,6 +60,34 @@ class Common {
 
 
         public function eula() {
+		// the end of search.php gets cut off because of the eula loading so it gets duplicated here:
+		print '
+	        </td></tr></table>
+	        <!-- end col -->
+	        </div>
+	        <!-- modal helper windows -->
+	        <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                        <div class="modal-content">
+                                <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Destinations</h4>
+                                </div>
+                                <div class="modal-body">
+                                        <p>You may select multiple destinations by holding the command key on a Mac or the Ctrl key on Windows</p>
+                                </div>
+                                <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                        </div>
+                </div>
+	        </div>
+		<!-- resp -->
+	        <div class="col-md-8">
+		<!-- e resp -->
+		';
+		// end of duplicating end part of search.php
+
                 $sql = "SELECT `tos_web` FROM `af_df_unified2`.`auto_emails` WHERE `id` = '1'";
                 $result = $this->new_mysql($sql);
                 while ($row = $result->fetch_assoc()) {
@@ -76,7 +104,7 @@ class Common {
                 print "<form action=\"agree.php\" method=\"post\">";
                 print "<input type=\"hidden\" name=\"r\" value=\"3\">";
 
-                print "<textarea cols=100 rows=10>$eula</textarea><br>";
+                print "$eula<br>";
 
                 print "<br>Name: $_SESSION[first] $_SESSION[middle] $_SESSION[last]<br>
                 IP Address: $ip<br>
@@ -581,7 +609,7 @@ class Common {
           ?>
 
 
-        <br><b>Awards & Certifications</b><br>
+        <br><span class="Section-Titles">Certifications/Awards</span><br>
                   <?php
                   if (($total_dives > 99) && ($total_dives < 200)) {
                     $this->trophy(100);
@@ -703,7 +731,7 @@ class Common {
                     </td>
                     <td valign=top>
 
-                      <b>Log Book</b><br>
+                      <span class="Section-Titles">My Dive Logs</span><br>
                       <?php
                       $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `dive_date` DESC LIMIT 4";
                       $result = $this->new_mysql($sql);
@@ -743,7 +771,7 @@ class Common {
                       ?>
 
 
-                      <b>Boutique Points</b><br><br>
+                      <span class="Section-Titles">Boutique Points</span><br><br>
                       <font size="12"><?=$points;?></font><br><br><br>
                       <a href="redeem.php"><i class="fa fa-minus" aria-hidden="true"></i> Redeem</a>&nbsp;&nbsp;<br>
 
@@ -769,7 +797,7 @@ class Common {
 
             <tr>
               <td valign=top>
-                <b>Creature Checklist</b><br><br>
+                <span class="Section-Titles">Creature Checklist</span><br><br>
 
                 <?php
                 $this->creature_list('creature','10','normal');
@@ -779,7 +807,7 @@ class Common {
               </td>
 
               <td>
-                <b>Most Wanted</b><br><br>
+                <span class="Section-Titles">Most Wanted</span><br><br>
 
                 <?php
                 $this->creature_list('wanted','10','normal');

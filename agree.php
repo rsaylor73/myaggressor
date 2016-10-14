@@ -8,6 +8,7 @@ if($_SERVER["HTTPS"] != "on")
 include "settings.php";
 include "header.php";
    $bg = "1";
+   $bypass = "1";
    include "search.php";
 
    $common->agree();

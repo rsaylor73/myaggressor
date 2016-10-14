@@ -71,6 +71,38 @@ while ($row4 = $result4->fetch_assoc()) {
 
 }
 
+// oasis
+$sql5 = "
+SELECT
+	`ri`.`yacht`,
+	`ri`.`reservationID`,
+	`ri`.`travel_date`,
+	`bi`.`longitude`,
+	`bi`.`latitude`
+
+FROM
+	`reservations_imported` ri,
+	`boats_imported` bi
+
+WHERE
+	`ri`.`contactID` = '$_SESSION[contactID]'
+	AND `ri`.`yacht` = `bi`.`name`
+";
+$result5 = $this->new_mysql($sql5);
+while ($row5 = $result5->fetch_assoc()) {
+    $markers .= "
+    {
+        \"title\": '$row5[yacht]',
+        \"lat\": '$row5[latitude]',
+        \"lng\": '$row5[longitude]',
+        \"description\": 'Dancer Fleet trip on $row5[yacht] traveled at $row5[travel_date]',
+        \"icon\": \"blu-circle.png\"
+    },
+    ";
+
+}
+
+
 
 // find past
 $sql4 = "

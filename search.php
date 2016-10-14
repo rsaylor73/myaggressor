@@ -28,7 +28,7 @@ if ($bg == "1") {
 <!-- resp -->
 <div class="row">
 	<div class="col-md-2 hidden-sm hidden-xs">
-	<table border=0 width=100%><tr><td>&nbsp;&nbsp;</td><td>
+	<table border=0 width=100%><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>
 
 
 		<form name="MyForm" id="MyForm" method="get" action="checkreservations.php" onsubmit="return validateForm()">
@@ -197,45 +197,46 @@ if ($bg == "1") {
 
                 <!-- seperator -->
 		<br>
-		&nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-success btn_custom" value="Search">
+		<input style="width:200px;" type="submit" class="btn btn-success btn_custom" value="Search"><br><br>
 		</form>
 
                 <!-- seperator -->
-		<p>&nbsp;</p>
 		<form name="MyForm" id="MyForm" method="get" action="portal.php">
 
 		<?php
 		if (($_SESSION['uuname'] == "") && ($_SESSION['uupass'] == "")) {
-			print '&nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Log In" id="submit">';
+			print '<input  style=\"width:200px;\" type="submit" class="btn btn-primary" value="Log In" id="submit"><br><br>';
 		} else {
-			print "&nbsp;&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-primary\" value=\"My Aggressor\" id=\"submit\">&nbsp;&nbsp;
-			<input type=\"button\" class=\"btn btn-primary\" value=\"Log Out\" onclick=\"document.location.href='logout.php';return false;\">";
+			print "<input style=\"width:200px;\" type=\"submit\" class=\"btn btn-primary\" value=\"My Aggressor\" id=\"submit\"><br><br>
+			<input style=\"width:200px;\" type=\"button\" class=\"btn btn-primary\" value=\"Log Out\" onclick=\"document.location.href='logout.php';return false;\"><br><br>";
 		}
 		?>
 		</form>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="img-creditcards.png" width="194" height="62" alt=""/></p>
+		<p>&nbsp;<img src="img-creditcards.png" width="194" height="62" alt=""/></p>
 
 
 	<?php
-	$check_login2 = $common->check_login();
-        if ($check_login2 == "TRUE") {
-		$today = date("Ymd");
-		$sql = "
-		SELECT
-			`r`.`reservationID`
-		FROM
-			`inventory` i, `charters` c, `reservations` r
-		WHERE
-			`i`.`passengerID` = '$_SESSION[contactID]'
-			AND `i`.`charterID` = `c`.`charterID`
-			AND `c`.`start_date` > '$today'
-			AND `i`.`reservationID` = `r`.`reservationID`
-			AND `r`.`show_as_suspended` != '1'
-		ORDER BY `c`.`start_date` ASC
-		";
-		$result = $common->new_mysql($sql);
-		while ($row = $result->fetch_assoc()) {
-			$common->dive_countdown($row['reservationID']);
+	if ($bypass != "1") {
+		$check_login2 = $common->check_login();
+        	if ($check_login2 == "TRUE") {
+			$today = date("Ymd");
+			$sql = "
+			SELECT
+				`r`.`reservationID`
+			FROM
+				`inventory` i, `charters` c, `reservations` r
+			WHERE
+				`i`.`passengerID` = '$_SESSION[contactID]'
+				AND `i`.`charterID` = `c`.`charterID`
+				AND `c`.`start_date` > '$today'
+				AND `i`.`reservationID` = `r`.`reservationID`
+				AND `r`.`show_as_suspended` != '1'
+			ORDER BY `c`.`start_date` ASC
+			";
+			$result = $common->new_mysql($sql);
+			while ($row = $result->fetch_assoc()) {
+				$common->dive_countdown($row['reservationID']);
+			}
 		}
 	}
 	?>
