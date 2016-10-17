@@ -828,7 +828,7 @@ class Reservation {
 			<div id=\"result_wrapper\">
 				<div id=\"result_pos1\">
 					<div id=\"result_pos2\">
-						<div id=\"result_pos3A\">";
+						<div id=\"result_pos3A\"><br><br>";
 			$month = substr($_GET['datepicker'],0,2);
 			$year = substr($_GET['datepicker'],2,4);
 

@@ -1021,8 +1021,8 @@ class Common {
           <table border=0 width=200>
           <tr>
             <td valign=top><i class=\"fa fa-ship\" aria-hidden=\"true\"></i></td>
-            <td valign=top><b>$row[name]</b><br><br>
-            $row[days] Days<br></td>
+            <td valign=top><b><span class=\"details-prices2\">$row[name]</span></b><br><br>
+            <span class=\"details-prices2-red\">$row[days] Days</span><br></td>
           </tr>
           </table><br>
           </td></tr></table><br><br>";  
