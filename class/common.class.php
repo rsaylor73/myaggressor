@@ -999,6 +999,7 @@ class Common {
         $sql = "
         SELECT
           `b`.`name`,
+	  `b`.`logo_url`,
           DATEDIFF(`c`.`start_date`,'$today') AS 'days'
 
         FROM
@@ -1017,16 +1018,13 @@ class Common {
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "<br>
-          <table border=0 width=200 id=\"rcorners1\"><tr><td><br>
-          <table border=0 width=200>
-          <tr>
-            <td valign=top><i class=\"fa fa-ship\" aria-hidden=\"true\"></i></td>
-            <td valign=top><b><span class=\"details-prices2\">$row[name]</span></b><br><br>
-            <span class=\"details-prices2-red\">$row[days] Days</span><br></td>
+          <table class=\"table-curved\">
+            <td valign=middle>&nbsp;&nbsp;&nbsp;<img src=\"$row[logo_url]\">&nbsp;&nbsp;</td>
+            <td valign=middle><b><span class=\"details-prices2\"><center>$row[name]</center></span></b><br>
+            <span class=\"details-prices2-red\"><center>$row[days] Days</center></span><br></td>
           </tr>
-          </table><br>
-          </td></tr></table><br><br>";  
-
+          </table>
+	  ";
         }
 
 
