@@ -251,7 +251,7 @@ function selectAll(selectBox,selectAll) {
 }
 </script>
       <div id="reservation-start-input-box-submit">
-        &nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-success btn_custom" value="Search"> 
+        &nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-success btn_custom" value="Search" style="width:200px;"> 
 		</form><br>
 		<br>
 		<form name="MyForm" id="MyForm" method="get" action="portal.php">
@@ -260,7 +260,7 @@ function selectAll(selectBox,selectAll) {
 		<?php
 			if (($_SESSION['uuname'] == "") && ($_SESSION['uupass'] == "")) {
 			?>
-			&nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Log In" id="submit">
+			&nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Log In" id="submit" style="width:200px;">
 			<?php
 			} else {
                         print "&nbsp;&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-primary\" value=\"My Aggressor\" id=\"submit\">&nbsp;&nbsp;

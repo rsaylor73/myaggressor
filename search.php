@@ -205,7 +205,7 @@ if ($bg == "1") {
 
 		<?php
 		if (($_SESSION['uuname'] == "") && ($_SESSION['uupass'] == "")) {
-			print '<input  style=\"width:200px;\" type="submit" class="btn btn-primary" value="Log In" id="submit"><br><br>';
+			print '<input  style="width:200px;" type="submit" class="btn btn-primary" value="Log In" id="submit"><br><br>';
 		} else {
 			print "<input style=\"width:200px;\" type=\"submit\" class=\"btn btn-primary\" value=\"My Aggressor\" id=\"submit\"><br><br>
 			<input style=\"width:200px;\" type=\"button\" class=\"btn btn-primary\" value=\"Log Out\" onclick=\"document.location.href='logout.php';return false;\"><br><br>";

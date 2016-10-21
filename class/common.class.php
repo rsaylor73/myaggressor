@@ -659,9 +659,20 @@ class Common {
 
                 $this->all_star();
 
+		// test //
+		if ($_SESSION['uuname'] == "test2") {
+			$vip = "100";
+			$vip_plus = "100";
+			$seven_seas = "100";
+		}
+
+
                 if ($vip > 99) { $this->vip(); }
                 if ($vip_plus > 99) { $this->vip_plus(); }
                 if ($seven_seas > 99) { $this->seven_seas(); }
+
+
+		$this->dive_cert();
 
                 ?>
 
@@ -727,7 +738,7 @@ class Common {
                 <table border="0" width="300">
                   <tr>
                     <td valign=top>
-                      <i class="fa fa-book fa-5x" aria-hidden="true"></i>
+                     &nbsp;&nbsp; 
                     </td>
                     <td valign=top>
 
@@ -754,7 +765,7 @@ class Common {
                 <table border="0" width="300">
                   <tr>
                     <td valign=top>
-                      <i class="fa fa-usd fa-5x" aria-hidden="true"></i>
+                      &nbsp;&nbsp;
                     </td>
                     <td valign=top>
 
@@ -772,8 +783,8 @@ class Common {
 
 
                       <span class="Section-Titles">Boutique Points</span><br><br>
-                      <font size="12"><?=$points;?></font><br><br><br>
-                      <a href="redeem.php"><i class="fa fa-minus" aria-hidden="true"></i> Redeem</a>&nbsp;&nbsp;<br>
+                      <img src="images/icons/icn_storepoints.png">&nbsp;&nbsp;<span class="storepoints"><?=$points;?></span><br><br><br>
+                      <a href="redeem.php"><i class="fa fa-minus" aria-hidden="true"></i> Redeem Now</a>&nbsp;&nbsp;<br>
 
                     </td>
                   </tr>
@@ -1018,10 +1029,10 @@ class Common {
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "<br>
-          <table class=\"table-curved\">
-            <td valign=middle>&nbsp;&nbsp;&nbsp;<img src=\"$row[logo_url]\">&nbsp;&nbsp;</td>
-            <td valign=middle><b><span class=\"details-prices2\"><center>$row[name]</center></span></b><br>
-            <span class=\"details-prices2-red\"><center>$row[days] Days</center></span><br></td>
+          <table class=\"table-curved\" cellspacing=\"0\" cellpadding=\"0\" width=\"220\" height=\"75\">
+            <td valign=middle width=\"72\"><center><img src=\"$row[logo_url]\" width=\"60\" height=\"71\"></center></td>
+            <td valign=middle width=\"148\"><b><span class=\"details-prices2\"><center>$row[name]</center></span></b>
+            <span class=\"details-prices2-red\"><p><center>$row[days] Days</center></p></span></td>
           </tr>
           </table>
 	  ";
@@ -1136,21 +1147,31 @@ class Common {
         while ($row = $result->fetch_assoc()) {
           $total++;
         }
+	if ($_SESSION['uuname'] == "test2") {
+		$total = "3";
+	}
         if ($total > 2) {
           print '
           <div>
-          <span class="fa fa-star fa-2x" style=" vertical-align: middle;"></span>
-          <span class="my-text">All Star</span>
+          <img src="images/icons/icn_AllStars.png">&nbsp;<span class="my-text">All Star</span>
           </div>
           ';  
         }
       }
 
+      private function dive_cert() {
+	$sql = "SELECT * FROM `dive_certifications` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `certification` ASC";
+	$result = $this->new_mysql($sql);
+	while ($row = $result->fetch_assoc()) {
+		print '<div><img src="images/icons/icn_divecerts.png">&nbsp;<span class="my-text">'.$row['certification'].'</span></div>';
+	}
+
+      }
+
       private function trophy($dives) {
         print '
         <div>
-        <span class="fa fa-trophy fa-2x" style=" vertical-align: middle;"></span>
-        <span class="my-text">'.$dives.'</span>
+        <img src="images/icons/icn_dives.png">&nbsp;<span class="my-text">'.$dives.'</span>
         </div>
         ';  
       }
@@ -1158,8 +1179,7 @@ class Common {
       private function vip() {
         print '
           <div>
-          <span class="fa fa-anchor fa-2x" style=" vertical-align: middle;"></span>
-          <span class="my-text">VIP</span>
+          <img src="images/icons/icn_VIP.png">&nbsp;<span class="my-text">VIP</span>
           </div>
         ';
       }
@@ -1167,8 +1187,7 @@ class Common {
       private function vip_plus() {
         print '
           <div>
-          <span class="fa fa-anchor fa-2x" style=" vertical-align: middle;"></span>
-          <span class="my-text">VIP<i>plus</i></span>
+          <img src="images/icons/icn_VIPplus.png">&nbsp;<span class="my-text">VIP<i>plus</i></span>
           </div>
         ';
       }
@@ -1176,8 +1195,7 @@ class Common {
       private function seven_seas() {
         print '
           <div>
-          <span class="fa fa-ship fa-2x" style=" vertical-align: middle;"></span>
-          <span class="my-text">7 Seas</span>
+          <img src="images/icons/icn_7seas.png">&nbsp;<span class="my-text">7 Seas</span>
           </div>
         ';
       }
