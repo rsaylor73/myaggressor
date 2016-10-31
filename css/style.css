@@ -705,6 +705,25 @@ form {
 	font-weight: bold;
 	color: #1B76B5;
 }
+
+.SubTitle-Blue {
+	font-family: font-family: Tahoma, Verdana, Geneva, sans-serif;
+	font-size: 14px;
+	color: #1B76B5;
+	font-weight: bold;
+}
+
+.SM-Text-Black {
+	font-family: font-family: Tahoma, Verdana, Geneva, sans-serif;
+	font-size: 11px;
+	color: #616C75;
+}
+.PAGE-TITLE {
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size: 20px;
+	font-weight: normal;
+	color: #1B76B5;
+}
 .TEXT-BLUE {
 	font-family: Tahoma, Verdana, Geneva, sans-serif;
 	color: #1B76B5;

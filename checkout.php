@@ -171,6 +171,21 @@ require "settings.php";
 				
 					$result2 = $reservation->new_mysql($sql2);
 					$reservationID = $reservation->linkID->insert_id;
+
+
+                                        // My Aggressor Points - 10/30/2016 - RBS
+                                        $sql2 = "INSERT INTO `points_earned_log` (`contactID`,`points_earned`,`date`,`event_details`) VALUES 
+                                        ('$contactID','400','$today','New reservation $reservationID')";
+                                        $result2 = $reservation->new_mysql($sql2);
+                                        $sql2 = "SELECT `points` FROM `contacts` WHERE `contactID` = '$contactID'";
+                                        $result2 = $reservation->new_mysql($sql2);
+                                        while ($row2 = $result2->fetch_assoc()) {
+                                                $points = $row2['points'] + 400;
+                                                $sql3 = "UPDATE `contacts` SET `points` = '$points' WHERE `contactID` = '$contactID'";
+                                                $result3 = $reservation->new_mysql($sql3);
+                                        }
+                                        // end points
+
 					//print "RESID $reservationID<br>\n";
 
 					// Update Inventory

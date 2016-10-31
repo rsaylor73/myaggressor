@@ -22,6 +22,10 @@ include "header.php";
 		$common->edit_divelog();
 	}
 
+	if ($_GET['section'] == "view") {
+		$common->view_divelog();
+	}
+
 	if ($_POST['section'] == "update") {
 		$common->delete_divelog();
 	}

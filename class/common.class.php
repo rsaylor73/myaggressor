@@ -131,7 +131,8 @@ class Common {
                         $ip = $_SERVER['REMOTE_ADDR'];
                         $sql = "UPDATE `reserve`.`reseller_agents` SET `waiver` = 'Yes', `ip_address` = '$ip', `timestamp` = NOW() WHERE `reseller_agentID` = '$_SESSION[reseller_agentID]'";
                         $result = $this->new_mysql($sql);
-                        print "<br><br>Thank you for accepting the terms and condition of Aggressor Fleet. We will not ask you to agree to the terms again unless they change. You may now continue to your profile.<br><br>";
+                        print "<br><br><center>
+Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba Aggressor Fleet. You may continue to My Aggressor to make a reservation. Once you select <b>My Aggressor</b>, then click on <b>Reservation System</b> to check availability or to make a reservation.</center><br><br>";
 
                 }
 
@@ -296,6 +297,16 @@ class Common {
         if ($total > "100") {
           $total = "100";
         }
+
+	// check manually
+	$sql = "SELECT `vip` FROM `contacts` WHERE `contactID` = '$contactID'";
+	$result = $this->new_mysql($sql);
+	while ($row = $result->fetch_assoc()) {
+		if ($row['vip'] == "checked") {
+			$total = "100";
+		}
+	}
+
         return $total;
 
     }
@@ -332,6 +343,16 @@ class Common {
         if ($total > "100") {
           $total = "100";
         }
+
+        // check manually
+        $sql = "SELECT `vip5` FROM `contacts` WHERE `contactID` = '$contactID'";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+                if ($row['vip5'] == "checked") {
+                        $total = "100";
+                }
+        }
+
         return $total;
 
     }
@@ -444,6 +465,16 @@ class Common {
       if ($south_pacific > 0) {
         $total = $total + 1.42857142857143;
       }
+
+        // check manually
+        $sql = "SELECT `seven_seas` FROM `contacts` WHERE `contactID` = '$contactID'";
+        $result = $this->new_mysql($sql);
+        while ($row = $result->fetch_assoc()) {
+                if ($row['seven_seas'] == "checked") {
+                        $total = "100";
+                }
+        }
+
       return $total;
 
     }
@@ -603,10 +634,11 @@ class Common {
                case "reseller_manager":
                case "reseller_agent":
                case "reseller_third_party":
-               print "<br><input type=\"button\" value=\"Reseller Portal\" style=\"width:200px\" class=\"btn btn-primary\" onclick=\"document.location.href='resellerportal.php'\"><br>";
+               print "<br><input type=\"button\" value=\"Reservation System\" style=\"width:200px\" class=\"btn btn-primary\" onclick=\"document.location.href='resellerportal.php'\"><br>";
                break;
             }
           ?>
+         <br><input type="button" style="width:200px;" value="Ask For Help" class="btn btn-primary" onclick="window.location='mailto:cole@wayneworks.com?subject=Help with My Aggressor'"><br>
 
 
         <br><span class="Section-Titles">Certifications/Awards</span><br>
@@ -731,7 +763,7 @@ class Common {
         <tr><td colspan="3"><hr></td></tr>
 
         <tr>
-          <td colspan="3">
+          <td colspan="3" valign="top">
           <table border="0" width="100%">
             <tr>
               <td width="50%">
@@ -744,10 +776,10 @@ class Common {
 
                       <span class="Section-Titles">My Dive Logs</span><br>
                       <?php
-                      $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `dive_date` DESC LIMIT 4";
+                      $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `dive_date` ASC LIMIT 4";
                       $result = $this->new_mysql($sql);
                       while ($row = $result->fetch_assoc()) {
-                        print "<a href=\"adddivelog.php?section=edit&id=$row[id]\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> $row[dive_date] - $row[site]</a><br>";
+                        print "<a href=\"adddivelog.php?section=view&id=$row[id]\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> $row[dive_date] - $row[site]</a><br>";
                       }
 
 
@@ -760,7 +792,7 @@ class Common {
                 </table>
               
               </td>
-              <td width="50%">
+              <td width="50%" valign="top">
                 
                 <table border="0" width="300">
                   <tr>
@@ -1763,6 +1795,105 @@ class Common {
         $this->header_bot();
       }
 
+      public function view_divelog() {
+        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $check_login = $this->check_login();
+        if ($check_login == "FALSE") {
+            // show login/register
+            //include "class/consummer.class.php";
+            $reservation = new Reservation($linkID);
+            $reservation->login_screen($uri);
+            die;
+        }
+        $this->header_top();
+        print "<br><span class=\"result-title-text\">Dive Log ($_SESSION[first] $_SESSION[last])</span><br><br>
+        <span class=\"details-description\">";
+        // content
+
+        $sql = "
+        SELECT 
+                `d`.*,
+                `b`.`name`
+
+        FROM 
+                `dive_log` d
+
+        LEFT JOIN `boats` b ON `d`.`boatID` = `b`.`boatID`
+
+        WHERE 
+                `d`.`id` = '$_GET[id]' 
+                AND `d`.`contactID` = '$_SESSION[contactID]'
+
+        ";
+        $result = $this->new_mysql($sql);
+        $row = $result->fetch_assoc();
+
+	print '
+	<table width="750" border="0" cellspacing="0" cellpadding="5">
+	 <tbody>
+	   <tr>
+	     <td width="118">Dive Trip:</td>
+	     <td width="314">&nbsp;</td>
+	     <td width="300" rowspan="10" align="center" valign="top"><p>
+		';
+	        if ($row['dive_image'] != "") {
+	                print "<img src=\".divelogimages/$row[dive_image]\" width=\"300\">";
+	        }
+		print '
+
+		</p>
+		<input type="button" value="Edit" class="btn btn-primary" onclick="document.location.href=\'adddivelog.php?section=edit&id='.$_GET['id'].'\'">
+	     </td>
+	   </tr>
+	   <tr>
+	     <td>Itinerarary:</td>
+	     <td>'.$row['itinerary'].'</td>
+	   </tr>
+	   <tr>
+	     <td>Dive Date:</td>
+	     <td>'.$row['dive_date'].'</td>
+	   </tr>
+	   <tr>
+	     <td>Dive Site:</td>
+	     <td>'.$row['site'].'</td>
+	   </tr>
+	   <tr>
+	     <td>Dive Buddies:</td>
+	     <td>'.$row['dive_buddies'].'</td>
+	   </tr>
+	   <tr>
+	     <td>Max Depth:</td>
+	     <td>'.$row['max_depth'].'</td>
+	   </tr>
+	   <tr>
+	     <td>Bottom Time:</td>
+	     <td>'.$row['bottom_time'].'</td>
+	   </tr>
+	   <tr>
+	     <td>Water Temp:</td>
+	     <td>'.$row['water_temp'].'</td>
+	   </tr>
+	   <tr>
+	     <td>Air Temp:</td>
+	     <td>'.$row['air_temp'].'</td>
+	   </tr>
+	   <tr>
+	     <td>Dive Rating:</td>
+	     <td>'.$row['rating'].'</td>
+	   </tr>
+	   <tr>
+	     <td colspan="3">Description:</td>
+	   </tr>
+	  <tr><td colspan="3">'.$row['description'].'</td></tr>
+	 </tbody>
+	</table>
+	';
+
+        print "</span>";
+        $this->header_bot();
+
+      }
+
       public function edit_divelog() {
         $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $check_login = $this->check_login();
@@ -1810,13 +1941,32 @@ class Common {
                 $minutes .= "<option>$x</option>";
         }
 
+
+        $sql2 = "SELECT `name`,`boatID` FROM `reserve`.`boats` WHERE `status` = 'Active' ORDER BY `name` ASC";
+        $result2 = $this->new_mysql($sql2);
+        while ($row2 = $result2->fetch_assoc()) {
+		if ($row2['boatID'] == $row['boatID']) {
+			$selected = "selected";
+			$found = "1";
+		} else {
+			$selected = "";
+		}
+		if ($found != "1") {
+			if ($display == "") {
+				$boats .= "<option selected value=\"\">--Select--</option>";
+				$display = "1";
+			}
+		}
+                $boats .= "<option $selected value=\"$row2[boatID]\">$row2[name]</option>";
+        }
+
         print "
         <form action=\"adddivelog.php\" method=\"post\" enctype=\"multipart/form-data\">
         <input type=\"hidden\" name=\"section\" value=\"update\">
         <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
         <table class=\"table\">
-	<tr><td>Dive Trip:</td><td>$row[name]</td></tr>
-	<tr><td>Itinerary:</td><td>$row[itinerary]</td></tr>
+	<tr><td>Dive Trip:</td><td><select name=\"boatID\" required onchange=\"get_itinerary(this.form)\" style=\"width:250px;\">$boats</select></td></tr>
+	<tr id=\"itinerary\"><td>Itinerary:</td><td>$row[itinerary]</td></tr>
         <tr><td>Dive Date:</td><td><input type=\"text\" name=\"dive_date\" id=\"dive_date\" value=\"$row[dive_date]\" size=\"40\" required></td></tr>
         <tr><td>Dive Site:</td><td><input type=\"text\" name=\"site\" size=\"40\" value=\"$row[site]\" required></td></tr>
         <tr><td>Dive Buddies:</td><td><textarea name=\"dive_buddies\" cols=40 rows=5>$row[dive_buddies]</textarea></td></tr>
@@ -1851,6 +2001,20 @@ class Common {
 
         // end content
         print "</span>";
+
+        ?>
+        <script>
+        function get_itinerary(myform) {
+                $.get('get_itinerary.php',
+                $(myform).serialize(),
+                function(php_msg) {
+                       $("#itinerary").html(php_msg);
+                });
+                document.getElementById('itinerary').style.display='table-row';
+        }
+        </script>
+        <?php
+
         $this->header_bot();
       }
 
@@ -1880,9 +2044,15 @@ class Common {
 	        }
 
 
+		if ($_POST['itinerary'] != "") {
+			$itinerary = ",`itinerary` = '$_POST[itinerary]'";
+		}
+
+
+
           $sql = "UPDATE `dive_log` SET `dive_date` = '$_POST[dive_date]', `site` = '$_POST[site]', `dive_buddies` = '$_POST[dive_buddies]', `max_depth` = '$_POST[max_depth]', 
           `description` = '$_POST[description]', `rating` = '$_POST[rating]', `bottom_time_hours` = '$_POST[bottom_time_hours]', `bottom_time_mins` = '$_POST[bottom_time_mins]',
-	  `water_temp` = '$_POST[water_temp]', `air_temp` = '$_POST[air_temp]' $sql_dive_img
+	  `water_temp` = '$_POST[water_temp]', `air_temp` = '$_POST[air_temp]', `boatID` = '$_POST[boatID]' $itinerary $sql_dive_img
 
 	  WHERE `id` = '$_POST[id]' AND `contactID` = '$_SESSION[contactID]'
           ";
@@ -2019,7 +2189,7 @@ class Common {
         }
         $this->header_top();
         print "<h2>Dive Log</h2>";
-        $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `dive_date` DESC";
+        $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `dive_date` ASC";
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "<a href=\"adddivelog.php?section=edit&id=$row[id]\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> $row[dive_date] - $row[site]</a><br>";

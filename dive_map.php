@@ -95,8 +95,8 @@ while ($row5 = $result5->fetch_assoc()) {
         \"title\": '$row5[yacht]',
         \"lat\": '$row5[latitude]',
         \"lng\": '$row5[longitude]',
-        \"description\": 'Dancer Fleet trip on $row5[yacht] traveled at $row5[travel_date]',
-        \"icon\": \"blu-circle.png\"
+        \"description\": 'Aggressor Fleet trip on $row5[yacht] traveled at $row5[travel_date]',
+        \"icon\": \"FlagRed.png\"
     },
     ";
 
