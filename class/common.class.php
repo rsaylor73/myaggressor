@@ -2074,7 +2074,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           print "<br><br>Your dive log was updated. Loading...<br>";
 	  ?>
 		<script>
-		setTimeout(function() { document.location.href='portal.php'},2000);
+		setTimeout(function() { document.location.href='adddivelog.php?section=edit&id=<?=$_POST['id'];?>'},2000);
 		</script>
 	  <?php
 
@@ -2108,7 +2108,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           print "<br><br>Your wish list was added. Loading...<br><br>";
                 ?>
                 <script>
-                setTimeout(function() { document.location.href='portal.php'},2000);
+                setTimeout(function() { document.location.href='wishlist.php'},2000);
                 </script>
                 <?php
         } else {
@@ -2640,7 +2640,14 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
       WHERE `contactID` = '$_SESSION[contactID]'";
 			$result = $this->new_mysql($sql);
 			if ($result == "TRUE") {
-				print "<br>Your profile has been updated.<br>";
+
+      		          print "<br><br>Your profile was updated. Loading...<br><br>";
+                		?>
+		                <script>
+		                setTimeout(function() { document.location.href='profile.php'},2000);
+		                </script>
+		                <?php
+
 			} else {
 				print "<br><font color=red>There was a problem updating your profile. </font><br>";
 			}

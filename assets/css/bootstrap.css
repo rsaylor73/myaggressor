@@ -7057,3 +7057,9 @@ td.visible-print {
     display: none !important;
   }
 }
+@media (max-width: 120px)
+{
+.col-md-2
+	{display :none;}
+}
+
