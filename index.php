@@ -18,7 +18,7 @@ if ($_GET['s'] == "1") {
 	}
 }
 
-include "header.php";
+include "header_landing.php";
 include "search.php";
 ?>
 

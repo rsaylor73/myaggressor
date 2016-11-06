@@ -766,7 +766,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           <td colspan="3" valign="top">
           <table border="0" width="100%">
             <tr>
-              <td width="50%">
+              <td width="50%" valign="top">
                 <table border="0" width="300">
                   <tr>
                     <td valign=top>
@@ -840,13 +840,33 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
             <tr>
               <td valign=top>
-                <span class="Section-Titles">Creature Checklist</span><br><br>
+                <span class="Section-Titles">Wish List</span><br><br>
 
                 <?php
-                $this->creature_list('creature','10','normal');
+	        $sql2 = "
+	        SELECT
+        	        `d`.`description`,
+	                `b`.`name`,
+        	        `w`.`id`
+
+	        FROM
+        	        `wish_list` w, `boats` b, `destinations` d
+
+	        WHERE
+        	        `w`.`contactID` = '$_SESSION[contactID]'
+                	AND `w`.`boatID` = `b`.`boatID`
+	                AND `w`.`itinerary` = `d`.`destinationID`
+	        ";
+		print "<table class=\"table\">";
+		$result2 = $this->new_mysql($sql2);
+		while ($row2 = $result2->fetch_assoc()) {
+			print "<tr><td>$row2[name]</td></tr>";
+		}
+		print "</table>";
+                //$this->creature_list('creature','10','normal');
                 ?>
                 <br><br>
-                <a href="viewallcreatures.php?section=creature">View All</a><br><br>
+                <a href="wishlist.php" class="btn btn-success">View All</a><br><br>
               </td>
 
               <td>
@@ -895,7 +915,6 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         $this->header_top();
         print "<br><span class=\"result-title-text\">Creature ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
-        print "<h2>Select up to 10</h2>";
 
         $this->creature_list('creature','999','normal');
 
@@ -916,7 +935,6 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         $this->header_top();
         print "<br><span class=\"result-title-text\">Wanted ($_SESSION[first] $_SESSION[last])</span><br><br>
         <span class=\"details-description\">";
-        print "<h2>Select up to 10</h2>";
 
 
         $this->creature_list('wanted','999','normal');

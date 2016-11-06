@@ -142,7 +142,7 @@ session_start();
 
 </head>
 
-<body style="width:1600px;" >
+<body>
 
 <!-- resp -->
 <div class="row">

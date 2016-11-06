@@ -404,8 +404,6 @@ p {
   }
 }
 
-.container { width: @container-desktop !important; }
-
 small,
 .small {
   font-size: 85%;
@@ -1257,7 +1255,7 @@ pre code {
   }
 }
 
-@media (min-width: 1px) {
+@media (min-width: 990px) {
   .container {
     width: 970px;
   }

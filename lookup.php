@@ -123,6 +123,17 @@ if ($_SESSION['sessionID'] != "") {
                          alert("Email is required.");
                          return false;
                  }
+
+		 var emailID = document.forms["myform"]["email"].value;
+	         atpos = emailID.indexOf("@");
+	         dotpos = emailID.lastIndexOf(".");
+         
+	         if (atpos < 1 || ( dotpos - atpos < 2 )) {
+	            alert("Please enter a valid email address")
+	            document.forms["myform"]["email"].focus() ;
+	            return false;
+	         }
+
                  var x=document.forms["myform"]["email2"].value;
                  if (x==null || x=="") {
                          alert("Please enter your email again.");

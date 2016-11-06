@@ -325,6 +325,8 @@ class Reservation {
                </div>
             </form>
 
+				<br><br><br><br>
+
 				</div></div></div></div>";
 
 
