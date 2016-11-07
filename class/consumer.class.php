@@ -135,7 +135,7 @@ class Reservation {
 <b>Are you an agent and need assistance with your log in? Email <a href=\"mailto:sales@aggressor.com\">sales@aggressor.com</a> or call +305-677-0695</b><br>
 
 
-<br>If you are new to Aggressor Fleet<br> please create an online account.<br><br>
+<br>If you are new to Aggressor Fleet<br> Or have not previously created a login,<br>Please click here.<br><br>
 <a href=\"javascript:void(0)\" onclick=\"location.href='register.php?$varU'\"><img src=\"buttons/bt-register.png\" border=0></a>
 									</td></tr>
 
