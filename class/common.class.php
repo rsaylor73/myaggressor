@@ -2093,7 +2093,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           print "<br><br>Your dive log was updated. Loading...<br>";
 	  ?>
 		<script>
-		setTimeout(function() { document.location.href='adddivelog.php?section=edit&id=<?=$_POST['id'];?>'},2000);
+		setTimeout(function() { document.location.href='adddivelog.php?section=viewall'},2000);
 		</script>
 	  <?php
 
@@ -2185,7 +2185,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           print "<br><br>Your dive log was added. Loading...<br><br>";
 		?>
                 <script>
-                setTimeout(function() { document.location.href='portal.php'},2000);
+                setTimeout(function() { document.location.href='adddivelog.php?section=viewall'},2000);
                 </script>
 		<?php
         } else {
