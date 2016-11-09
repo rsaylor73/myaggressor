@@ -2600,7 +2600,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
                 return $ext;
         }
 
-		public function save_update_profile() {
+	public function save_update_profile() {
          $uri = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
          $check_login = $this->check_login();
          if ($check_login == "FALSE") {
@@ -2653,6 +2653,11 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
            }
          }
 
+			// check if pw changed
+			if ($_POST['uupass'] != $_SESSION['uupass']) {
+				$force_login = "1";
+			}
+
 			 $sql = "UPDATE `contacts` SET `address1` = '$_POST[address1]', `address2` = '$_POST[address2]', `city` = '$_POST[city]', `state` = '$_POST[state]', `province` = '$_POST[province]', `countryID` = '$_POST[countryID]',`zip` = '$_POST[zip]',
 			`phone1` = '$_POST[phone1]', `phone2` = '$_POST[phone2]', `phone3` = '$_POST[phone3]', `phone4` = '$_POST[phone4]', `uupass` = '$_POST[uupass]' $avatar_sql $logo_sql, `total_dives` = '$_POST[total_dives]'
 
@@ -2661,9 +2666,24 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 			if ($result == "TRUE") {
 
       		          print "<br><br>Your profile was updated. Loading...<br><br>";
+
+			if ($force_login == "1") {
+				print "<br><font color=blue>You changed your password you will need to log back in.</font><br>";
+			}
+
                 		?>
 		                <script>
+				<?php
+				if ($force_login == "1") {
+				?>
+                                setTimeout(function() { document.location.href='index.php'},2000);
+				<?php
+				} else {
+				?>
 		                setTimeout(function() { document.location.href='profile.php'},2000);
+				<?php
+				}
+				?>
 		                </script>
 		                <?php
 
