@@ -776,7 +776,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
                       <span class="Section-Titles">My Dive Logs</span><br>
                       <?php
-                      $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `dive_date` DESC LIMIT 4";
+                      $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY replace(`dive_date`,'-','') DESC LIMIT 4";
                       $result = $this->new_mysql($sql);
                       while ($row = $result->fetch_assoc()) {
                         print "<a href=\"adddivelog.php?section=view&id=$row[id]\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> $row[dive_date] - $row[site]</a><br>";
@@ -2208,7 +2208,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         }
         $this->header_top();
         print "<h2>Dive Log</h2>";
-        $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `dive_date` DESC";
+        $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY replace(`dive_date`,'-','') DESC";
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "<a href=\"adddivelog.php?section=edit&id=$row[id]\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> $row[dive_date] - $row[site]</a><br>";
