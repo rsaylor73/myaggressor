@@ -181,7 +181,7 @@ while ($row4 = $result4->fetch_assoc()) {
     }
     function LoadMap() {
         var mapOptions = {
-            center: new google.maps.LatLng(0,40),
+            center: new google.maps.LatLng(0,0),
             zoom: 2,
             disableDefaultUI: true,
             mapTypeId: google.maps.MapTypeId.ROADMAP
