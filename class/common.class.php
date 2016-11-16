@@ -583,7 +583,9 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         $total_dives = $row['total_dives'];
 
         $age = floor((time() - strtotime($row['date_of_birth'])) / 31556926);
-
+	if ($row['date_of_birth'] == "") {
+		$age = "<b><font color=red>DOB Missing</font></b>";
+	}
         //print "$_SESSION[contactID]";
         //$linkID2 = new mysqli(HOST, USER, PASS, DB);
         //$sql2 = "SELECT * FROM `af_guests` WHERE `contactID` = '$_SESSION[contactID]'";
