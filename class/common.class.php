@@ -1274,7 +1274,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           $points = $row['points'];
         }
         if ($points > 0) {
-          print "<form action=\"redeem.php\" method=\"post\">
+          print "<form action=\"redeem.php\" method=\"post\" target=\"_blank\">
           <input type=\"hidden\" name=\"section\" value=\"redeem\">
           <table class=\"table\">
           <tr><td>How many points would you like to redeem?</td><td><input type=\"text\" name=\"points\" size=\"20\" required></td></tr>
@@ -1286,6 +1286,9 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         } else {
           print "<br><font color=red>Sorry, but you do not have any points to redeem.</font><br>";
         }
+
+	print "<br>
+	<b>Ways to earn Boutique Points:</b> 400 points for making a Reservation & Deposit, 100 for completing Customer Survey, & 100 as a Birthday gift.<br>";
 
         print "</span>";
         $this->header_bot();
@@ -1733,8 +1736,11 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           $result5 = $this->new_mysql($sql5);
           $_SESSION['points'] = $points;
 
-          print "<br><br>Thank you, your points have been redeemed in the amount <b>$ $amount</b>. Please use coupon code <b>$code</b> at the Aggressor Fleet Boutique.<br><br>
-          Please print this page for your records.<br><br><input type=\"button\" value=\"Back to My Aggressor\" class=\"btn btn-success\" onclick=\"document.location.href='portal.php'\"><br>";
+          print "<br><br>Thank you, your points have been redeemed in the amount <b>$ $amount</b>. Please use coupon code <b><font color=red>$code</font></b> at the <a href=\"http://www.liveaboardboutique.com\" target=_blank>Aggressor Fleet Boutique</a>.<br><br>
+
+	<b>Please write down the code above. Once you close or leave this page the code will no longer be available.</b>
+
+	<br><br><input type=\"button\" value=\"Back to My Aggressor\" class=\"btn btn-success\" onclick=\"document.location.href='portal.php'\"><br>";
         }
 
 

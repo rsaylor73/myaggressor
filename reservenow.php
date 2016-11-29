@@ -247,7 +247,8 @@ if (($_GET['tk'] == $_SESSION['reservation_token']) && ($_GET['tk'] != "")) {
                                         function(php_msg) {
 														if (php_msg == "E") {
 															alert('Your credit card could not be processed due to an error. Please check your information and if the problem continues, contact your bank.');
-		                                       document.getElementById('checkout_img').style.display='inline';
+		                                       //header('Location: http://www.aggressor.com');
+							document.getElementById('checkout_img').style.display='inline';
 		                                       document.getElementById('loading').style.display='none';
 														}
 														if (php_msg == "D") {
@@ -257,6 +258,7 @@ if (($_GET['tk'] == $_SESSION['reservation_token']) && ($_GET['tk'] != "")) {
 														}
 														if ((php_msg != "E") && (php_msg != "D")) {
                                                 $("#checkout").html(php_msg);
+						window.location.replace("order_processed.php");
 														}
                                         });
                                 }
