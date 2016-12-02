@@ -3524,7 +3524,7 @@ class Reservation {
 
                      if (preg_match("/Quad/i",$row['bunk_description'])) {
                         $sex = "Quad";
-								$quad = "yes";
+			$quad = "yes";
                         // find out default sex for Quad
                         $sql_q = "
                         SELECT
@@ -3613,12 +3613,12 @@ class Reservation {
 								$found_me = "1";
 							} else {
 								if ($found_open_bunk == "1") {
-                           print "<td><input type=\"radio\" name=\"primary\" checked value=\"inv_$row[inventoryID]\"></td>";
-	                        $primary = "1";
-   	                     $set_proper_sex = $_SESSION['sex'];
-      	                  $found_me = "1";
+					                           print "<td><input type=\"radio\" name=\"primary\" checked value=\"inv_$row[inventoryID]\"></td>";
+						                        $primary = "1";
+					   	                     $set_proper_sex = $_SESSION['sex'];
+					      	                  $found_me = "1";
 								} else {
-            	         	print "<td><input type=\"radio\" name=\"primary\" disabled value=\"inv_$row[inventoryID]\"></td>";
+						            	       	print "<td><input type=\"radio\" name=\"primary\" disabled value=\"inv_$row[inventoryID]\"></td>";
 								}
 							}
 						} else {
@@ -3637,7 +3637,12 @@ class Reservation {
 									$set_proper_sex = $_SESSION['sex'];
 									$found_me = "1";
 								} else {
-	                        print "<td><input type=\"radio\" disabled name=\"primary\" value=\"inv_$row[inventoryID]\"></td>";
+                                                                        if ($quad == "yes") {
+                                                                                print "<td><input type=\"radio\" name=\"primary\" value=\"inv_$row[inventoryID]\"></td>";
+                                                                                $found_me = "1";
+									} else {
+							                        print "<td><input type=\"radio\" disabled name=\"primary\" value=\"inv_$row[inventoryID]\"></td>";
+									}
 								}
                      }  
 						}
