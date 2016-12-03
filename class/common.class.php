@@ -3736,7 +3736,8 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 				`ra`.*,
 				`c`.`company`,
 				`c`.`contactID`,
-				`c`.`commission`
+				`c`.`commission`,
+				`c`.`commission2`
 
 			FROM
 				`reseller_agents` ra, `contacts` c
@@ -3771,8 +3772,8 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 				<tr><td>Country:</td><td><select name=\"country\">$countries</select></td></tr>
             <tr><td>Company:</td><td><input type=\"text\" name=\"company\" size=40 value=\"$row[company]\"></td></tr>
 				";
-            print "<tr><td valign=top>Groups Commission:<br>3rd party only</td><td valign=top><input type=\"text\" name=\"commission\" value=\"$row[commission]\" size=40>%</td></tr>";
-            print "<tr><td valign=top>Individual Commission:<br>3rd party only</td><td valign=top><input type=\"text\" name=\"commission2\" value=\"$row[commission2]\" size=40>%</td></tr>";
+            print "<tr><td valign=top>Groups Commission:<br>3rd party only</td><td valign=top><input type=\"text\" name=\"commission\" value=\"$row[commission]\" size=40 onkeypress=\"return isNumber(event)\">%</td></tr>";
+            print "<tr><td valign=top>Individual Commission:<br>3rd party only</td><td valign=top><input type=\"text\" name=\"commission2\" value=\"$row[commission2]\" size=40 onkeypress=\"return isNumber(event)\">%</td></tr>";
 
 				if ($row['phone1_type'] != "") {
 					print "<tr><td>$row[phone1_type] Phone:</td><td><input type=\"text\" name=\"phone1\" value=\"$row[phone1]\" size=40></td></tr>";
@@ -3874,6 +3875,20 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
          }
 
 			print "</span>";
+
+		?>
+		<script>
+	         function isNumber(evt) {
+	             evt = (evt) ? evt : window.event;
+	             var charCode = (evt.which) ? evt.which : evt.keyCode;
+	             if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+	                 return false;
+	             }
+	             return true;
+	         }
+		</script>
+		<?php
+
          $this->header_bot();
 
 
