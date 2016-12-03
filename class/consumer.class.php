@@ -3618,7 +3618,12 @@ class Reservation {
 					   	                     $set_proper_sex = $_SESSION['sex'];
 					      	                  $found_me = "1";
 								} else {
-						            	       	print "<td><input type=\"radio\" name=\"primary\" disabled value=\"inv_$row[inventoryID]\"></td>";
+                                                                        if ($quad == "yes") {
+                                                                                print "<td><input type=\"radio\" name=\"primary\" value=\"inv_$row[inventoryID]\"></td>";
+                                                                                $found_me = "1";
+									} else {
+							            	       	print "<td><input type=\"radio\" name=\"primary\" disabled value=\"inv_$row[inventoryID]\"></td>";
+									}
 								}
 							}
 						} else {
