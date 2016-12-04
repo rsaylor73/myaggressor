@@ -2898,20 +2898,42 @@ class Reservation {
       return $return_sex_value;
    }
 
+	// This will allow the reseller to book all bunks in the charter and class type - RBS
+	public function view_all_in_charter_and_type() {
+		$boats = unserialize($_GET['boats']);
+
+		foreach ($boats as $value) {
+			$this_boats .= "&boats[]=$value";
+		}
+
+		if ($_SESSION['contact_type'] != "consumer") {
+			print "
+			<table border=0 width=\"800\" cellspacing=\"3\">
+				<tr>
+					<td width=\"300\">&nbsp;</td>
+					<td width=\"90\">&nbsp;</td>
+					<td width=\"146\">&nbsp;</td>
+					<td width=\"156\">&nbsp;</td>
+					<td width=\"166\" align=\"left\"><input type=\"button\" value=\"Book All\" class=\"btn btn-warning\" style=\"float: left;\"
+					onclick=\"document.location.href='book_all.php?charter=$_GET[charter]&type=$_GET[type]&name=$_GET[name]&start_date=$_GET[start_date]&end_date=$_GET[end_date]&passengers=$_GET[passengers]$this_boats'\">
+
+					</td>
+				</tr>
+			</table>
+			";
+		}
+	}
+
 	public function view_bunks() {
-
-				$_GET['boats'] = stripslashes($_GET['boats']);
-
-				$new_boats = unserialize($_GET['boats']);
-	
-            foreach ($new_boats as $boat) {
-               $boats .= "$boat,";
-            }
-            $boats = substr($boats,0,-1);
-
-            foreach ($new_boats as $boat2) {
-               $this_boats .= "&boats[]=$boat2";
-            }
+		$_GET['boats'] = stripslashes($_GET['boats']);
+		$new_boats = unserialize($_GET['boats']);
+		foreach ($new_boats as $boat) {
+		        $boats .= "$boat,";
+	        }
+		$boats = substr($boats,0,-1);
+		foreach ($new_boats as $boat2) {
+                	$this_boats .= "&boats[]=$boat2";
+ 	        }
 	
 
 				$new_name = $_GET['name'];
