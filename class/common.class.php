@@ -2666,7 +2666,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 				$force_login = "1";
 			}
 
-			 $sql = "UPDATE `contacts` SET `address1` = '$_POST[address1]', `address2` = '$_POST[address2]', `city` = '$_POST[city]', `state` = '$_POST[state]', `province` = '$_POST[province]', `countryID` = '$_POST[countryID]',`zip` = '$_POST[zip]',
+			 $sql = "UPDATE `contacts` SET `address1` = '$_POST[address1]', `address2` = '$_POST[address2]', `city` = '$_POST[city]', `state` = '$_POST[state]', `province` = '$_POST[province]', `countryID` = '$_POST[countryID]',`zip` = '$_POST[zip]',`email` = '$_POST[email]',
 			`phone1` = '$_POST[phone1]', `phone2` = '$_POST[phone2]', `phone3` = '$_POST[phone3]', `phone4` = '$_POST[phone4]', `uupass` = '$_POST[uupass]' $avatar_sql $logo_sql, `total_dives` = '$_POST[total_dives]'
 
       WHERE `contactID` = '$_SESSION[contactID]'";
@@ -2725,7 +2725,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
          <span class=\"details-description\">
 				<form name=\"myform\" action=\"profile.php\" method=\"post\" enctype=\"multipart/form-data\">
 				<input type=\"hidden\" name=\"section\" value=\"update\">
-				<table border=0 width=90% class=\"table\">
+				<table border=0 width=90% class=\"table table-striped\">
 				<tr><td>Name:</td><td>$row[first] $row[middle] $row[last]</td></tr>
         <tr><td>Profile Picture:</td><td><input type=\"file\" name=\"avatar\">
         ";
@@ -2805,7 +2805,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
         print "<tr><td>Total Number of Dives:</td><td><input type=\"text\" name=\"total_dives\" value=\"$row[total_dives]\" size=40></td></tr>";
 				print "<tr><td>Account Type:</td><td>$type</td></tr>";
-				print "<tr><td>&nbsp;</td><td><br><input type=\"submit\" class=\"btn btn-success\" value=\"Update\"></td></tr>";
+				print "<tr><td colspan=2><input type=\"submit\" class=\"btn btn-success\" value=\"Update\"></td></tr>";
 				print "
 				</table>
 				</form>
@@ -3554,7 +3554,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 			print "$msg";
 			print "
 			<form action=\"update_company.php\" method=\"post\" enctype=\"multipart/form-data\">
-			<table border=0 width=80%>
+			<table border=0 width=80% class=\"table table-striped\">
 			<tr><td>Address Line 1:</td><td><input type=\"text\" name=\"address1\" value=\"$row[address1]\" size=40></td></tr>
 			<tr><td>Address Line 2:</td><td><input type=\"text\" name=\"address2\" value=\"$row[address2]\" size=40></td></tr>
 			<tr><td>City:</td><td><input type=\"text\" name=\"city\" value=\"$row[city]\" size=40></td></tr>
@@ -3571,7 +3571,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 			}
 			print "</td></tr>
 			<tr><td>Default Commission: <br>(Whole Number Only)</td><td><input type=\"text\" name=\"default_commission\" value=\"$row[default_commission]\" size=40></td></tr>
-			<tr><td colspan=2><input type=\"submit\" value=\"Save\"></td></tr>
+			<tr><td colspan=2><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\"></td></tr>
 			</table>
 			</form>";
 
@@ -3675,7 +3675,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
             <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
             <input type=\"hidden\" name=\"section\" value=\"update\">
                                 <input type=\"hidden\" name=\"rr\" value=\"1\">
-            <table border=\"0\" width=90%>
+            <table border=\"0\" width=90% class=\"table table-striped\">
             <tr><td width=\"200\">First Name:</td><td><input type=\"text\" name=\"first\" value=\"$row[first]\" size=40> $t1</td></tr>
             <tr><td>Last Name:</td><td><input type=\"text\" name=\"last\" value=\"$row[last]\" size=40> $t1</td></tr>
             <tr><td>Address 1:</td><td><input type=\"text\" name=\"address1\" value=\"$row[address1]\" size=40> $t1</td></tr>
@@ -3686,8 +3686,8 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
             <tr><td>Zip:</td><td><input type=\"text\" name=\"zip\" value=\"$row[zip]\" size=40></td></tr>
             <tr><td>Country:</td><td><select name=\"country\" required><option selected value=\"\">Select Country</option>$countries</select> $t1</td></tr>
                                 <tr><td>Company:</td><td><input type=\"text\" name=\"company\" size=\"40\"></td></tr>
-            <tr><td valign=\"top\">Groups Commission:<br>3rd party only</td><td align=\"top\"><input type=\"text\" name=\"commission\" value=\"0\" size=\"40\">%</td></tr>
-            <tr><td valign=top>Individual Commission:<br>3rd party only</td><td valign=top><input type=\"text\" name=\"commission2\" value=\"0\" size=40>%</td></tr>
+            <tr><td valign=\"top\">Groups Commission:<br>3rd party only</td><td align=\"top\"><input type=\"text\" name=\"commission\" onkeypress=\"return isNumber(event)\" value=\"0\" size=\"40\">%</td></tr>
+            <tr><td valign=top>Individual Commission:<br>3rd party only</td><td valign=top><input type=\"text\" name=\"commission2\" onkeypress=\"return isNumber(event)\" value=\"0\" size=40>%</td></tr>
 
                                 <tr><td>Gender:</td><td><input type=\"radio\" name=\"sex\" value=\"male\" checked> Male <input type=\"radio\" name=\"sex\" value=\"female\"> Female $t1</td></tr>
                                 <tr><td>Birth Month:</td><td><select name=\"birth_month\">$months</select></td></tr>
@@ -3705,12 +3705,12 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
             <option value=\"reseller_third_party\">Reseller Third Party</option>
             <option value=\"reseller_manager\">Reseller Manager</option></select></td></tr>";
 
-            print "<tr><td colspan=2><input type=\"submit\" value=\"Continue\" id=\"Continue\" disabled> (Please complete all fields <font color=red>*</font>)</td></tr>";
+            print "<tr><td colspan=2><input type=\"submit\" value=\"Continue\" class=\"btn btn-primary\" id=\"Continue\" disabled> (Please complete all fields <font color=red>*</font>)</td></tr>";
             print "</table><br><br>
             </form>";
 
                         ?>
-                                <script>
+                <script>
                                  function check_uuname(myform) {
                                         $.get('check_uuname.php',
                                         $(myform).serialize(),
@@ -3718,7 +3718,18 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
                                                 $("#info1").html(php_msg);
                                         });
                                  }
-                                                                                        </script>
+
+                 function isNumber(evt) {
+                     evt = (evt) ? evt : window.event;
+                     var charCode = (evt.which) ? evt.which : evt.keyCode;
+                     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                         return false;
+                     }
+                     return true;
+                 }
+
+                                                                                       
+		</script>
                         <?php
          print "</span>";
          $this->header_bot();
@@ -3760,7 +3771,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 				<input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
 				<input type=\"hidden\" name=\"section\" value=\"update\">
             <input type=\"hidden\" name=\"contactID\" value=\"$row[contactID]\">
-				<table border=\"0\" width=90%>
+				<table border=\"0\" width=90% class=\"table table-striped\">
                                 <tr><td width=\"200\">Status:</td><td><select name=\"status\"><option selected value=\"$row[status]\">$row[status]<option>Active</option><option>Inactive</option></select></td></tr>
 				<tr><td width=\"200\">First Name:</td><td><input type=\"text\" name=\"first\" value=\"$row[first]\" size=40></td></tr>
 				<tr><td>Last Name:</td><td><input type=\"text\" name=\"last\" value=\"$row[last]\" size=40></td></tr>
