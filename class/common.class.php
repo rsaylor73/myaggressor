@@ -2672,7 +2672,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
       WHERE `contactID` = '$_SESSION[contactID]'";
 			$result = $this->new_mysql($sql);
 			if ($result == "TRUE") {
-
+				$_SESSION['email'] = $_POST['email'];
       		          print "<br><br>Your profile was updated. Loading...<br><br>";
 
 			if ($force_login == "1") {
