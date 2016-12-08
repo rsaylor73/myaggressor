@@ -2914,13 +2914,21 @@ class Reservation {
 					<td width=\"90\">&nbsp;</td>
 					<td width=\"146\">&nbsp;</td>
 					<td width=\"156\">&nbsp;</td>
-					<td width=\"166\" align=\"left\"><input type=\"button\" value=\"Book All\" class=\"btn btn-success btn-lg\" style=\"width:117px;\" style=\"float: left;\"
-					onclick=\"document.location.href='book_all.php?charter=$_GET[charter]&type=$_GET[type]&name=$_GET[name]&start_date=$_GET[start_date]&end_date=$_GET[end_date]&passengers=$_GET[passengers]$this_boats'\">
+					<td width=\"166\" align=\"left\">
+
+					<input type=\"image\" src=\"buttons/bt-bookall.png\" onclick=\"document.location.href='book_all.php?charter=$_GET[charter]&type=$_GET[type]&name=$_GET[name]&start_date=$_GET[start_date]&end_date=$_GET[end_date]&passengers=$_GET[passengers]$this_boats';return false;\">
 
 					</td>
 				</tr>
 			</table>
 			";
+		/*
+                                        <!--
+                                        <input type=\"button\" value=\"Book All\" class=\"btn btn-success btn-lg\" style=\"width:117px;\" style=\"float: left;\"
+                                        onclick=\"document.location.href='book_all.php?charter=$_GET[charter]&type=$_GET[type]&name=$_GET[name]&start_date=$_GET[start_date]&end_date=$_GET[end_date]&passengers=$_GET[passengers]$this_boats'\">
+                                        -->
+		*/
+
 		}
 	}
 
