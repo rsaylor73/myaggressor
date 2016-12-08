@@ -2424,7 +2424,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
                break;
             }
 			if ($type == "Reseller Manager") {
-	         print "<br><span class=\"result-title-text\">Manage Agents</span><br><br>
+	         print "<br><span class=\"result-title-text\"><a href=\"resellerportal.php\">Reservation System</a> | Manage Agents</span><br><br>
    	      <span class=\"details-description\">";
 
 				$sql = "
@@ -2519,17 +2519,22 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 		}
 
 		public function myreservations() {
-         $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-         $check_login = $this->check_login();
-         if ($check_login == "FALSE") {
-            // show login/register
-            //include "class/consummer.class.php";
-            $reservation = new Reservation($linkID);
-            $reservation->login_screen($uri);
-				die;
-         }
+		        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	         $check_login = $this->check_login();
+	         if ($check_login == "FALSE") {
+        	    // show login/register
+	            //include "class/consummer.class.php";
+        	    $reservation = new Reservation($linkID);
+	            $reservation->login_screen($uri);
+			die;
+	         }
          $this->header_top();
-         print "<br><span class=\"result-title-text\">My Reservations ($_SESSION[first] $_SESSION[last])</span><br><br>
+
+	if ($_SESSION['contact_type'] != "consumer") {
+		$bread = "<a href=\"resellerportal.php\">Reservation System</a> | ";
+	}
+
+         print "<br><span class=\"result-title-text\">".$bread."My Reservations ($_SESSION[first] $_SESSION[last])</span><br><br>
          <span class=\"details-description\">";
 
          if ($_SESSION['contact_type'] == "reseller_third_party") {
@@ -2539,11 +2544,13 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
          }
 
 			$sql = "
+			(
 			SELECT
 				`reservations`.`reservationID`,
 				`boats`.`name`,
 				DATE_FORMAT(`charters`.`start_date`,'%b %e, %Y') AS 'start_date',
-				`charters`.`nights`
+				`charters`.`nights`,
+				`reservations`.`reservation_contactID`
 
 			FROM
 				`reservations`,`charters`,`boats`
@@ -2553,13 +2560,36 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 				AND `reservations`.`charterID` = `charters`.`charterID`
 				AND `charters`.`boatID` = `boats`.`boatID`
 				AND `reservations`.`show_as_suspended` = '0'
+			)
 
-			ORDER BY `charters`.`start_date` DESC
+			UNION
+
+			(
+                        SELECT
+                                `reservations`.`reservationID`,
+                                `boats`.`name`,
+                                DATE_FORMAT(`charters`.`start_date`,'%b %e, %Y') AS 'start_date',
+                                `charters`.`nights`,
+				`reservations`.`reservation_contactID`
+
+                        FROM
+                                `reservations`,`charters`,`boats`,`inventory`
+
+                        WHERE
+                                `inventory`.`passengerID` = '$_SESSION[contactID]'
+				AND `inventory`.`reservationID` = `reservations`.`reservationID`
+                                AND `reservations`.`charterID` = `charters`.`charterID`
+                                AND `charters`.`boatID` = `boats`.`boatID`
+                                AND `reservations`.`show_as_suspended` = '0'
+
+			)
+			ORDER BY `start_date` DESC
+			
 			";
 
-			print "<table border=0 width=99%>
+			print "<table class=\"table table-striped table-responsive\">
 			<tr>
-				<td><b>Confirmation #</b></td>
+				<td><b>Conf #</b></td>
 				<td><b>Yacht</b></td>
 				<td><b>Embarkment Date</b></td>
 				<td><b>Nights</b></td>
@@ -2572,8 +2602,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
             switch ($_SESSION['contact_type']) {
                case "reseller_manager":
                case "reseller_agent":
-               //$invoice = "<a href=\"invoicer.php?r=$row[reservationID]\" target=_blank>Reseller Invoice</a>&nbsp;|&nbsp;<a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Client Invoice</a>";
-               $invoice = " | <a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Aggressor Invoice</a> | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
+	               $invoice = " | <a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Aggressor Invoice</a> | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
                break;
 
                case "reseller_third_party":
@@ -2582,8 +2611,14 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
             }
 
-				print "<tr><td>$row[reservationID]</td><td>$row[name]</td><td>$row[start_date]</td><td>$row[nights]</td><td><a href=\"guests.php?res=$row[reservationID]&c=$_SESSION[contactID]\">Assign Guests</a> | 
+		print "<tr><td>$row[reservationID]</td><td>$row[name]</td><td>$row[start_date]</td><td>$row[nights]</td>";
+
+		if (($_SESSION['contactID'] == $row['reservation_contactID']) or ($_SESSION['contact_type'] == "reseller_third_party")) {
+			print "<td><a href=\"guests.php?res=$row[reservationID]&c=$_SESSION[contactID]\">Assign Guests</a> | 
 				<a href=\"gis.php?res=$row[reservationID]\">GIS</a> $invoice</td></tr>";
+		} else {
+			print "<td>&nbsp;</td>";
+		}
 				$found = "1";
 			}
 			if ($found != "1") {
@@ -2843,7 +2878,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
 		public function agent_save() {
          $this->header_top();
-         print "<br><span class=\"result-title-text\">Add Agent</span><br><br>
+         print "<br><span class=\"result-title-text\"><a href=\"resellerportal.php\">Reservation System</a> | Add Agent</span><br><br>
          <span class=\"details-description\">";
 
 				$dob = $_POST['birth_year'] . $_POST['birth_month'] . $_POST['birth_day'];
@@ -3343,7 +3378,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
             $this->eval_reseller($cont);
 
 
-         print "<br><span class=\"result-title-text\">Agent Reservations</span><br><br>
+         print "<br><span class=\"result-title-text\"><a href=\"resellerportal.php\">Reservation System</a> | Agent Reservations</span><br><br>
          <span class=\"details-description\">";
 
          if ($_SESSION['contact_type'] == "reseller_third_party") {
@@ -3382,7 +3417,6 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
          ORDER BY `charters`.`start_date` DESC
          ";
-
 			$result = $this->new_mysql($sql);
 			$total_rows = $result->num_rows;
 
@@ -3420,14 +3454,14 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
 			print "</td><td valign=top>
 			<form action=\"agentreservations.php\" method=\"get\">
-			<input type=\"text\" name=\"res\" placeholder=\"Type in a confirmation number\" size=40> <input type=\"submit\" value=\"Search\">
-			<input type=\"button\" value=\"Reset\" onclick=\"document.location.href='agentreservations.php'\">
+			<input type=\"text\" name=\"res\" placeholder=\"Type in a confirmation number\" size=\"30\"> <input type=\"submit\" class=\"btn btn-success\" value=\"Search\">
+			<input type=\"button\" value=\"Reset\" onclick=\"document.location.href='agentreservations.php'\" class=\"btn btn-warning\">
 			</form>
 			</td></tr></table>";
 
          print "<table border=0 width=100%>
          <tr>
-            <td><b>Confirmation #</b></td>
+            <td><b>Conf #</b></td>
 				<td><b>Agent</b></td>
             <td><b>Type</b></td>
 				<td><b>Company</b></td>
@@ -3507,7 +3541,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 		public function company_info($msg) {
          $this->header_top();
 
-         print "<br><span class=\"result-title-text\">Your Company Information to Appear On 3rd Party Invoice</span><br><br>
+         print "<br><span class=\"result-title-text\"><a href=\"resellerportal.php\">Reservation System</a> | Your Company Information to Appear On 3rd Party Invoice</span><br><br>
          <span class=\"details-description\">";
 
 			if ($_SESSION['contact_type'] != "reseller_manager") {
@@ -3630,7 +3664,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
                 public function add_agents() {
          $this->header_top();
-         print "<br><span class=\"result-title-text\">Add Agent</span><br><br>
+         print "<br><span class=\"result-title-text\"><a href=\"resellerportal.php\">Reservation System</a> | Add Agent</span><br><br>
          <span class=\"details-description\">";
 
                                 // check if user is a reseller manager
