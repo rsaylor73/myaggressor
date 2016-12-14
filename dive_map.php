@@ -71,47 +71,14 @@ while ($row4 = $result4->fetch_assoc()) {
 
 }
 
-// oasis
-$sql5 = "
-SELECT
-	`ri`.`yacht`,
-	`ri`.`reservationID`,
-	`ri`.`travel_date`,
-	`bi`.`longitude`,
-	`bi`.`latitude`
-
-FROM
-	`reservations_imported` ri,
-	`boats_imported` bi
-
-WHERE
-	`ri`.`contactID` = '$_SESSION[contactID]'
-	AND `ri`.`yacht` = `bi`.`name`
-";
-$result5 = $this->new_mysql($sql5);
-while ($row5 = $result5->fetch_assoc()) {
-    $markers .= "
-    {
-        \"title\": '$row5[yacht]',
-        \"lat\": '$row5[latitude]',
-        \"lng\": '$row5[longitude]',
-        \"description\": 'Aggressor Fleet trip on $row5[yacht] traveled at $row5[travel_date]',
-        \"icon\": \"FlagRed.png\"
-    },
-    ";
-
-}
-
-
 
 // find past
 $sql4 = "
 SELECT
-    `inventory`.`reservationID`,
-    DATE_FORMAT(`charters`.`start_date`, '%m/%d/%Y') AS 'start_date',
+    `boats`.`name`,
     `destinations`.`latitude`,
-    `destinations`.`longitude`,
-    `boats`.`name`
+    `destinations`.`longitude`
+
 
 FROM
     `inventory`,`charters`,`boats`,`destinations`
@@ -121,7 +88,26 @@ WHERE
     AND `charters`.`start_date` < '$today'
     AND `charters`.`boatID` = `boats`.`boatID`
     AND `charters`.`destinationID` = `destinations`.`destinationID`
+
+UNION
+
+SELECT
+        `ri`.`yacht` AS 'name',
+        `bi`.`longitude`,
+        `bi`.`latitude`
+
+FROM
+        `reservations_imported` ri,
+        `boats_imported` bi
+
+WHERE
+        `ri`.`contactID` = '$_SESSION[contactID]'
+        AND `ri`.`yacht` = `bi`.`name`
+
+GROUP BY `name`
 ";
+
+
 $result4 = $this->new_mysql($sql4);
 while ($row4 = $result4->fetch_assoc()) {
     $markers .= "
@@ -129,7 +115,7 @@ while ($row4 = $result4->fetch_assoc()) {
         \"title\": '$row4[name]',
         \"lat\": '$row4[latitude]',
         \"lng\": '$row4[longitude]',
-        \"description\": '$row4[name] Past Trip Confirmation #$row4[reservationID] starting $row4[start_date]',
+        \"description\": '$row4[name]',
         \"icon\": \"FlagRed.png\"
     },
     ";
