@@ -1773,21 +1773,21 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 		$hours .= "<option>$x</option>";
 	}
 
-	for ($x=1; $x < 60; $x++) {
+	for ($x=1; $x < 121; $x++) {
 		$minutes .= "<option>$x</option>";
 	}
 
         print "
         <form action=\"adddivelog.php\" method=\"post\" name=\"myform\" id=\"myform\" enctype=\"multipart/form-data\">
         <input type=\"hidden\" name=\"section\" value=\"save\">
-        <table class=\"table\">
+        <table class=\"table table-striped table-responsive\">
 	<tr><td>Dive Trip:</td><td><select name=\"boatID\" required onchange=\"get_itinerary(this.form)\" style=\"width:250px;\"><option selected value=\"\">--Select--</option>$boats</select></td></tr>
 	<tr id=\"itinerary\" style=\"display:none\"></tr>
         <tr><td>Dive Date:</td><td><input type=\"text\" name=\"dive_date\" id=\"dive_date\" size=\"40\" required></td></tr>
         <tr><td>Dive Site:</td><td><input type=\"text\" name=\"site\" size=\"40\" required></td></tr>
         <tr><td>Dive Buddies:</td><td><textarea name=\"dive_buddies\" cols=40 rows=5></textarea></td></tr>
         <tr><td>Max Depth:</td><td><input type=\"text\" name=\"max_depth\" size=\"40\"></td></tr>
-        <tr><td>Bottom Time:</td><td><select name=\"bottom_time_hours\">$hours</select> Hour(s)&nbsp;&nbsp;&nbsp; <select name=\"bottom_time_mins\">$minutes</select> Minute(s)</td></tr>
+        <tr><td>Bottom Time:</td><td><select name=\"bottom_time_mins\">$minutes</select> Minute(s)</td></tr>
 	<tr><td>Water Temp:</td><td><input type=\"text\" name=\"water_temp\" size=\"40\"></td></tr>
 	<tr><td>Air Temp:</td><td><input type=\"text\" name=\"air_temp\" size=\"40\"></td></tr>
         <tr><td>Describe Your Dive:</td><td><textarea name=\"description\" cols=40 rows=10></textarea></td></tr>
@@ -1894,7 +1894,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 	   </tr>
 	   <tr>
 	     <td>Bottom Time:</td>
-	     <td>'.$row['bottom_time'].'</td>
+	     <td>'.$row['bottom_time_mins'].' (minutes)</td>
 	   </tr>
 	   <tr>
 	     <td>Water Temp:</td>
@@ -1964,7 +1964,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 	if ($row['bottom_time_mins'] != "") {
 		$minutes .= "<option selected>$row[bottom_time_mins]</option>";
 	}
-        for ($x=1; $x < 60; $x++) {
+        for ($x=1; $x < 121; $x++) {
                 $minutes .= "<option>$x</option>";
         }
 
@@ -1991,7 +1991,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         <form action=\"adddivelog.php\" method=\"post\" enctype=\"multipart/form-data\">
         <input type=\"hidden\" name=\"section\" value=\"update\">
         <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
-        <table class=\"table\">
+        <table class=\"table table-striped table-responsive\">
 	<tr><td>Dive Trip:</td><td><select name=\"boatID\" required onchange=\"get_itinerary(this.form)\" style=\"width:250px;\">$boats</select></td></tr>
 	<tr id=\"itinerary\"><td>Itinerary:</td><td>$row[itinerary]</td></tr>
         <tr><td>Dive Date:</td><td><input type=\"text\" name=\"dive_date\" id=\"dive_date\" value=\"$row[dive_date]\" size=\"40\" required></td></tr>
@@ -1999,7 +1999,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         <tr><td>Dive Buddies:</td><td><textarea name=\"dive_buddies\" cols=40 rows=5>$row[dive_buddies]</textarea></td></tr>
         <tr><td>Max Depth:</td><td><input type=\"text\" name=\"max_depth\" value=\"$row[max_depth]\" size=\"40\"></td></tr>
 
-        <tr><td>Bottom Time:</td><td><select name=\"bottom_time_hours\">$hours</select> Hour(s)&nbsp;&nbsp;&nbsp; <select name=\"bottom_time_mins\">$minutes</select> Minute(s)</td></tr>
+        <tr><td>Bottom Time:</td><td><select name=\"bottom_time_mins\">$minutes</select> Minute(s)</td></tr>
         <tr><td>Water Temp:</td><td><input type=\"text\" name=\"water_temp\" value=\"$row[water_temp]\" size=\"40\"></td></tr>
         <tr><td>Air Temp:</td><td><input type=\"text\" name=\"air_temp\" value=\"$row[air_temp]\" size=\"40\"></td></tr>
 
