@@ -9,8 +9,6 @@ if ($map == "ok") {
 $today = date("Ymd");
 $sql4 = "
 SELECT
-	`inventory`.`reservationID`,
-	DATE_FORMAT(`charters`.`start_date`, '%m/%d/%Y') AS 'start_date',
 	`destinations`.`latitude`,
 	`destinations`.`longitude`,
 	`boats`.`name`
@@ -23,6 +21,8 @@ WHERE
 	AND `charters`.`start_date` > '$today'
 	AND `charters`.`boatID` = `boats`.`boatID`
 	AND `charters`.`destinationID` = `destinations`.`destinationID`
+
+GROUP BY `boats`.`name`
 ";
 $result4 = $this->new_mysql($sql4);
 while ($row4 = $result4->fetch_assoc()) {
@@ -31,7 +31,7 @@ while ($row4 = $result4->fetch_assoc()) {
         \"title\": '$row4[name]',
         \"lat\": '$row4[latitude]',
         \"lng\": '$row4[longitude]',
-        \"description\": '$row4[name] Confirmation #$row4[reservationID] starting $row4[start_date]',
+        \"description\": '$row4[name]',
         \"icon\": \"FlagGreen.png\"
     },
 	";
