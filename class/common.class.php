@@ -2549,6 +2549,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 				`reservations`.`reservationID`,
 				`boats`.`name`,
 				DATE_FORMAT(`charters`.`start_date`,'%b %e, %Y') AS 'start_date',
+                                DATE_FORMAT(`charters`.`start_date`,'%Y%m%d') AS 'start_date2',
 				`charters`.`nights`,
 				`reservations`.`reservation_contactID`
 
@@ -2569,6 +2570,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
                                 `reservations`.`reservationID`,
                                 `boats`.`name`,
                                 DATE_FORMAT(`charters`.`start_date`,'%b %e, %Y') AS 'start_date',
+                                DATE_FORMAT(`charters`.`start_date`,'%Y%m%d') AS 'start_date2',
                                 `charters`.`nights`,
 				`reservations`.`reservation_contactID`
 
@@ -2583,7 +2585,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
                                 AND `reservations`.`show_as_suspended` = '0'
 
 			)
-			ORDER BY `start_date` DESC
+			ORDER BY `start_date2` DESC
 			
 			";
 

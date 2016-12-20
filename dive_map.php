@@ -24,8 +24,13 @@ WHERE
 
 GROUP BY `boats`.`name`
 ";
+
 $result4 = $this->new_mysql($sql4);
 while ($row4 = $result4->fetch_assoc()) {
+
+	$row4['latitude'] = $row4['latitude'] + 0.01;
+	$row4['longitude'] = $row4['longitude'] + 0.01;
+
 	$markers .= "
     {
         \"title\": '$row4[name]',
@@ -35,6 +40,7 @@ while ($row4 = $result4->fetch_assoc()) {
         \"icon\": \"FlagGreen.png\"
     },
 	";
+
 
 }
 
