@@ -24,6 +24,8 @@ WHERE
 
 GROUP BY `boats`.`name`
 ";
+
+
 $result4 = $this->new_mysql($sql4);
 while ($row4 = $result4->fetch_assoc()) {
 	$markers .= "
