@@ -708,6 +708,8 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
 		$this->dive_cert();
 
+		$this->iron_divers();
+
                 ?>
 
 		<br><a href="viewallawards.php">View All</a>
@@ -1221,6 +1223,23 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
       }
 
+	private function iron_divers() {
+		$sql = "
+		SELECT
+			`b`.`name`
+		FROM
+			`boats` b, `iron_divers` i
+		WHERE
+			`i`.`contactID` = '$_SESSION[contactID]'
+			AND `i`.`boatID` = `b`.`boatID`
+		";
+		$result = $this->new_mysql($sql);
+		while ($row = $result->fetch_assoc()) {
+			print '<div><img src="images/icons/icn-irondivers.png">&nbsp;<span class="my-text">'.$row['name'].'</span></div>';
+		}
+		
+	}
+
       private function trophy($dives) {
         print '
         <div>
@@ -1457,7 +1476,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 			$result = $this->new_mysql($sql);
 			while ($row = $result->fetch_assoc()) {
 				print "<a href=\"viewallawards.php?part=d&i=$row[id]\">
-                                <i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>&nbsp;&nbsp;&nbsp;$row[name] Iron Diver<br>";
+                                <i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>&nbsp;&nbsp;&nbsp;<img src=\"images/icons/icn-irondivers.png\">&nbsp;$row[name] Iron Diver<br>";
 				$d = "1";
 			}
 			if ($d == "") {
