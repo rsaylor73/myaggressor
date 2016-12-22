@@ -1860,7 +1860,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 	 <tbody>
 	   <tr>
 	     <td width="118">Dive Trip:</td>
-	     <td width="314">&nbsp;</td>
+	     <td width="314">'.$row['name'].'</td>
 	     <td width="300" rowspan="10" align="center" valign="top"><p>
 		';
 	        if ($row['dive_image'] != "") {
