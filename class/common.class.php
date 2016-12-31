@@ -2579,7 +2579,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 				$s1
 				AND `reservations`.`charterID` = `charters`.`charterID`
 				AND `charters`.`boatID` = `boats`.`boatID`
-				AND `reservations`.`show_as_suspended` = '0'
+				AND `reservations`.`show_as_suspended` != '1'
 			)
 
 			UNION
@@ -2601,7 +2601,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 				AND `inventory`.`reservationID` = `reservations`.`reservationID`
                                 AND `reservations`.`charterID` = `charters`.`charterID`
                                 AND `charters`.`boatID` = `boats`.`boatID`
-                                AND `reservations`.`show_as_suspended` = '0'
+                                AND `reservations`.`show_as_suspended` != '1'
 
 			)
 			ORDER BY `start_date2` DESC
@@ -2640,13 +2640,23 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 		} else {
 			print "<td>&nbsp;</td>";
 		}
-				$found = "1";
-			}
-			if ($found != "1") {
-					print "<tr><td colspan=5><br><br><center>Sorry, you do not have any reservations to display.</center><br><br></td></tr>";
-			}
+			$found = "1";
+		}
 
-			print "</table>";
+		// imported reservations
+		$sql2 = "SELECT * FROM `reservations_imported` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY `travel_date` DESC";
+		$result2 = $this->new_mysql($sql2);
+		while ($row2 = $result2->fetch_assoc()) {
+			print "<tr><td>$row2[reservationID]</td><td>$row2[yacht]</td><td>$row2[travel_date]</td><td>N/A</td><td>&nbsp;</td></tr>";
+			$found = "1";
+		}
+
+
+		if ($found != "1") {
+			print "<tr><td colspan=5><br><br><center>Sorry, you do not have any reservations to display.</center><br><br></td></tr>";
+		}
+
+		print "</table>";
 
 
          print "</span>";
