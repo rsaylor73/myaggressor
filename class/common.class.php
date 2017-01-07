@@ -269,6 +269,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         $today = date("Ymd");
 
         $sql = "
+	(
         SELECT
           `c`.`charterID`
 
@@ -283,8 +284,29 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           AND `r`.`show_as_suspended` != '1'
           AND `i`.`charterID` = `c`.`charterID`
           AND `c`.`start_date` < '$today'
+	  GROUP BY `c`.`charterID`
+	)
 
-        GROUP BY `c`.`charterID`
+        UNION
+
+        (
+        SELECT
+		`charters`.`charterID`
+
+        FROM
+                `reservations`,`charters`,`boats`,`inventory`
+
+        WHERE
+                `inventory`.`passengerID` = '$contactID'
+                AND `inventory`.`reservationID` = `reservations`.`reservationID`
+                AND `reservations`.`charterID` = `charters`.`charterID`
+                AND `charters`.`boatID` = `boats`.`boatID`
+                AND `reservations`.`show_as_suspended` != '1'
+		AND `charters`.`start_date` < '$today'
+
+	GROUP BY `charters`.`charterID`
+        )
+
         ";
         $vip = "0";
         $result = $this->new_mysql($sql);
@@ -597,10 +619,8 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         $seven_seas = $seven_seas * 10;
 
         $vip = $this->vip_status($_SESSION['contactID']);
-        $vip = $vip * 10;
 
 	$vip_plus = $this->vip_status_plus($_SESSION['contactID']);
-	$vip_plus = $vip_plus * 10;
 
         ?>
 
