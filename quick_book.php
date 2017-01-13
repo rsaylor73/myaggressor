@@ -76,7 +76,7 @@
 				die;
 			}
 			$timestamp = date("U");
-			$timestamp = $timestamp + 1800;
+			$timestamp = $timestamp + 2700; // 45 mins was 30 mins
 
 			$sql = "UPDATE `inventory` SET `passengerID` = '61531204', `status` = 'tentative', `sessionID` = '$_SESSION[sessionID]', `timestamp` = '$timestamp', `donotmove_passenger` = '1'  WHERE `inventoryID` = '$_POST[qb]'";
 			$result = $reservation->new_mysql($sql);

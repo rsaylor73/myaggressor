@@ -57,7 +57,7 @@
 		$result = $reservation->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
 			$timestamp = date("U");
-			$timestamp = $timestamp + "1800";
+			$timestamp = $timestamp + "2700"; // changed to 45 mins was 30 mins
 			$sql2 = "UPDATE `inventory` SET `passengerID` = '61531204', `status` = 'tentative', `sessionID` = '$_SESSION[sessionID]', `timestamp` = '$timestamp', 
 			`donotmove_passenger` = '1'  WHERE `inventoryID` = '$row[inventoryID]'";
 			$result2 = $reservation->new_mysql($sql2);
