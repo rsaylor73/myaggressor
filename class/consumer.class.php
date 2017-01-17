@@ -1435,7 +1435,11 @@ class Reservation {
 			`af_df_unified2`.`specials_discounts`.`percent_off`,
 			`af_df_unified2`.`specials_discounts`.`dollar_off`,
 			`af_df_unified2`.`specials_discounts`.`price_override`,
-			`af_df_unified2`.`specials_discounts`.`general_discount_reason`
+			`af_df_unified2`.`specials_discounts`.`general_discount_reason`,
+                        `af_df_unified2`.`specials_discounts`.`id`,
+                        `af_df_unified2`.`specials_discounts`.`special_id`
+
+
 
 		FROM
 			`reserve`.`charters`,`af_df_unified2`.`specials_discounts`
@@ -1455,20 +1459,24 @@ class Reservation {
 					$tvar = $row['dollar_off'];
 					$discount[] = $row['dollar_off'];
 					$discount[$tvar][0] = $row['general_discount_reason'];
-
+                                        $discount[$tvar][1] = $row['id'];
+                                        $discount[$tvar][2] = $row['special_id'];
 				break;
 
 				case "Percent Off":
 					$temp = $price * ($row['percent_off'] * 0.01);
 					$discount[] = $temp;
 					$discount[$temp][0] = $row['general_discount_reason'];
-
+                                        $discount[$temp][1] = $row['id'];
+                                        $discount[$temp][2] = $row['special_id'];
 				break;
 
 				case "Price Override":
 					$temp = $price - $row['price_override'];
 					$discount[] = $temp;
 					$discount[$temp][0] = $row['general_discount_reason'];
+                                        $discount[$temp][1] = $row['id'];
+                                        $discount[$temp][2] = $row['special_id'];
 				break;
 			}
 		}
@@ -3192,17 +3200,58 @@ class Reservation {
                            if ($value > $temp_d) {
                               if(!is_array($value)) {
 	                              $temp_d = $value;
+					//print "TEST $temp_d<br>";
 										}
                            }
                         }
                      }
 
-						if ($temp_d > 0) {
-                     $new_price = $row['bunk_price'] - $temp_d;
-							print "
-							<td class=\"details-description\"><del><font color=red>$".number_format($row['bunk_price'])."</font></del> <ins style=\"text-decoration: none\">$".number_format($new_price)."</ins></td>
+			// this is where we set a discount but we now have to eval the bunk. If there is no data in specials_bunks then the discount is applied to all. If there is a
+			// value then the discount is only applied to the bunk. - RBS Jan 16, 2017.
+
+			//print "<pre>";
+			//print_r($discount);
+			//print_r($row);
+			//print "</pre>";
+
+                        $sql_b = "
+                        SELECT
+                                `sb`.`bunkID`,
+                                `sb`.`value`,
+                                `bk`.`cabin`,
+                                `bk`.`bunk`,
+                                `b`.`abbreviation`,
+				CONCAT(`b`.`abbreviation`,'-',`bk`.`cabin`,`bk`.`bunk`) AS 'location'
+                        FROM
+                                `af_df_unified2`.`specials_bunks` sb,
+                                `reserve`.`bunks` bk,
+                                `reserve`.`boats` b
+
+                        WHERE
+                                `sb`.`discountID` = '".$discount[$temp_d][1]."'
+                                AND `sb`.`bunkID` = `bk`.`bunkID`
+                                AND `bk`.`boatID` = `b`.`boatID`
+
+                        ";
+			$check_discount = $temp_d; // this is here incase the query is empty
+                        $result_b = $this->new_mysql($sql_b);
+                        $num_rows = $result_b->num_rows;
+			if ($num_rows > 0) {
+				$check_discount = "";
+				while ($row_b = $result_b->fetch_assoc()) {
+					if ($row_b['location'] == $row['bunk']) {
+						$check_discount = $temp_d;
+						
+					}		
+				}
+			}
+
+
+			if ($check_discount > 0) {
+				$new_price = $row['bunk_price'] - $temp_d;
+				print "<td class=\"details-description\"><del><font color=red>$".number_format($row['bunk_price'])."</font></del> <ins style=\"text-decoration: none\">$".number_format($new_price)."</ins></td>
 							";
-						} else {
+			} else {
                      print "
                      <td class=\"details-description\">$".number_format($row['bunk_price'])."</td>
                      ";
