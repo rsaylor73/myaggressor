@@ -2249,6 +2249,58 @@ class Reservation {
 			print "<table border=\"0\" width=\"820\" cellspacing=3>";
          $result = $this->new_mysql($sql);
          while($row = $result->fetch_assoc()) {
+
+		// stateroom discount check
+		if ($row['img1'] != "") {
+			$price = $this->get_quick_rates($_GET['charter'],$row['bunks1']);
+			$discount = $this->find_discount($_GET['charter'],$price);
+			if (is_array($discount)) {
+                        	foreach ($discount as $value) {
+ 	 	                       if(!is_array($value)) {
+                       	                       $discount_check1 = $value;
+					}
+				}
+			}
+		}
+                if ($row['img2'] != "") {
+                        $price = $this->get_quick_rates($_GET['charter'],$row['bunks2']);
+                        $discount = $this->find_discount($_GET['charter'],$price);
+                        if (is_array($discount)) { 
+                                foreach ($discount as $value) {
+                                       if(!is_array($value)) { 
+                                               $discount_check2 = $value;
+                                        }
+                                }
+                        }
+                }
+                if ($row['img3'] != "") {
+                        $price = $this->get_quick_rates($_GET['charter'],$row['bunks3']);
+                        $discount = $this->find_discount($_GET['charter'],$price);
+                        if (is_array($discount)) {
+                                foreach ($discount as $value) {       
+                                       if(!is_array($value)) {  
+                                               $discount_check3 = $value;
+                                        }
+                                }
+                        }
+                }
+                if ($row['img4'] != "") {
+                        $price = $this->get_quick_rates($_GET['charter'],$row['bunks4']);
+                        $discount = $this->find_discount($_GET['charter'],$price);
+                        if (is_array($discount)) {
+                                foreach ($discount as $value) {       
+                                       if(!is_array($value)) {  
+                                               $discount_check4 = $value;
+                                        }
+                                }
+                        }
+                }
+		$discount = "";
+		if (($discount_check1 != "") or ($discount_check2 != "") or ($discount_check3 != "") or ($discount_check4 != "")) {
+			print "<div align=\"right\"><input type=\"button\" value=\"A discount may be available on one or more staterooms\" class=\"btn btn-info\"></div>";
+		}
+		// end discount check
+
 				if ($this_name != $row['name']) {
 					$this_name = $row['name'];
 				}
@@ -2296,7 +2348,8 @@ class Reservation {
 
 						if ($total_inv > 0) {
 							$temp_d = "";
-							$discount = $this->find_discount($_GET['charter'],$price);
+							//$discount = $this->find_discount($_GET['charter'],$price);
+
 							if (is_array($discount)) {
 								foreach ($discount as $value) {
 									if ($value > $temp_d) {
@@ -2410,7 +2463,7 @@ class Reservation {
 
                   if ($total_inv > 0) {
                      $temp_d = "";
-                     $discount = $this->find_discount($_GET['charter'],$price);
+                     //$discount = $this->find_discount($_GET['charter'],$price);
                      if (is_array($discount)) {
                         foreach ($discount as $value) {
                            if ($value > $temp_d) {
@@ -2516,7 +2569,7 @@ class Reservation {
 
                   if ($total_inv > 0) {
                      $temp_d = "";
-                     $discount = $this->find_discount($_GET['charter'],$price);
+                     //$discount = $this->find_discount($_GET['charter'],$price);
                      if (is_array($discount)) {
                         foreach ($discount as $value) {
                            if ($value > $temp_d) {
@@ -2623,7 +2676,7 @@ class Reservation {
 
                   if ($total_inv > 0) {
                      $temp_d = "";
-                     $discount = $this->find_discount($_GET['charter'],$price);
+                     //$discount = $this->find_discount($_GET['charter'],$price);
                      if (is_array($discount)) {
                         foreach ($discount as $value) {
                            if ($value > $temp_d) {
@@ -3749,7 +3802,44 @@ class Reservation {
                         }
                      }
 
-						if ($temp_d > 0) {
+
+			// ----------------
+
+                        $sql_b = "
+                        SELECT
+                                `sb`.`bunkID`,
+                                `sb`.`value`,
+                                `bk`.`cabin`,
+                                `bk`.`bunk`,
+                                `b`.`abbreviation`,
+                                CONCAT(`b`.`abbreviation`,'-',`bk`.`cabin`,`bk`.`bunk`) AS 'location'
+                        FROM
+                                `af_df_unified2`.`specials_bunks` sb,
+                                `reserve`.`bunks` bk,
+                                `reserve`.`boats` b
+
+                        WHERE
+                                `sb`.`discountID` = '".$discount[$temp_d][1]."'
+                                AND `sb`.`bunkID` = `bk`.`bunkID`
+                                AND `bk`.`boatID` = `b`.`boatID`
+
+                        ";
+                        $check_discount = $temp_d; // this is here incase the query is empty
+                        $result_b = $this->new_mysql($sql_b);
+                        $num_rows = $result_b->num_rows;
+                        if ($num_rows > 0) {
+                                $check_discount = "";
+                                while ($row_b = $result_b->fetch_assoc()) {
+                                        if ($row_b['location'] == $row['bunk']) {
+                                                $check_discount = $temp_d;
+
+                                        }
+                                }
+                        }
+
+			// ---------------
+
+			if ($check_discount > 0) {
  	                  $new_price = $row['bunk_price'] - $temp_d;    
 							print "
 							<td><del><font color=red>$".number_format($row['bunk_price'])."</font></del> <ins style=\"text-decoration: none\">$".number_format($new_price)."</td>";
