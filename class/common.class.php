@@ -1103,11 +1103,33 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         ";
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
+		// get GIS link
+		$sql2 = "
+		SELECT
+			`i`.`charterID`,
+			`i`.`passengerID`,
+			`i`.`reservationID`,
+			`i`.`login_key`
+
+		FROM
+			`inventory` i
+
+		WHERE
+			`i`.`reservationID` = '$reservationID'
+			AND `i`.`passengerID` = '$_SESSION[contactID]'
+			AND `i`.`login_key` != ''
+		";
+		$result2 = $this->new_mysql($sql2);
+		while ($row2 = $result2->fetch_assoc()) {
+			$gis_link = "<br>
+			<a href=\"https://gis.liveaboardfleet.com/gis/index.php/$row2[passengerID]/$row2[reservationID]/$row2[charterID]/$row2[login_key]\" target=_blank>Access GIS</a>";
+		}
+
           print "<br>
           <table class=\"table-curved\" cellspacing=\"0\" cellpadding=\"0\" width=\"220\" height=\"75\">
             <td valign=middle width=\"72\"><center><img src=\"$row[logo_url]\" width=\"60\" height=\"71\"></center></td>
             <td valign=middle width=\"148\"><b><span class=\"details-prices2\"><center>$row[name]</center></span></b>
-            <span class=\"details-prices2-red\"><p><center>$row[days] Days</center></p></span></td>
+            <span class=\"details-prices2-red\"><p><center>$row[days] Days$gis_link</center></p></span></td>
           </tr>
           </table>
 	  ";

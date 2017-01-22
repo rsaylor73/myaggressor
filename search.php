@@ -227,6 +227,7 @@ if ($bg == "1") {
 				`inventory` i, `charters` c, `reservations` r
 			WHERE
 				`i`.`passengerID` = '$_SESSION[contactID]'
+				AND `i`.`passengerID` != ''
 				AND `i`.`charterID` = `c`.`charterID`
 				AND `c`.`start_date` > '$today'
 				AND `i`.`reservationID` = `r`.`reservationID`

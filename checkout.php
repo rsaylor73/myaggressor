@@ -571,6 +571,13 @@ require "settings.php";
 						
 					}
 
+					$_SESSION['contact_name'] = $contact_name;
+					$_SESSION['reservationID'] = $reservationID;
+					$_SESSION['contactID'] = $contactID;
+
+					/*
+					// this is now displayed in order_processed.php
+
 					print "
 					<br><br>
 					<table width=800>
@@ -591,7 +598,7 @@ require "settings.php";
 					<tr><td>&nbsp;</td><td><br>
 					<input type=\"image\" src=\"buttons/bt-dashboard.png\" onclick=\"location.href='guests.php?res=$reservationID&c=$contactID';return false;\">&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"index.php?s=1\" target=_blank><img src=\"buttons/bt-makeanother.png\" border=0></a><br>";
 
-
+					*/
 					?>
 
 

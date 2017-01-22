@@ -295,8 +295,7 @@ if (($_GET['tk'] == $_SESSION['reservation_token']) && ($_GET['tk'] != "")) {
 														}
 														if ((php_msg != "E") && (php_msg != "D")) {
                                                 $("#checkout").html(php_msg);
-						// I do not understand why we need this - Robert (Jan 21, 2017)
-						//window.location.replace("order_processed.php");
+						window.location.replace("order_processed.php");
 														}
                                         });
                                 }
