@@ -4155,9 +4155,105 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
          }
 
 
-
          $this->header_bot();
 
 		}
+
+
+
+        public function map_numbers($max,$pages) {
+
+                for ($i=0; $i < $pages; $i++) {
+                        if ($stop == "") {
+                                $stop = "0";
+                        }
+                        if ($i > 0) {
+                                $stop = $stop + $max;
+                        }
+                        $i2 = $i + 1;
+                        $array[$i2] = $stop;
+                }
+                return $array;
+        }
+
+        public function page_numbers($sql,$url) {
+                $max = "20";
+                $result = $this->new_mysql($sql);
+                $total_records = $result->num_rows;
+                $total_records = $total_records / $max;
+                $pages = ceil($total_records);
+
+                        $page = $_GET['page'];
+                        if ($page == "") {
+                                $page = "1";
+                        }
+
+                        $html = "<div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
+                        $html .= "<button type=\"button\" class=\"btn btn-default\" disabled>Page</button>";
+                        if ($page == "1") {
+                                $html .= "<button type=\"button\" class=\"btn btn-primary\" onclick=\"document.location.href='".$url.$page."&stop=0'\">1</button>";
+                                $array = $this->map_numbers($max,$pages);
+                                $next = $page + 1;
+                                $next10 = $page + 10;
+                                $next100 = $page + 100;
+
+                                if ($next < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next."&stop=".$array[$next]."'\">&gt;&gt;</button>";
+                                }
+
+                                if ($next10 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next10."&stop=".$array[$next10]."'\">+ 10</button>";
+                                }
+
+                                if ($next100 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next100."&stop=".$array[$next100]."'\">+ 100</button>";
+                                }
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pages."&stop=".$array[$pages]."'\">$pages</button>";
+
+                        } else {
+                                $array = $this->map_numbers($max,$pages);
+
+                                $pre = $page - 1;
+                                $pre10 = $page - 10;
+                                $pre100 = $page - 100;
+                                $next = $page + 1;
+                                $next10 = $page + 10;
+                                $next100 = $page + 100;
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url."1&stop=0'\">1</button>";
+
+                                if ($pre10 > 0) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pre10."&stop=$array[$pre10]'\">- 10</button>";
+                                }
+
+                                if ($pre100 > 0) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pre100."&stop=$array[$pre100]'\">- 100</button>";
+                                }
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pre."&stop=$array[$pre]'\">&lt;&lt;</button>";
+
+                                $html .= "<button type=\"button\" class=\"btn btn-primary\" onclick=\"document.location.href='".$url.$page."&stop=$array[$page]'\">$page</button>";
+
+                                if ($next < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next."&stop=$array[$next]'\">&gt;&gt;</button>";
+                                }
+
+                                if ($next10 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next10."&stop=$array[$next10]'\">+ 10</button>";
+                                }
+
+                                if ($next100 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next100."&stop=$array[$next100]'\">+ 100</button>";
+                                }
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pages."&stop=$array[$pages]'\">$pages</button>";
+
+                        }
+                        $html .= "</div>";
+                return $html;
+        }
+
+
 }
 ?>

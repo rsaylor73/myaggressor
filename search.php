@@ -104,6 +104,8 @@ if ($bg == "1") {
 					<option value="2">2</option>
 					<option value="3">3</option>
 					<option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
                                         ';
 					break;
 
@@ -130,6 +132,8 @@ if ($bg == "1") {
 					<option value="2">2</option>
 					<option value="3">3</option>
 					<option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
 					';
                                         break;
 				}
@@ -199,6 +203,9 @@ if ($bg == "1") {
 		<br>
 		<input style="width:200px;" type="submit" class="btn btn-success btn_custom" value="Search"><br><br>
 		</form>
+
+                <input type="button" class="btn btn-info btn_custom" value="Specials" onclick="document.location.href='specials.php'">
+                <br><br>
 
                 <!-- seperator -->
 		<form name="MyForm" id="MyForm" method="get" action="portal.php">

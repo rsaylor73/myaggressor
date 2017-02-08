@@ -35,6 +35,526 @@ class Reservation {
 			return $options;
 		}
 
+		public function specials_destinations() {
+                        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                        $check_login = $this->check_login();
+                        if ($check_login == "FALSE") {
+                                // show login/register
+                                $this->login_screen($uri);
+                        } else {
+                                $this->paint_modal();
+
+                                print "
+                                <div id=\"result_wrapper\">
+                                <div id=\"result_pos1\">
+                                <div id=\"result_pos2\">
+                                <br>
+                                <table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\">
+                                <tr>
+                                <td>
+                                <img src=\"/ResImages/generic-DTW.jpg\" width=\"850\">
+                                </td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\" background=\"bt-bck.jpg\" height=\"30\">
+                                <tr>
+                                <td width=\"100%\" class=\"details-top\">&nbsp;&nbsp;Specials</td>
+                                </tr>
+                                </table>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5\">
+                                <tbody>
+                                <tr>
+                                <td>";
+
+
+                                $today = date("Y-m-d");
+                                $sql = "
+                                SELECT
+                                        `s`.`description`,
+                                        `s`.`id`
+
+                                FROM
+                                        `af_df_unified2`.`specials` s,
+                                        `af_df_unified2`.`specials_discounts` d
+
+                                WHERE
+                                        '$today' BETWEEN `s`.`start_date` AND `s`.`end_date`
+                                        AND `s`.`type` IN ('Specials','Unique Charter')
+                                        AND `s`.`id` = `d`.`special_id`
+					AND `d`.`boatID` = '$_GET[destination]'
+
+                                GROUP BY `s`.`id`       
+                                ";
+
+                                $url = "specials.php?page=";
+                                $show_pages = $this->page_numbers($sql,$url);
+
+                                if ($_GET['stop'] == "") {
+                                        $stop = "0";
+                                } else {
+                                        $stop = $_GET['stop'];
+                                }
+                                $sql .= "LIMIT $stop,5";
+
+
+                                print "$show_pages";
+                                print "&nbsp;<input type=\"button\" value=\"Search Specials\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#myModal2\">";
+                                $result = $this->new_mysql($sql);
+                                while ($row = $result->fetch_assoc()) {
+                                        print "<a href=\"specials_details.php?id=$row[id]\">$row[description]</a><br>";
+					$found = "1";
+                                }
+                        
+                                if ($found != "1") {
+                                        print "<br><br>Sorry, but there were no specials for the destination you selected.<br>";
+                                }
+
+                                print "
+                                </td>
+                                </tr>
+                                </tbody>
+                                </table>
+                                </td>
+                                </tr>
+                                </table>
+                                </div>
+                                </div>
+                                </div>
+                                ";                        
+                        }
+		}
+
+		public function specials_date() {
+                        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                        $check_login = $this->check_login();
+                        if ($check_login == "FALSE") {
+                                // show login/register
+                                $this->login_screen($uri);
+                        } else {
+                                $this->paint_modal();
+
+                                print "
+                                <div id=\"result_wrapper\">
+                                <div id=\"result_pos1\">
+                                <div id=\"result_pos2\">
+                                <br>
+                                <table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\">
+                                <tr>
+                                <td>
+                                <img src=\"/ResImages/generic-DTW.jpg\" width=\"850\">
+                                </td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\" background=\"bt-bck.jpg\" height=\"30\">
+                                <tr>
+                                <td width=\"100%\" class=\"details-top\">&nbsp;&nbsp;Specials</td>
+                                </tr>
+                                </table>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5\">
+                                <tbody>
+                                <tr>
+                                <td>";
+
+				$arr = explode(" ",$_GET['month']);
+				$month = $arr[0];
+				$year = $arr[1];
+
+				$month = date("m", strtotime($month));
+				$temp = "$year-$month-01";
+				$days = date("t", strtotime($temp));
+				
+
+				$range1 = $year . '-' . $month . '-' . "01";
+				$range2 = $year . '-' . $month . '-' . $days;
+
+                                $today = date("Y-m-d");
+                                $sql = "
+                                SELECT
+                                        `s`.`description`,
+                                        `s`.`id`,
+					`s`.`start_date`,
+					`s`.`end_date`
+
+                                FROM
+                                        `af_df_unified2`.`specials` s,
+					`af_df_unified2`.`specials_discounts` d
+
+                                WHERE
+					'$range1' BETWEEN `s`.`start_date` AND `s`.`end_date`
+                                        AND `s`.`type` IN ('Specials','Unique Charter')
+					AND `s`.`id` = `d`.`special_id`
+       
+				GROUP BY `s`.`id` 
+                                ";
+
+                                $url = "specials_date.php?month=$_GET[month]&page=";
+                                $show_pages = $this->page_numbers($sql,$url);
+
+                                if ($_GET['stop'] == "") {
+                                        $stop = "0";
+                                } else {
+                                        $stop = $_GET['stop'];
+                                }
+                                $sql .= "LIMIT $stop,5";
+
+                                print "$show_pages";
+                                print "&nbsp;<input type=\"button\" value=\"Search Specials\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#myModal2\">";
+                                $result = $this->new_mysql($sql);
+                                while ($row = $result->fetch_assoc()) {
+                                        print "<a href=\"specials_details.php?id=$row[id]\">$row[description]</a><br>";
+					$found = "1";
+                                }
+				if ($found != "1") {
+					print "<br><br>Sorry, but there were no specials for the date you selected.<br>";
+				}
+
+                                print "
+                                </td>
+                                </tr>
+                                </tbody>
+                                </table>
+                                </td>
+                                </tr>
+                                </table>
+                                </div>
+                                </div>
+                                </div>
+                                ";
+			}
+		}
+
+		public function paint_modal() {
+                                $destination = "<option value=\"\">Select</option>";
+                                $sql2 = "SELECT `name`,`boatID` FROM `reserve`.`boats` WHERE `status` = 'Active'";
+                                $result2 = $this->new_mysql($sql2);
+                                while ($row2 = $result2->fetch_assoc()) {
+                                        $destination .= "<option value=\"$row2[boatID]\">$row2[name]</option>";
+                                }
+
+                                print "
+                                <!-- Modal -->
+                                <div id=\"myModal2\" class=\"modal fade\" role=\"dialog\">
+                                  <div class=\"modal-dialog\">
+
+                                    <!-- Modal content-->
+                                    <div class=\"modal-content\">
+                                      <div class=\"modal-header\">
+                                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>
+                                        <h4 class=\"modal-title\">Search Specials</h4>
+                                      </div>
+                                      <div class=\"modal-body\">
+
+                                        <ul class=\"nav nav-tabs\">
+                                          <li class=\"active\" id=\"t1\">
+                                                <a href=\"javascript:void(0)\" 
+                                                onclick=\"document.getElementById('bydate').style.display='inline';
+                                                document.getElementById('bydestination').style.display='none';
+                                                document.getElementById('t1').className='';
+                                                document.getElementById('t2').className='active';
+                                                \">By Date</a></li>
+                                          <li id=\"t2\">
+                                                <a href=\"javascript:void(0)\" 
+                                                onclick=\"document.getElementById('bydate').style.display='none';
+                                                document.getElementById('bydestination').style.display='inline';
+                                                document.getElementById('t1').className='active';
+                                                document.getElementById('t2').className='';
+                                                \">By Destination</a></li>
+                                        </ul>
+
+                                        <br><br>
+                                        <div id=\"bydate\">
+                                        <form action=\"specials_date.php\" method=\"get\">
+                                        <div class=\"row top-buffer\">
+                                                <div class=\"col-sm-6\">Departure Month:</div>
+                                                <div class=\"col-sm-6\"><input type=\"text\" readonly id=\"month\" name=\"month\" class=\"monthPicker form-control\" /></div>
+                                        </div>
+                                        <div class=\"row top-buffer\">
+                                                <div class=\"col-sm-6\">&nbsp;</div>
+                                                <div class=\"col-sm-6\"><br><input type=\"submit\" value=\"Search\" class=\"btn btn-success btn-lg\"></div>
+                                        </div>
+                                        </form>
+                                        </div>
+                                        <div id=\"bydestination\" style=\"display:none\">
+                                        <form action=\"specials_destination.php\" method=\"get\">
+                                        <div class=\"row top-buffer\">
+                                                <div class=\"col-sm-6\">Destination:</div>
+                                                <div class=\"col-sm-6\"><select name=\"destination\" class=\"form-control\">$destination</select></div>
+                                        </div>
+                                        <div class=\"row top-buffer\">
+                                                <div class=\"col-sm-6\">&nbsp;</div>
+                                                <div class=\"col-sm-6\"><br><input type=\"submit\" value=\"Search\" class=\"btn btn-success btn-lg\"></div>
+                                        </div> 
+                                        </form>
+                                        </div>
+
+
+
+                                      </div>
+                                      <div class=\"modal-footer\">
+                                        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>                          
+                                ";
+		}
+
+		public function view_specials() {
+			$uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			$check_login = $this->check_login();
+			if ($check_login == "FALSE") {
+				// show login/register
+				$this->login_screen($uri);
+			} else {
+				$this->paint_modal();
+
+				print "
+				<div id=\"result_wrapper\">
+				<div id=\"result_pos1\">
+				<div id=\"result_pos2\">
+				<br>
+				<table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\">
+				<tr>
+				<td>
+				<img src=\"/ResImages/generic-DTW.jpg\" width=\"850\">
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\" background=\"bt-bck.jpg\" height=\"30\">
+				<tr>
+				<td width=\"100%\" class=\"details-top\">&nbsp;&nbsp;
+				Specials</td>
+				</tr>
+				</table>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5\">
+				<tbody>
+				<tr>
+				<td>";
+
+				$today = date("Y-m-d");
+				$sql = "
+				SELECT
+					`s`.`description`,
+					`s`.`id`
+
+				FROM
+					`af_df_unified2`.`specials` s,
+                                        `af_df_unified2`.`specials_discounts` d
+
+				WHERE
+					'$today' BETWEEN `s`.`start_date` AND `s`.`end_date`
+					AND `s`.`type` IN ('Specials','Unique Charter')
+                                        AND `s`.`id` = `d`.`special_id`
+
+				GROUP BY `s`.`id`	
+				";
+
+	                        $url = "specials.php?page=";
+        	                $show_pages = $this->page_numbers($sql,$url);
+
+		                if ($_GET['stop'] == "") {
+		                        $stop = "0";
+        		        } else {
+	                	        $stop = $_GET['stop'];
+	        	        }
+		                $sql .= "LIMIT $stop,5";
+
+
+				print "$show_pages";
+				print "&nbsp;<input type=\"button\" value=\"Search Specials\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#myModal2\">";
+				$result = $this->new_mysql($sql);
+				while ($row = $result->fetch_assoc()) {
+					print "<a href=\"specials_details.php?id=$row[id]\">$row[description]</a><br>";
+				}
+
+				print "
+				</td>
+				</tr>
+				</tbody>
+				</table>
+				</td>
+				</tr>
+				</table>
+				</div>
+				</div>
+				</div>
+				";	
+			}
+		}
+
+
+		public function specials_details() {
+                        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                        $check_login = $this->check_login();
+                        if ($check_login == "FALSE") {
+                                // show login/register
+                                $this->login_screen($uri);
+                        } else {
+
+                        $sql = "
+                        SELECT
+                                `s`.`description`,
+                                `s`.`id`,
+				`s`.`short_title`
+
+                        FROM
+                                `af_df_unified2`.`specials` s
+
+                        WHERE
+				`s`.`id` = '$_GET[id]'
+                        ";
+			$result = $this->new_mysql($sql);
+			$row = $result->fetch_assoc();
+
+                        print "
+                        <div id=\"result_wrapper\">
+                        <div id=\"result_pos1\">
+                        <div id=\"result_pos2\">
+                        <br>
+                        <table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\">
+                        <tr>
+                        <td>
+                        <img src=\"/ResImages/generic-DTW.jpg\" width=\"850\">
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\" background=\"bt-bck.jpg\" height=\"30\">
+                        <tr>
+
+			<td width=\"33%\" class=\"details-top\">&nbsp;&nbsp;<a class=\"details-top\" href=\"javascript:history.back()\">&lt; Previous</a></td>
+
+                        <td width=\"67%\" class=\"details-top\">&nbsp;&nbsp;
+			$row[short_title]</td>
+                        </tr>
+                        </table>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5\">
+                        <tbody>
+                        <tr>
+                        <td>";
+
+			print "$row[description]<br>";
+
+			$today = date("Y-m-d");
+			$sql = "
+			SELECT
+				`b`.`name`,
+				`sd`.`discount_type`,
+				`sd`.`percent_off`,
+				`sd`.`price_override`,
+				`sd`.`dollar_off`,
+				DATE_FORMAT(`sd`.`travel_date_start`, '%b %e, %Y') AS 'travel_date_start',
+                                DATE_FORMAT(`sd`.`travel_date_end`, '%b %e, %Y') AS 'travel_date_end',
+				`b`.`boatID`,
+                                DATE_FORMAT(`sd`.`travel_date_start`, '%Y%m%d') AS 'start_date',
+                                DATE_FORMAT(`sd`.`travel_date_end`, '%Y%m%d') AS 'end_date'
+
+			FROM
+				`af_df_unified2`.`specials` s,
+				`af_df_unified2`.`specials_discounts` sd,
+				`reserve`.`boats` b
+
+			WHERE
+				`s`.`id` = '$_GET[id]'
+				AND `s`.`id` = `sd`.`special_id`
+				AND `sd`.`special_id`
+				AND `sd`.`boatID` = `b`.`boatID` 
+				AND '$today' BETWEEN `sd`.`date_booked_start` AND `sd`.`date_booked_end`
+
+			ORDER BY `b`.`name` ASC
+			";
+			$result = $this->new_mysql($sql);
+			while ($row = $result->fetch_assoc()) {
+				if ($this_name != $row['name']) {
+					print "<div class=\"well\"><h3>$row[name]</h3></div>";
+					$this_name = $row['name'];
+				}
+				switch($row['discount_type']) {
+					case "Percent Off":
+						print "&nbsp;&nbsp;&nbsp;&nbsp;$row[percent_off]% off when you travel $row[travel_date_start] to $row[travel_date_end]<br>";
+					break;
+
+					case "Dollar Off":
+						print "&nbsp;&nbsp;&nbsp;&nbsp;$".number_format($row['dollar_off'])." off when you travel $row[travel_date_start] to $row[travel_date_end]<br>";
+
+					break;
+
+					case "Price Override":
+						print "&nbsp;&nbsp;&nbsp;&nbsp;New price $".number_format($row['price_override'])." when you travel $row[travel_date_start] to $row[travel_date_end]<br>";
+					break;
+				}
+				// get inventory for discount
+				$sql2 = "
+				SELECT
+					`c`.`charterID`,
+					COUNT(`i`.`status`) AS 'total',
+					DATE_FORMAT(`c`.`start_date`, '%b %e, %Y') AS 'start_date'
+
+				FROM
+					`reserve`.`charters` c,
+					`reserve`.`inventory` i
+
+				WHERE
+					`c`.`boatID` = '$row[boatID]'
+					AND `c`.`start_date` BETWEEN '$row[start_date]' AND '$row[end_date]'
+					AND `c`.`charterID` = `i`.`charterID`
+					AND `i`.`status` = 'avail'
+
+				GROUP BY `i`.`charterID`
+
+				HAVING `total` > 0
+				";
+				$result2 = $this->new_mysql($sql2);
+				while ($row2 = $result2->fetch_assoc()) {
+					if ($row2['total'] > 6) {
+						$plus = "6+";
+					} else {
+						$plus = $row2['total'];
+					}
+					if ($plus > 0) {
+						$boat_name = urlencode($row['name']);
+						print "<li><a href=\"view_details.php?name=$boat_name&charter=$row2[charterID]\">$row2[start_date] ($plus left)</a></li>";
+					}
+				}
+
+			}
+			print "<br><br>";
+                        print "
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        </td>
+                        </tr>
+                        </table>
+                        </div>
+                        </div>
+                        </div>
+                        ";
+			}
+
+		}
+
                 public function check_login() {
 
                         if (($_SESSION['uuname'] != "") && ($_SESSION['uupass'] != "")) {
@@ -1496,7 +2016,9 @@ class Reservation {
          `af_df_unified2`.`specials_discounts`.`percent_off`,
          `af_df_unified2`.`specials_discounts`.`dollar_off`,
          `af_df_unified2`.`specials_discounts`.`price_override`,
-         `af_df_unified2`.`specials_discounts`.`general_discount_reason`
+         `af_df_unified2`.`specials_discounts`.`general_discount_reason`,
+         `af_df_unified2`.`specials_discounts`.`id`
+
 
       FROM
          `reserve`.`charters`,`af_df_unified2`.`specials_discounts`
@@ -1505,17 +2027,154 @@ class Reservation {
          `reserve`.`charters`.`charterID` = '$charterID'
          AND `af_df_unified2`.`specials_discounts`.`boatID` = `reserve`.`charters`.`boatID`
          AND '$today' BETWEEN `af_df_unified2`.`specials_discounts`.`date_booked_start` AND `af_df_unified2`.`specials_discounts`.`date_booked_end`
-         AND `reserve`.`charters`.`start_date` BETWEEN replace(`af_df_unified2`.`specials_discounts`.`travel_date_start`,'-','') AND replace(`af_df_unified2`.`specials_discounts`.`travel_date_end`,'-','')
+         AND `reserve`.`charters`.`start_date` BETWEEN replace(`af_df_unified2`.`specials_discounts`.`travel_date_start`,'-','') 
+		AND replace(`af_df_unified2`.`specials_discounts`.`travel_date_end`,'-','')
       ";
 
-		$found = "false";
+
+	$found = "false";
       $result = $this->new_mysql($sql);
       while ($row = $result->fetch_assoc()) {
-			$found = "true";
+		$sql2 = "
+                SELECT
+                	`sb`.`bunkID`,
+                        `sb`.`value`,
+                        `bk`.`cabin`,
+                        `bk`.`bunk`,
+                        `b`.`abbreviation`,
+                        CONCAT(`b`.`abbreviation`,'-',`bk`.`cabin`,`bk`.`bunk`) AS 'location'
+                FROM
+                        `af_df_unified2`.`specials_bunks` sb,
+                        `reserve`.`bunks` bk,
+                        `reserve`.`boats` b
+
+                WHERE
+                        `sb`.`discountID` = '".$row['id']."'
+                        AND `sb`.`bunkID` = `bk`.`bunkID`
+                        AND `bk`.`boatID` = `b`.`boatID`
+                ";
+		$result2 = $this->new_mysql($sql2);
+		while($row2 = $result2->fetch_assoc()) {
+			// get inventory
+			$sql3 = "SELECT `bunk` FROM `reserve`.`inventory` WHERE `charterID` = '$charterID' AND `bunk` = '$row2[location]' AND `status` = 'avail'";
+			$result3 = $this->new_mysql($sql3);
+			while ($row3 = $result3->fetch_assoc()) {
+				$found = "true";
+			}
+		}
+
+		//$found = "true";
       }
-		return $found;
+	return $found;
 
    }
+
+
+
+        public function find_discount3($charterID,$price,$bunks) {
+                $today = date("Y-m-d");
+                $sql = "
+                SELECT
+                        `reserve`.`charters`.`boatID`,
+                        `reserve`.`charters`.`start_date`,
+                        `af_df_unified2`.`specials_discounts`.`discount_type`,
+                        `af_df_unified2`.`specials_discounts`.`percent_off`,
+                        `af_df_unified2`.`specials_discounts`.`dollar_off`,
+                        `af_df_unified2`.`specials_discounts`.`price_override`,
+                        `af_df_unified2`.`specials_discounts`.`general_discount_reason`,
+                        `af_df_unified2`.`specials_discounts`.`id`,
+                        `af_df_unified2`.`specials_discounts`.`special_id`
+
+
+
+                FROM
+                        `reserve`.`charters`,`af_df_unified2`.`specials_discounts`
+
+                WHERE
+                        `reserve`.`charters`.`charterID` = '$charterID'
+                        AND `af_df_unified2`.`specials_discounts`.`boatID` = `reserve`.`charters`.`boatID`
+                        AND '$today' BETWEEN `af_df_unified2`.`specials_discounts`.`date_booked_start` AND `af_df_unified2`.`specials_discounts`.`date_booked_end`
+                        AND `reserve`.`charters`.`start_date` BETWEEN replace(`af_df_unified2`.`specials_discounts`.`travel_date_start`,'-','') AND replace(`af_df_unified2`.`specials_discounts`.`travel_date_end`,'-','')
+                ";
+
+                $discount = array();
+                $result = $this->new_mysql($sql);
+                while ($row = $result->fetch_assoc()) {
+                        switch ($row['discount_type']) {
+                                case "Dollar Off":
+                                        $tvar = $row['dollar_off'];
+                                        $discount[] = $row['dollar_off'];
+                                        $discount[$tvar][0] = $row['general_discount_reason'];
+                                        $discount[$tvar][1] = $row['id'];
+					$discountID = $row['id'];
+                                        $discount[$tvar][2] = $row['special_id'];
+                                break;
+
+                                case "Percent Off":
+                                        $temp = $price * ($row['percent_off'] * 0.01);
+                                        $discount[] = $temp;
+                                        $discount[$temp][0] = $row['general_discount_reason'];
+                                        $discount[$temp][1] = $row['id'];
+                                        $discountID = $row['id'];
+                                        $discount[$temp][2] = $row['special_id'];
+                                break;
+
+                                case "Price Override":
+                                        $temp = $price - $row['price_override'];
+                                        $discount[] = $temp;
+                                        $discount[$temp][0] = $row['general_discount_reason'];
+                                        $discount[$temp][1] = $row['id'];
+                                        $discountID = $row['id'];
+                                        $discount[$temp][2] = $row['special_id'];
+                                break;
+                        }
+                }
+
+		$view_bunks = explode(",",$bunks);
+		// --------------------
+
+                        $sql_b = "
+                        SELECT
+                                `sb`.`bunkID`,
+                                `sb`.`value`,
+                                `bk`.`cabin`,
+                                `bk`.`bunk`,
+                                `b`.`abbreviation`,
+                                CONCAT(`b`.`abbreviation`,'-',`bk`.`cabin`,`bk`.`bunk`) AS 'location'
+                        FROM
+                                `af_df_unified2`.`specials_bunks` sb,
+                                `reserve`.`bunks` bk,
+                                `reserve`.`boats` b
+
+                        WHERE
+                                `sb`.`discountID` = '".$discountID."'
+                                AND `sb`.`bunkID` = `bk`.`bunkID`
+                                AND `bk`.`boatID` = `b`.`boatID`
+
+                        ";
+			$found = "0";
+                        $result_b = $this->new_mysql($sql_b);
+                        while ($row_b = $result_b->fetch_assoc()) {
+				foreach ($view_bunks as $key=>$value) {
+					if ($value == $row_b['location']) {
+			                        // get inventory
+			                        $sql3 = "SELECT `bunk` FROM `reserve`.`inventory` WHERE `charterID` = '$charterID' AND `bunk` = '$row_b[location]' AND `status` = 'avail'";
+			                        $result3 = $this->new_mysql($sql3);
+		        	                while ($row3 = $result3->fetch_assoc()) {
+							//print "$value = $row_b[location]<br>";
+							$found = "1";
+						}
+					}
+				}
+                        }
+
+		// --------------------
+		if ($found == "1") {
+	                return $discount;
+		}
+
+
+        }
 
 
 	public function get_inv_count_one_pax($charter,$bunks) {
@@ -2297,7 +2956,7 @@ class Reservation {
                 }
 		$discount = "";
 		if (($discount_check1 != "") or ($discount_check2 != "") or ($discount_check3 != "") or ($discount_check4 != "")) {
-			print "<div align=\"right\"><input type=\"button\" value=\"A discount may be available on one or more staterooms\" class=\"btn btn-info\"></div>";
+			//print "<div align=\"right\"><input type=\"button\" value=\"A discount may be available on one or more staterooms\" class=\"btn btn-info\"></div>";
 		}
 		// end discount check
 
@@ -2348,7 +3007,8 @@ class Reservation {
 
 						if ($total_inv > 0) {
 							$temp_d = "";
-							//$discount = $this->find_discount($_GET['charter'],$price);
+							// RBS - ENABLE
+							$discount = $this->find_discount3($_GET['charter'],$price,$row['bunks1']);
 
 							if (is_array($discount)) {
 								foreach ($discount as $value) {
@@ -2463,7 +3123,8 @@ class Reservation {
 
                   if ($total_inv > 0) {
                      $temp_d = "";
-                     //$discount = $this->find_discount($_GET['charter'],$price);
+			// RBS - ENABLE
+                     $discount = $this->find_discount3($_GET['charter'],$price,$row['bunks2']);
                      if (is_array($discount)) {
                         foreach ($discount as $value) {
                            if ($value > $temp_d) {
@@ -2569,7 +3230,8 @@ class Reservation {
 
                   if ($total_inv > 0) {
                      $temp_d = "";
-                     //$discount = $this->find_discount($_GET['charter'],$price);
+			// RBS - ENABLE
+                     $discount = $this->find_discount3($_GET['charter'],$price,$row['bunks3']);
                      if (is_array($discount)) {
                         foreach ($discount as $value) {
                            if ($value > $temp_d) {
@@ -2676,7 +3338,8 @@ class Reservation {
 
                   if ($total_inv > 0) {
                      $temp_d = "";
-                     //$discount = $this->find_discount($_GET['charter'],$price);
+			// RBS - ENABLE
+                     $discount = $this->find_discount3($_GET['charter'],$price,$row['bunks4']);
                      if (is_array($discount)) {
                         foreach ($discount as $value) {
                            if ($value > $temp_d) {
@@ -2963,10 +3626,11 @@ class Reservation {
 	public function view_all_in_charter_and_type() {
 		$boats = unserialize($_GET['boats']);
 
-		foreach ($boats as $value) {
-			$this_boats .= "&boats[]=$value";
+		if(is_array($boats)) {
+			foreach ($boats as $value) {
+				$this_boats .= "&boats[]=$value";
+			}
 		}
-
 		if ($_SESSION['contact_type'] != "consumer") {
 			print "
 			<table border=0 width=\"800\" cellspacing=\"3\">
@@ -2996,14 +3660,17 @@ class Reservation {
 	public function view_bunks() {
 		$_GET['boats'] = stripslashes($_GET['boats']);
 		$new_boats = unserialize($_GET['boats']);
-		foreach ($new_boats as $boat) {
-		        $boats .= "$boat,";
-	        }
+		if(is_array($new_boats)) {
+			foreach ($new_boats as $boat) {
+			        $boats .= "$boat,";
+		        }
+		}
 		$boats = substr($boats,0,-1);
-		foreach ($new_boats as $boat2) {
-                	$this_boats .= "&boats[]=$boat2";
- 	        }
-	
+		if(is_array($new_boats)) {
+			foreach ($new_boats as $boat2) {
+        	        	$this_boats .= "&boats[]=$boat2";
+	 	        }
+		}
 
 				$new_name = $_GET['name'];
 				if ($new_name == "Caño Island Okeanos") {
@@ -4190,6 +4857,101 @@ class Reservation {
 		session_destroy();
 		print '<meta http-equiv="refresh" content="0; url=portal.php">';
 	}
+
+
+        public function map_numbers($max,$pages) {
+
+                for ($i=0; $i < $pages; $i++) {
+                        if ($stop == "") {
+                                $stop = "0";
+                        }
+                        if ($i > 0) {
+                                $stop = $stop + $max;
+                        }
+                        $i2 = $i + 1;
+                        $array[$i2] = $stop;
+                }
+                return $array;
+        }
+
+        public function page_numbers($sql,$url) {
+                $max = "5";
+                $result = $this->new_mysql($sql);
+                $total_records = $result->num_rows;
+                $total_records = $total_records / $max;
+                $pages = ceil($total_records);
+
+                        $page = $_GET['page'];
+                        if ($page == "") {
+                                $page = "1";
+                        }
+
+                        $html = "<div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
+                        $html .= "<button type=\"button\" class=\"btn btn-default\" disabled>Page</button>";
+                        if ($page == "1") {
+                                $html .= "<button type=\"button\" class=\"btn btn-primary\" onclick=\"document.location.href='".$url.$page."&stop=0'\">1</button>";
+                                $array = $this->map_numbers($max,$pages);
+                                $next = $page + 1;
+                                $next10 = $page + 10;
+                                $next100 = $page + 100;
+
+                                if ($next < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next."&stop=".$array[$next]."'\">&gt;&gt;</button>";
+                                }
+
+                                if ($next10 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next10."&stop=".$array[$next10]."'\">+ 10</button>";
+                                }
+
+                                if ($next100 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next100."&stop=".$array[$next100]."'\">+ 100</button>";
+                                }
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pages."&stop=".$array[$pages]."'\">$pages</button>";
+
+                        } else {
+                                $array = $this->map_numbers($max,$pages);
+
+                                $pre = $page - 1;
+                                $pre10 = $page - 10;
+                                $pre100 = $page - 100;
+                                $next = $page + 1;
+                                $next10 = $page + 10;
+                                $next100 = $page + 100;
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url."1&stop=0'\">1</button>";
+
+                                if ($pre10 > 0) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pre10."&stop=$array[$pre10]'\">- 10</button>";
+                                }
+
+                                if ($pre100 > 0) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pre100."&stop=$array[$pre100]'\">- 100</button>";
+                                }
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pre."&stop=$array[$pre]'\">&lt;&lt;</button>";
+
+                                $html .= "<button type=\"button\" class=\"btn btn-primary\" onclick=\"document.location.href='".$url.$page."&stop=$array[$page]'\">$page</button>";
+
+                                if ($next < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next."&stop=$array[$next]'\">&gt;&gt;</button>";
+                                }
+
+                                if ($next10 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next10."&stop=$array[$next10]'\">+ 10</button>";
+                                }
+
+                                if ($next100 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next100."&stop=$array[$next100]'\">+ 100</button>";
+                                }
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pages."&stop=$array[$pages]'\">$pages</button>";
+
+                        }
+                        $html .= "</div>";
+                return $html;
+        }
+
 
 
 	// END CLASS
