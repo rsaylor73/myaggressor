@@ -1,6 +1,7 @@
 <?php
 require "settings.php";
 
+
 	if ($_SESSION['uuname'] != "") {
 
 	   // Get total cost
