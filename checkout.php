@@ -125,58 +125,58 @@ require "settings.php";
 
 		$result = $reservation->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
-			$authnet_login = "5ZuC46WbX";
-			//$authnet_key = "53mr9jJwEL4689qn";
-			$authnet_key = "2pmE9MW2kj5Uk846";
-
+			$authnet_login = AUTHNET_LOGIN;
+			$authnet_key = AUTHNET_KEY;
 			require_once('authorizenet.class.php');
 			$cc_num_v = preg_replace("/[^0-9]/","", $_POST['cc_num']);
-         $a = new authorizenet_class;
-         $a->add_field('x_login', $authnet_login);
-         $a->add_field('x_tran_key', $authnet_key);
-         $a->add_field('x_version', '3.1');
-         $a->add_field('x_type', 'AUTH_CAPTURE');
+		         $a = new authorizenet_class;
+		         $a->add_field('x_login', $authnet_login);
+		         $a->add_field('x_tran_key', $authnet_key);
+		         $a->add_field('x_version', '3.1');
+		         $a->add_field('x_type', 'AUTH_CAPTURE');
 
-	// test enabled
-         $a->add_field('x_test_request', 'TRUE');    // Just a test transaction
-	// end test
-         $a->add_field('x_relay_response', 'FALSE');
-         $a->add_field('x_delim_data', 'TRUE');
-         $a->add_field('x_delim_char', '|');
-         $a->add_field('x_encap_char', '');
- 	 $a->add_field('x_email_customer', 'FALSE');
-         $a->add_field('x_ship_to_first_name', $row['first']);
-         $a->add_field('x_ship_to_last_name', $row['last']);
-         $a->add_field('x_ship_to_address', $row['address1']);
-         $a->add_field('x_ship_to_city', $row['city']);
+			// test enabled
+			if(AUTHNET_TEST == "true") {
+			         $a->add_field('x_test_request', 'TRUE');    // Just a test transaction
+			}
+			// end test
+		         $a->add_field('x_relay_response', 'FALSE');
+		         $a->add_field('x_delim_data', 'TRUE');
+		         $a->add_field('x_delim_char', '|');
+		         $a->add_field('x_encap_char', '');
+		 	 $a->add_field('x_email_customer', 'FALSE');
+		         $a->add_field('x_ship_to_first_name', $row['first']);
+		         $a->add_field('x_ship_to_last_name', $row['last']);
+		         $a->add_field('x_ship_to_address', $row['address1']);
+		         $a->add_field('x_ship_to_city', $row['city']);
 
 			if ($row['countryID'] == "2") {
- 	        $a->add_field('x_ship_to_state', $row['state']);
+	 	        $a->add_field('x_ship_to_state', $row['state']);
 			} else {
-           $a->add_field('x_ship_to_state', $row['province']);
+		           $a->add_field('x_ship_to_state', $row['province']);
 			}
-         $a->add_field('x_ship_to_zip', $row['zip']);
-         $a->add_field('x_ship_to_country', $row['country']);
-         $a->add_field('x_first_name', $row['first']);
-         $a->add_field('x_last_name', $row['last']);
-         $a->add_field('x_address', $row['address1']);
-         $a->add_field('x_city', $row['city']);
-         if ($row['countryID'] == "2") {
- 	        $a->add_field('x_state', $row['state']);
+		         $a->add_field('x_ship_to_zip', $row['zip']);
+		         $a->add_field('x_ship_to_country', $row['country']);
+		         $a->add_field('x_first_name', $row['first']);
+		         $a->add_field('x_last_name', $row['last']);
+		         $a->add_field('x_address', $row['address1']);
+		         $a->add_field('x_city', $row['city']);
+		         if ($row['countryID'] == "2") {
+		 	        $a->add_field('x_state', $row['state']);
 			} else {
-           $a->add_field('x_state', $row['province']);
+		           $a->add_field('x_state', $row['province']);
 			}
-         $a->add_field('x_zip', $row['zip']);
-         $a->add_field('x_country', $row['country']);
-         $a->add_field('x_email', $row['email']);
-         $a->add_field('x_phone', $row['phone1']);
-         $a->add_field('x_description', "Charter $_POST[charter]");
-         $a->add_field('x_method', 'CC');
-         $a->add_field('x_card_num', $cc_num_v);   // test successful visa
-         $a->add_field('x_amount', $_POST['payment_amount']);
+		         $a->add_field('x_zip', $row['zip']);
+	        	 $a->add_field('x_country', $row['country']);
+		         $a->add_field('x_email', $row['email']);
+		         $a->add_field('x_phone', $row['phone1']);
+		         $a->add_field('x_description', "Charter $_POST[charter]");
+		         $a->add_field('x_method', 'CC');
+		         $a->add_field('x_card_num', $cc_num_v);   // test successful visa
+		         $a->add_field('x_amount', $_POST['payment_amount']);
 			$exp_date = $_POST['exp_month'] . $_POST['exp_year'];
-         $a->add_field('x_exp_date', $exp_date);    // march of 2008
-         $a->add_field('x_card_code', $_POST['cvv']);    // Card CAVV Security code
+		         $a->add_field('x_exp_date', $exp_date);    // march of 2008
+		         $a->add_field('x_card_code', $_POST['cvv']);    // Card CAVV Security code
 
 			switch ($a->process()) {
 				case 1: // Accepted
