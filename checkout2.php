@@ -18,7 +18,8 @@ require "settings.php";
 		$result = $reservation->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
 			$authnet_login = "5ZuC46WbX";
-			$authnet_key = "53mr9jJwEL4689qn";
+			//$authnet_key = "53mr9jJwEL4689qn";
+                        $authnet_key = "2pmE9MW2kj5Uk846";
 
 			require_once('authorizenet.class.php');
 			$cc_num_v = preg_replace("/[^0-9]/","", $_POST['cc_num']);
