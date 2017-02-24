@@ -16,7 +16,7 @@ require "settings.php";
       SELECT
          `inventory`.`inventoryID`,
          `inventory`.`bunk`,
-         `inventory`.`bunk_price` + `charters`.`add_on_price_commissionable` AS 'bunk_price',
+         `inventory`.`bunk_price` + `charters`.`add_on_price_commissionable` + `add_on_price` AS 'bunk_price',
          `inventory`.`bunk_description`
 
       FROM

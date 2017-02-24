@@ -32,7 +32,7 @@ if (($_GET['tk'] == $_SESSION['reservation_token']) && ($_GET['tk'] != "")) {
    SELECT
  		`inventory`.`inventoryID`,
       `inventory`.`bunk`,
-      `inventory`.`bunk_price` + `charters`.`add_on_price_commissionable` AS 'bunk_price',
+      `inventory`.`bunk_price` + `charters`.`add_on_price_commissionable` + `charters`.`add_on_price` AS 'bunk_price',
       `inventory`.`bunk_description`
 
 	FROM
@@ -109,7 +109,7 @@ if (($_GET['tk'] == $_SESSION['reservation_token']) && ($_GET['tk'] != "")) {
 			$total = $total + $row['bunk_price'];
 		}
 	}
-	$total2 = $total;
+	$total2 = round($total);
 	//$total2 = number_format($total,2);
 
 	// If the inventory is timmed our stop

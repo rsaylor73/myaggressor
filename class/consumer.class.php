@@ -1905,6 +1905,100 @@ class Reservation {
    }
 
 
+   public function get_quick_addon_rates($charterID,$bunks) {
+
+      $array_bunks = explode(",",$bunks);
+      foreach ($array_bunks as $value) {
+         $bunk_list .= "'$value',";
+      }
+      $bunk_list = substr($bunk_list,0,-1);
+
+      $sql = "
+      SELECT
+         `reserve`.`charters`.`add_on_price_commissionable` + `reserve`.`charters`.`add_on_price` AS 'bunk_price'
+      FROM
+         `reserve`.`inventory`,`charters`
+
+      WHERE
+         `reserve`.`inventory`.`charterID` = '$charterID'
+         AND `reserve`.`charters`.`charterID` = '$charterID'
+         AND `reserve`.`inventory`.`bunk` IN ($bunk_list)
+         AND `inventory`.`status` = 'avail'
+      LIMIT 1
+      ";
+
+                $bunk_list = str_replace(" ","",$bunk_list);
+
+      $result = $this->new_mysql($sql);
+      $row = $result->fetch_assoc();
+      if ($row['bunk_price'] == "") {
+      $sql = "
+      SELECT
+         `reserve`.`charters`.`add_on_price_commissionable` + `reserve`.`charters`.`add_on_price` AS 'bunk_price'
+      FROM
+         `reserve`.`inventory`,`charters`
+
+      WHERE
+         `reserve`.`inventory`.`charterID` = '$charterID'
+         AND `reserve`.`charters`.`charterID` = '$charterID'
+         AND `reserve`.`inventory`.`bunk` IN ($bunk_list)
+                ORDER BY `bunk_price` DESC
+      LIMIT 1
+      ";
+      $result = $this->new_mysql($sql);
+      $row = $result->fetch_assoc();
+      }
+
+      return ($row['bunk_price']);
+   }
+
+
+   public function get_quick_addon_rates_all($charterID) {
+
+      $array_bunks = explode(",",$bunks);
+      foreach ($array_bunks as $value) {
+         $bunk_list .= "'$value',";
+      }
+      $bunk_list = substr($bunk_list,0,-1);
+
+      $sql = "
+      SELECT
+         `reserve`.`charters`.`add_on_price_commissionable` + `reserve`.`charters`.`add_on_price` AS 'bunk_price'
+      FROM
+         `reserve`.`inventory`,`charters`
+
+      WHERE
+         `reserve`.`inventory`.`charterID` = '$charterID'
+         AND `reserve`.`charters`.`charterID` = '$charterID'
+         AND `inventory`.`status` = 'avail'
+      LIMIT 1
+      ";
+
+                $bunk_list = str_replace(" ","",$bunk_list);
+
+      $result = $this->new_mysql($sql);
+      $row = $result->fetch_assoc();
+      if ($row['bunk_price'] == "") {
+      $sql = "
+      SELECT
+         `reserve`.`charters`.`add_on_price_commissionable` + `reserve`.`charters`.`add_on_price` AS 'bunk_price'
+      FROM
+         `reserve`.`inventory`,`charters`
+
+      WHERE
+         `reserve`.`inventory`.`charterID` = '$charterID'
+         AND `reserve`.`charters`.`charterID` = '$charterID'
+                ORDER BY `bunk_price` DESC
+      LIMIT 1
+      ";
+      $result = $this->new_mysql($sql);
+      $row = $result->fetch_assoc();
+      }
+
+      return ($row['bunk_price']);
+   }
+
+
    public function get_inventory($charterID,$bunks) {
 
 		$ses_id = session_id();
@@ -1946,6 +2040,10 @@ class Reservation {
    }
 
 	public function find_discount($charterID,$price) {
+
+		$addon = $this->get_quick_addon_rates_all($charterID);
+		$price = $price - $addon;
+
 		$today = date("Y-m-d");
 		$sql = "
 		SELECT
@@ -2072,6 +2170,11 @@ class Reservation {
 
 
         public function find_discount3($charterID,$price,$bunks) {
+		// get the addon price and remove from the discount
+		$addon = $this->get_quick_addon_rates($charterID,$bunks);
+		$price = $price - $addon;
+		//print "Test: $addon<br>";
+
                 $today = date("Y-m-d");
                 $sql = "
                 SELECT
@@ -2923,6 +3026,7 @@ class Reservation {
 		}
                 if ($row['img2'] != "") {
                         $price = $this->get_quick_rates($_GET['charter'],$row['bunks2']);
+
                         $discount = $this->find_discount($_GET['charter'],$price);
                         if (is_array($discount)) { 
                                 foreach ($discount as $value) {
@@ -2934,6 +3038,7 @@ class Reservation {
                 }
                 if ($row['img3'] != "") {
                         $price = $this->get_quick_rates($_GET['charter'],$row['bunks3']);
+
                         $discount = $this->find_discount($_GET['charter'],$price);
                         if (is_array($discount)) {
                                 foreach ($discount as $value) {       
@@ -2945,6 +3050,7 @@ class Reservation {
                 }
                 if ($row['img4'] != "") {
                         $price = $this->get_quick_rates($_GET['charter'],$row['bunks4']);
+
                         $discount = $this->find_discount($_GET['charter'],$price);
                         if (is_array($discount)) {
                                 foreach ($discount as $value) {       
@@ -3969,7 +4075,8 @@ class Reservation {
 
 			if ($check_discount > 0) {
 				$new_price = $row['bunk_price'] - $temp_d;
-				print "<td class=\"details-description\"><del><font color=red>$".number_format($row['bunk_price'])."</font></del> <ins style=\"text-decoration: none\">$".number_format($new_price)."</ins></td>
+				print "<td class=\"details-description\"><del><font color=red>$".number_format($row['bunk_price'])."</font></del> 
+				<ins style=\"text-decoration: none\">$".number_format($new_price)."</ins></td>
 							";
 			} else {
                      print "
@@ -4242,7 +4349,7 @@ class Reservation {
 				SELECT
 					`inventory`.`inventoryID`,
 					`inventory`.`bunk`,
-					`inventory`.`bunk_price` + `charters`.`add_on_price_commissionable` AS 'bunk_price',
+					`inventory`.`bunk_price` + `charters`.`add_on_price_commissionable` + `charters`.`add_on_price` AS 'bunk_price',
 					`inventory`.`bunk_description`
 
 				FROM
@@ -4458,6 +4565,7 @@ class Reservation {
 						}
 
                      $temp_d = "";
+			// bunk price
                      $discount = $this->find_discount($_GET['charter'],$row['bunk_price']);
                      if (is_array($discount)) {
                         foreach ($discount as $value) {
