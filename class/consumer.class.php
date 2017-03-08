@@ -21,7 +21,7 @@ class Reservation {
 					$boats[$boat] = $boat;
 				}
 			}
-			$sql = "SELECT * FROM `reserve`.`boats` WHERE `reserve`.`boats`.`status` = 'Active' AND `reserve`.`boats`.`boatID` NOT IN ('36','37','39','21') ORDER BY `reserve`.`boats`.`name` ASC";
+			$sql = "SELECT * FROM `reserve`.`boats` WHERE `reserve`.`boats`.`status` = 'Active' AND `reserve`.`boats`.`boatID` NOT IN ('36','37','39','21','40') ORDER BY `reserve`.`boats`.`name` ASC";
 			$result = $this->new_mysql($sql);
 			while($row = $result->fetch_assoc()) {
 				$i = $row['boatID'];
