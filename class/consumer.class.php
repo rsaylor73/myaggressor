@@ -486,7 +486,7 @@ class Reservation {
 			$result = $this->new_mysql($sql);
 			while ($row = $result->fetch_assoc()) {
 				if ($this_name != $row['name']) {
-					print "<div class=\"well\"><h3>$row[name]</h3></div>";
+					print "<h3>$row[name]</h3>";
 					$this_name = $row['name'];
 				}
 				switch($row['discount_type']) {
@@ -533,7 +533,13 @@ class Reservation {
 					}
 					if ($plus > 0) {
 						$boat_name = urlencode($row['name']);
-						print "<li><a href=\"view_details.php?name=$boat_name&charter=$row2[charterID]\">$row2[start_date] ($plus left)</a></li>";
+						print "<div class=\"row\">
+						<div class=\"col-sm-1\">&nbsp;</div>
+						<div class=\"col-sm-3\"><li><a href=\"view_details.php?name=$boat_name&charter=$row2[charterID]\">$row2[start_date]</a></li></div>
+						<div class=\"col-sm-5\">$plus left</div>
+						<div class=\"col-sm-3\">&nbsp;</div>
+						</div>
+						";
 					}
 				}
 
