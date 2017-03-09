@@ -201,10 +201,10 @@ if ($bg == "1") {
 
                 <!-- seperator -->
 		<br>
-		<input style="width:200px;" type="submit" class="btn btn-success btn_custom" value="Search"><br><br>
+		<input style="width:200px;" type="submit" class="btn btn-primary btn_custom" value="Search"><br><br>
 		</form>
 
-                <input type="button" class="btn btn-info btn_custom" value="Specials" onclick="document.location.href='specials.php'">
+                <input type="button" class="btn btn-success btn_custom" value="Specials" onclick="document.location.href='specials.php'">
                 <br><br>
 
                 <!-- seperator -->

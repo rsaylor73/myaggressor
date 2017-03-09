@@ -21,7 +21,7 @@ class Reservation {
 					$boats[$boat] = $boat;
 				}
 			}
-			$sql = "SELECT * FROM `reserve`.`boats` WHERE `reserve`.`boats`.`status` = 'Active' AND `reserve`.`boats`.`boatID` NOT IN ('36','37','39','21') ORDER BY `reserve`.`boats`.`name` ASC";
+			$sql = "SELECT * FROM `reserve`.`boats` WHERE `reserve`.`boats`.`status` = 'Active' AND `reserve`.`boats`.`boatID` NOT IN ('36','37','39','21','40') ORDER BY `reserve`.`boats`.`name` ASC";
 			$result = $this->new_mysql($sql);
 			while($row = $result->fetch_assoc()) {
 				$i = $row['boatID'];
@@ -101,9 +101,14 @@ class Reservation {
                                 }
                                 $sql .= "LIMIT $stop,5";
 
-
-                                print "$show_pages";
-                                print "&nbsp;<input type=\"button\" value=\"Search Specials\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#myModal2\">";
+				print "<br>";
+				print "<div class=\"row\">";
+                                print "<div class=\"col-sm-8\">$show_pages</div>";
+                                print "<div class=\"col-sm-4\">
+					<input type=\"button\" value=\"Search Specials\" class=\"btn btn-success pull-right\" data-toggle=\"modal\" data-target=\"#myModal2\">
+				</div>";
+				print "</div>";
+				print "<br>";
                                 $result = $this->new_mysql($sql);
                                 while ($row = $result->fetch_assoc()) {
                                         print "<a href=\"specials_details.php?id=$row[id]\">$row[description]</a><br>";
@@ -207,8 +212,14 @@ class Reservation {
                                 }
                                 $sql .= "LIMIT $stop,5";
 
-                                print "$show_pages";
-                                print "&nbsp;<input type=\"button\" value=\"Search Specials\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#myModal2\">";
+				print "<br>";
+                                print "<div class=\"row\">";
+                                print "<div class=\"col-sm-8\">$show_pages</div>";
+                                print "<div class=\"col-sm-4\">
+                                        <input type=\"button\" value=\"Search Specials\" class=\"btn btn-success pull-right\" data-toggle=\"modal\" data-target=\"#myModal2\">
+                                </div>";
+                                print "</div>";
+				print "<br>";
                                 $result = $this->new_mysql($sql);
                                 while ($row = $result->fetch_assoc()) {
                                         print "<a href=\"specials_details.php?id=$row[id]\">$row[description]</a><br>";
@@ -325,21 +336,20 @@ class Reservation {
 				<div id=\"result_pos2\">
 				<br>
 				<table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\">
-				<tr>
-				<td>
-				<img src=\"/ResImages/generic-DTW.jpg\" width=\"850\">
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\" background=\"bt-bck.jpg\" height=\"30\">
-				<tr>
-				<td width=\"100%\" class=\"details-top\">&nbsp;&nbsp;
-				Specials</td>
-				</tr>
-				</table>
-				</td>
-				</tr>
+				  <tr>
+				    <td>
+				      <img src=\"/ResImages/generic-DTW.jpg\" width=\"850\">
+				    </td>
+				  </tr>
+				  <tr>
+				    <td>
+				      <table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\" background=\"bt-bck.jpg\" height=\"30\">
+				        <tr>
+				          <td width=\"100%\" class=\"details-top\">&nbsp;&nbsp;Specials</td>
+				        </tr>
+				      </table>
+				    </td>
+				  </tr>
 				<tr>
 				<td>
 				<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5\">
@@ -375,9 +385,15 @@ class Reservation {
 	        	        }
 		                $sql .= "LIMIT $stop,5";
 
+				print "<br>";
+                                print "<div class=\"row\">";
+                                print "<div class=\"col-sm-8\">$show_pages</div>";
+                                print "<div class=\"col-sm-4\">
+                                        <input type=\"button\" value=\"Search Specials\" class=\"btn btn-success pull-right\" data-toggle=\"modal\" data-target=\"#myModal2\">
+                                </div>";
+                                print "</div>";
+				print "<br>";
 
-				print "$show_pages";
-				print "&nbsp;<input type=\"button\" value=\"Search Specials\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#myModal2\">";
 				$result = $this->new_mysql($sql);
 				while ($row = $result->fetch_assoc()) {
 					print "<a href=\"specials_details.php?id=$row[id]\">$row[description]</a><br>";
@@ -438,10 +454,10 @@ class Reservation {
                         <table border=\"0\" width=\"850\" cellpadding=\"0\" cellspacing=\"0\" background=\"bt-bck.jpg\" height=\"30\">
                         <tr>
 
-			<td width=\"33%\" class=\"details-top\">&nbsp;&nbsp;<a class=\"details-top\" href=\"javascript:history.back()\">&lt; Previous</a></td>
+			<td width=\"33%\" class=\"details-top\">&nbsp;</td>
 
                         <td width=\"67%\" class=\"details-top\">&nbsp;&nbsp;
-			$row[short_title]</td>
+			</td>
                         </tr>
                         </table>
                         </td>
@@ -452,7 +468,7 @@ class Reservation {
                         <tbody>
                         <tr>
                         <td>";
-
+			print "<br><input type=\"button\" class=\"btn btn-primary\" value=\"&lt; Previous\" onclick=\"javascript:history.back()\"><br><br>";
 			print "$row[description]<br>";
 
 			$today = date("Y-m-d");
@@ -486,7 +502,7 @@ class Reservation {
 			$result = $this->new_mysql($sql);
 			while ($row = $result->fetch_assoc()) {
 				if ($this_name != $row['name']) {
-					print "<h3>$row[name]</h3>";
+					print "<h4>$row[name]</h4>";
 					$this_name = $row['name'];
 				}
 				switch($row['discount_type']) {
@@ -536,9 +552,9 @@ class Reservation {
 						print "<div class=\"row\">
 						<div class=\"col-sm-1\">&nbsp;</div>
 						<div class=\"col-sm-3\"><li><a href=\"view_details.php?name=$boat_name&charter=$row2[charterID]\">$row2[start_date]</a></li></div>
-						<div class=\"col-sm-5\">$plus left</div>
+						<div class=\"col-sm-5\"><b>$plus left</b></div>
 						<div class=\"col-sm-3\">&nbsp;</div>
-						</div>
+						</div><br>
 						";
 					}
 				}

@@ -13,6 +13,7 @@ body {
 }
 
 .top-buffer { margin-top:10px; margin-left:10px; margin-right:10px; }
+.top-buffer2 { margin-top:15px; margin-left:0px; margin-right:0px; }
 
 .ui-helper-hidden-accessible {
     border: 0;

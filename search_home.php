@@ -255,11 +255,11 @@ function selectAll(selectBox,selectAll) {
 }
 </script>
       <div id="reservation-start-input-box-submit">
-        &nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-success btn_custom" value="Search" style="width:200px;"> 
+        &nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-primary btn_custom" value="Search" style="width:200px;"> 
 		</form><br>
 		<br>
 
-		&nbsp;&nbsp;&nbsp;<input type="button" class="btn btn-info btn_custom" value="Specials" onclick="document.location.href='specials.php'">
+		&nbsp;&nbsp;&nbsp;<input type="button" class="btn btn-success btn_custom" value="Specials" onclick="document.location.href='specials.php'">
 		<br><br>
 
 		<form name="MyForm" id="MyForm" method="get" action="portal.php">
