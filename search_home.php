@@ -259,7 +259,8 @@ function selectAll(selectBox,selectAll) {
 		</form><br>
 		<br>
 
-		&nbsp;&nbsp;&nbsp;<input type="button" class="btn btn-success btn_custom" value="Specials" onclick="document.location.href='specials.php'">
+
+		&nbsp;&nbsp;&nbsp;<input type="button" class="btn btn-success btn_custom btn_custom_font" value="Specials" onclick="document.location.href='specials.php'">
 		<br><br>
 
 		<form name="MyForm" id="MyForm" method="get" action="portal.php">

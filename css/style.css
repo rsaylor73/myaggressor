@@ -26,6 +26,7 @@ body {
     width: 1px;
 }
 
+
 /*
 .row > div {
     margin-top:10px;
@@ -200,6 +201,12 @@ form {
     width: 200px !important;
     height: 32px !important;
 }
+
+.btn_custom_font{
+	font-weight: bold;
+        font-size: 16px ! important; //to make fontsize bigger 
+}
+
 
 /* This is the outer shell of the box on index.php */
 #reservation-box-outline {
