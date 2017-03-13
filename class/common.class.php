@@ -1337,21 +1337,40 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         if ($points > 0) {
           print "<form action=\"redeem.php\" method=\"post\" target=\"_blank\">
           <input type=\"hidden\" name=\"section\" value=\"redeem\">
-          <table class=\"table\">
-          <tr><td>How many points would you like to redeem?</td><td><input type=\"text\" name=\"points\" size=\"20\" required></td></tr>
+          <table class=\"table table-striped\">
+          <tr><td>How many points would you like to redeem?</td><td><input type=\"number\" max=\"$points\" placeholder=\"$points\" name=\"points\" onkeypress=\"return isNumberKey(event)\" required class=\"form-control\"></td></tr>
           <tr><td>&nbsp;</td><td><b>Balance: $points</b></td></tr>
-          <tr><td colspan=\"2\"><input type=\"submit\" value=\"Redeem Points\" class=\"btn btn-primary\">&nbsp;&nbsp;
+          <tr><td colspan=\"2\">
+		<input type=\"submit\" value=\"Redeem Points\" class=\"btn btn-primary\">&nbsp;&nbsp;
+		<input type=\"button\" value=\"View Past Coupons\" class=\"btn btn-success\" onclick=\"document.location.href='viewpastcoupons.php'\">&nbsp;&nbsp;
+	
           <input type=\"button\" value=\"Cancel\" class=\"btn btn-warning\" onclick=\"document.location.href='portal.php'\"></td></tr>
           </table>
           </form>";
         } else {
-          print "<br><font color=red>Sorry, but you do not have any points to redeem.</font><br>";
+		print "<br><font color=red>Sorry, but you do not have any points to redeem.</font><br><br>
+		<input type=\"button\" value=\"View Past Coupons\" class=\"btn btn-success\" onclick=\"document.location.href='viewpastcoupons.php'\"><br>
+		";
         }
 
 	print "<br>
 	<b>Ways to earn Boutique Points:</b> 400 points for making a Reservation & Deposit, 100 for completing Customer Survey, & 100 as a Birthday gift.<br>";
 
         print "</span>";
+
+	?>
+	<script>
+	function isNumberKey(evt) {
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+			return false;
+		}
+
+		return true;
+	}
+	</script>
+	<?php
+
         $this->header_bot();
 
       }
@@ -1738,6 +1757,47 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
         return $code;
       }
+
+	public function viewpastcoupons() {
+	        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	        $check_login = $this->check_login();
+        	if ($check_login == "FALSE") {
+	            // show login/register
+        	    //include "class/consummer.class.php";
+	            $reservation = new Reservation($linkID);
+	            $reservation->login_screen($uri);
+	            die;
+	        }
+	        $this->header_top();
+	        print "<br><span class=\"result-title-text\">Aggressor Fleet Boutique Coupon Codes($_SESSION[first] $_SESSION[last])</span><br><br>
+	        <span class=\"details-description\">";
+
+		print "<table class=\"table table-striped\">
+		<tr>
+			<td><b>Coupon Code</b></td>
+			<td><b>Pounts Redeemed</b></td>
+			<td><b>Date Created</b></td>
+			<td><b>Dollar Value</b></td>
+			<td><b>Coupon Redeemed</b></td>
+		</tr>";
+
+		$sql = "SELECT `points_used`,`code_issued`,DATE_FORMAT(`date`,'%m/%d/%Y') AS 'date' FROM `points_log` WHERE `contactID` = '$_SESSION[contactID]'";
+		$result = $this->new_mysql($sql);
+		while ($row = $result->fetch_assoc()) {
+			$amount = $row['points_used'] * 0.05;
+			print "<tr><td>$row[code_issued]</td><td>$row[points_used]</td><td>$row[date]</td><td>$$amount</td><td>TBD</td></tr>";
+			$found = "1";
+		}
+		if ($found != "1") {
+			print "<tr><td colspan=\"5\"><font color=blue>You do not have any points redeemed.</font></td></tr>";
+		}
+		print "</table>";
+
+
+
+	        print "</span>";
+	        $this->header_bot();
+	}
 
 
       private function create_coupon($amount,$points) {
