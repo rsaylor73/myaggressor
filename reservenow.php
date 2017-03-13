@@ -32,7 +32,7 @@ if (($_GET['tk'] == $_SESSION['reservation_token']) && ($_GET['tk'] != "")) {
    SELECT
  		`inventory`.`inventoryID`,
       `inventory`.`bunk`,
-      `inventory`.`bunk_price` + `charters`.`add_on_price_commissionable` AS 'bunk_price',
+      `inventory`.`bunk_price` + `charters`.`add_on_price_commissionable` + `charters`.`add_on_price` AS 'bunk_price',
       `inventory`.`bunk_description`
 
 	FROM
@@ -65,14 +65,51 @@ if (($_GET['tk'] == $_SESSION['reservation_token']) && ($_GET['tk'] != "")) {
                            }
                         }
                      }
-		if ($temp_d > 0) {
-			$new_price = $row['bunk_price'] - $temp_d;
+
+		// ----------------
+
+                        $sql_b = "
+                        SELECT
+                                `sb`.`bunkID`,
+                                `sb`.`value`,
+                                `bk`.`cabin`,
+                                `bk`.`bunk`,
+                                `b`.`abbreviation`,
+                                CONCAT(`b`.`abbreviation`,'-',`bk`.`cabin`,`bk`.`bunk`) AS 'location'
+                        FROM
+                                `af_df_unified2`.`specials_bunks` sb,
+                                `reserve`.`bunks` bk,
+                                `reserve`.`boats` b
+
+                        WHERE
+                                `sb`.`discountID` = '".$discount[$temp_d][1]."'
+                                AND `sb`.`bunkID` = `bk`.`bunkID`
+                                AND `bk`.`boatID` = `b`.`boatID`
+
+                        ";
+                        $check_discount = $temp_d; // this is here incase the query is empty
+                        $result_b = $reservation->new_mysql($sql_b);
+                        $num_rows = $result_b->num_rows;
+                        if ($num_rows > 0) {
+                                $check_discount = "";
+                                while ($row_b = $result_b->fetch_assoc()) {
+                                        if ($row_b['location'] == $row['bunk']) {
+                                                $check_discount = $temp_d;
+
+                                        }
+                                }
+                        }
+
+		// ---------------
+
+		if ($check_discount > 0) {
+			$new_price = $row['bunk_price'] - $check_discount;
 			$total = $total + $new_price;
 		} else {
 			$total = $total + $row['bunk_price'];
 		}
 	}
-	$total2 = $total;
+	$total2 = round($total);
 	//$total2 = number_format($total,2);
 
 	// If the inventory is timmed our stop

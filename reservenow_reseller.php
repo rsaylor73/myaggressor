@@ -16,7 +16,7 @@ require "settings.php";
       SELECT
          `inventory`.`inventoryID`,
          `inventory`.`bunk`,
-         `inventory`.`bunk_price` + `charters`.`add_on_price_commissionable` AS 'bunk_price',
+         `inventory`.`bunk_price` + `charters`.`add_on_price_commissionable` + `add_on_price` AS 'bunk_price',
          `inventory`.`bunk_description`
 
       FROM
@@ -46,14 +46,52 @@ require "settings.php";
                            }
                         }
                      }
-         if ($temp_d > 0) {
+
+
+	// ---------------
+                        $sql_b = "
+                        SELECT
+                                `sb`.`bunkID`,
+                                `sb`.`value`,
+                                `bk`.`cabin`,
+                                `bk`.`bunk`,
+                                `b`.`abbreviation`,
+                                CONCAT(`b`.`abbreviation`,'-',`bk`.`cabin`,`bk`.`bunk`) AS 'location'
+                        FROM
+                                `af_df_unified2`.`specials_bunks` sb,
+                                `reserve`.`bunks` bk,
+                                `reserve`.`boats` b
+
+                        WHERE
+                                `sb`.`discountID` = '".$discount[$temp_d][1]."'
+                                AND `sb`.`bunkID` = `bk`.`bunkID`
+                                AND `bk`.`boatID` = `b`.`boatID`
+
+                        ";
+                        $check_discount = $temp_d; // this is here incase the query is empty
+                        $result_b = $reservation->new_mysql($sql_b);
+                        $num_rows = $result_b->num_rows;
+                        if ($num_rows > 0) {
+                                $check_discount = "";
+                                while ($row_b = $result_b->fetch_assoc()) {
+                                        if ($row_b['location'] == $row['bunk']) {
+                                                $check_discount = $temp_d;
+
+                                        }
+                                }
+                        }
+
+
+	// --------------
+
+         if ($check_discount > 0) {
             $new_price = $row['bunk_price'] - $temp_d;
             $total = $total + $new_price;
             $gdr = $discount[$temp_d][0];
 
-				//print "Inventory ID $row[inventoryID] - Bunk price $row[bunk_price] - DWC $temp_d<br>";
-		      $sql2 = "UPDATE `inventory` SET `DWC_discount` = '$temp_d', `general_discount_reason` = '$gdr' WHERE `inventoryID` = '$row[inventoryID]'";
-				$result2 = $reservation->new_mysql($sql2);
+		//print "Inventory ID $row[inventoryID] - Bunk price $row[bunk_price] - DWC $temp_d<br>";
+	        $sql2 = "UPDATE `inventory` SET `DWC_discount` = '$check_discount', `general_discount_reason` = '$gdr' WHERE `inventoryID` = '$row[inventoryID]'";
+		$result2 = $reservation->new_mysql($sql2);
 
 
          } else {
@@ -253,7 +291,14 @@ require "settings.php";
 
 
 		<tr><td>&nbsp;</td><td><br>
+
+		<input type=\"button\" class=\"btn btn-info\" value=\"View Reservation Details\" onclick=\"location.href='guests.php?res=$reservationID&c=$contactID';return false;\">&nbsp;&nbsp;
+		<input type=\"button\" class=\"btn btn-info\" value=\"Make Another Reservation\" onclick=\"window.open('index.php?s=1')\">
+		";
+		
+		/*
 		<input type=\"image\" src=\"buttons/bt-dashboard.png\" onclick=\"location.href='guests.php?res=$reservationID&c=$contactID';return false;\">&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"index.php?s=1\" target=_blank><img src=\"buttons/bt-makeanother.png\" border=0></a><br>";
+		*/
 
 		?>
 		<!-- Google Code for Completed Reservation Conversion Page https://developers.google.com/analytics/devguides/collection/analyticsjs/ecommerce-->

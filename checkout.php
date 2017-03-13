@@ -1,7 +1,6 @@
 <?php
 require "settings.php";
 
-
 	if ($_SESSION['uuname'] != "") {
 
 	   // Get total cost
@@ -39,12 +38,50 @@ require "settings.php";
                            }
                         }
                      }
-			if ($temp_d > 0) {
-				$new_price = $row['bunk_price'] - $temp_d;
-            $total = $total + $new_price;
+
+		// ------------------
+
+                        $sql_b = "
+                        SELECT
+                                `sb`.`bunkID`,
+                                `sb`.`value`,
+                                `bk`.`cabin`,
+                                `bk`.`bunk`,
+                                `b`.`abbreviation`,
+                                CONCAT(`b`.`abbreviation`,'-',`bk`.`cabin`,`bk`.`bunk`) AS 'location'
+                        FROM
+                                `af_df_unified2`.`specials_bunks` sb,
+                                `reserve`.`bunks` bk,
+                                `reserve`.`boats` b
+
+                        WHERE
+                                `sb`.`discountID` = '".$discount[$temp_d][1]."'
+                                AND `sb`.`bunkID` = `bk`.`bunkID`
+                                AND `bk`.`boatID` = `b`.`boatID`
+
+                        ";
+                        $check_discount = $temp_d; // this is here incase the query is empty
+                        $result_b = $reservation->new_mysql($sql_b);
+                        $num_rows = $result_b->num_rows;
+                        if ($num_rows > 0) {
+                                $check_discount = "";
+                                while ($row_b = $result_b->fetch_assoc()) {
+                                        if ($row_b['location'] == $row['bunk']) {
+                                                $check_discount = $temp_d;
+
+                                        }
+                                }
+                        }
+
+		// -----------------
+
+
+			if ($check_discount > 0) {
+				$new_price = $row['bunk_price'] - $check_discount;
+            			$total = $total + $new_price;
 				$gdr = $discount[$temp_d][0];
 			} else {
-		      $total = $total + $row['bunk_price'];
+			      $total = $total + $row['bunk_price'];
 			}
 	   }
 
@@ -88,58 +125,62 @@ require "settings.php";
 
 		$result = $reservation->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
-			$authnet_login = "5ZuC46WbX";
-			$authnet_key = "2pmE9MW2kj5Uk846";
-
+			$authnet_login = AUTHNET_LOGIN;
+			$authnet_key = AUTHNET_KEY;
 			require_once('authorizenet.class.php');
 			$cc_num_v = preg_replace("/[^0-9]/","", $_POST['cc_num']);
-         $a = new authorizenet_class;
-         $a->add_field('x_login', $authnet_login);
-         $a->add_field('x_tran_key', $authnet_key);
-         $a->add_field('x_version', '3.1');
-         $a->add_field('x_type', 'AUTH_CAPTURE');
-         //$a->add_field('x_test_request', 'TRUE');    // Just a test transaction
-         $a->add_field('x_relay_response', 'FALSE');
-         $a->add_field('x_delim_data', 'TRUE');
-         $a->add_field('x_delim_char', '|');
-         $a->add_field('x_encap_char', '');
-			$a->add_field('x_email_customer', 'FALSE');
-         $a->add_field('x_ship_to_first_name', $row['first']);
-         $a->add_field('x_ship_to_last_name', $row['last']);
-         $a->add_field('x_ship_to_address', $row['address1']);
-         $a->add_field('x_ship_to_city', $row['city']);
+		         $a = new authorizenet_class;
+		         $a->add_field('x_login', $authnet_login);
+		         $a->add_field('x_tran_key', $authnet_key);
+		         $a->add_field('x_version', '3.1');
+		         $a->add_field('x_type', 'AUTH_CAPTURE');
+
+			// test enabled
+			if(AUTHNET_TEST == "true") {
+			         $a->add_field('x_test_request', 'TRUE');    // Just a test transaction
+			}
+			// end test
+		         $a->add_field('x_relay_response', 'FALSE');
+		         $a->add_field('x_delim_data', 'TRUE');
+		         $a->add_field('x_delim_char', '|');
+		         $a->add_field('x_encap_char', '');
+		 	 $a->add_field('x_email_customer', 'FALSE');
+		         $a->add_field('x_ship_to_first_name', $row['first']);
+		         $a->add_field('x_ship_to_last_name', $row['last']);
+		         $a->add_field('x_ship_to_address', $row['address1']);
+		         $a->add_field('x_ship_to_city', $row['city']);
 
 			if ($row['countryID'] == "2") {
- 	        $a->add_field('x_ship_to_state', $row['state']);
+	 	        $a->add_field('x_ship_to_state', $row['state']);
 			} else {
-           $a->add_field('x_ship_to_state', $row['province']);
+		           $a->add_field('x_ship_to_state', $row['province']);
 			}
-         $a->add_field('x_ship_to_zip', $row['zip']);
-         $a->add_field('x_ship_to_country', $row['country']);
-         $a->add_field('x_first_name', $row['first']);
-         $a->add_field('x_last_name', $row['last']);
-         $a->add_field('x_address', $row['address1']);
-         $a->add_field('x_city', $row['city']);
-         if ($row['countryID'] == "2") {
- 	        $a->add_field('x_state', $row['state']);
+		         $a->add_field('x_ship_to_zip', $row['zip']);
+		         $a->add_field('x_ship_to_country', $row['country']);
+		         $a->add_field('x_first_name', $row['first']);
+		         $a->add_field('x_last_name', $row['last']);
+		         $a->add_field('x_address', $row['address1']);
+		         $a->add_field('x_city', $row['city']);
+		         if ($row['countryID'] == "2") {
+		 	        $a->add_field('x_state', $row['state']);
 			} else {
-           $a->add_field('x_state', $row['province']);
+		           $a->add_field('x_state', $row['province']);
 			}
-         $a->add_field('x_zip', $row['zip']);
-         $a->add_field('x_country', $row['country']);
-         $a->add_field('x_email', $row['email']);
-         $a->add_field('x_phone', $row['phone1']);
-         $a->add_field('x_description', "Charter $_POST[charter]");
-         $a->add_field('x_method', 'CC');
-         $a->add_field('x_card_num', $cc_num_v);   // test successful visa
-         $a->add_field('x_amount', $_POST['payment_amount']);
+		         $a->add_field('x_zip', $row['zip']);
+	        	 $a->add_field('x_country', $row['country']);
+		         $a->add_field('x_email', $row['email']);
+		         $a->add_field('x_phone', $row['phone1']);
+		         $a->add_field('x_description', "Charter $_POST[charter]");
+		         $a->add_field('x_method', 'CC');
+		         $a->add_field('x_card_num', $cc_num_v);   // test successful visa
+		         $a->add_field('x_amount', $_POST['payment_amount']);
 			$exp_date = $_POST['exp_month'] . $_POST['exp_year'];
-         $a->add_field('x_exp_date', $exp_date);    // march of 2008
-         $a->add_field('x_card_code', $_POST['cvv']);    // Card CAVV Security code
+		         $a->add_field('x_exp_date', $exp_date);    // march of 2008
+		         $a->add_field('x_card_code', $_POST['cvv']);    // Card CAVV Security code
 
 			switch ($a->process()) {
 				case 1: // Accepted
-      	   //echo $a->get_response_reason_text();
+      	   				//echo $a->get_response_reason_text();
 					// Make Reservation and record the payment
 
 					$today = date("Ymd");
@@ -190,7 +231,11 @@ require "settings.php";
 					//print "RESID $reservationID<br>\n";
 
 					// Update Inventory
-					$sql2 = "UPDATE `inventory` SET `reservationID` = '$reservationID', `commission_at_time_of_booking` = '0', `passengerID` = '61531204', `status` = 'booked',`DWC_discount` = '$temp_d', `general_discount_reason` = '$gdr' WHERE `charterID` = '$_POST[charter]' AND `sessionID` = '$_SESSION[sessionID]'";
+
+					// This needs to be put into a loop
+					//$sql2 = "UPDATE `inventory` SET `reservationID` = '$reservationID', `commission_at_time_of_booking` = '0', `passengerID` = '61531204', `status` = 'booked',`DWC_discount` = '$temp_d', `general_discount_reason` = '$gdr' WHERE `charterID` = '$_POST[charter]' AND `sessionID` = '$_SESSION[sessionID]'";
+                                        $sql2 = "UPDATE `inventory` SET `reservationID` = '$reservationID', `commission_at_time_of_booking` = '0', `passengerID` = '61531204', `status` = 'booked' WHERE `charterID` = '$_POST[charter]' AND `sessionID` = '$_SESSION[sessionID]'";
+
 					$result2 = $reservation->new_mysql($sql2);
 
 					// Add contact profile to inventory
@@ -201,21 +246,82 @@ require "settings.php";
 						$i .= $row3['inventoryID'];
 						$this_passenger = $_POST[$i];
 
+
+						// update discounts
+						$temp_d = "";
+						$discount = $reservation->find_discount($_POST['charter'],$row3['bunk_price']);
+						if (is_array($discount)) {
+							foreach ($discount as $value) {
+								if ($value > $temp_d) {
+									if(!is_array($value)) {
+										$temp_d = $value;
+									}
+								}
+							}
+						}
+
+			                        $sql_b = "
+			                        SELECT
+			                                `sb`.`bunkID`,
+			                                `sb`.`value`,
+			                                `bk`.`cabin`,
+			                                `bk`.`bunk`,
+			                                `b`.`abbreviation`,
+			                                CONCAT(`b`.`abbreviation`,'-',`bk`.`cabin`,`bk`.`bunk`) AS 'location'
+			                        FROM
+			                                `af_df_unified2`.`specials_bunks` sb,
+			                                `reserve`.`bunks` bk,
+			                                `reserve`.`boats` b
+
+			                        WHERE
+			                                `sb`.`discountID` = '".$discount[$temp_d][1]."'
+			                                AND `sb`.`bunkID` = `bk`.`bunkID`
+			                                AND `bk`.`boatID` = `b`.`boatID`
+			
+			                        ";
+			                        $check_discount = $temp_d; // this is here incase the query is empty
+						$new_gdr = "";
+			                        $result_b = $reservation->new_mysql($sql_b);
+			                        $num_rows = $result_b->num_rows;
+			                        if ($num_rows > 0) {
+							// we will follow bunks
+			                                $check_discount = "";
+			                                while ($row_b = $result_b->fetch_assoc()) {
+			                                        if ($row_b['location'] == $row3['bunk']) {
+			                                                $check_discount = $temp_d;
+									$new_gdr = $gdr;
+			                                        }
+			                                }
+			                        } else {
+							// apply discount to all bunks
+							$check_discount = $temp_d;
+							$new_gdr = $gdr;
+						}
+
+						// end discounts
+
+// Notes
+// The discount did not work
+// on the last test. - RBS Jan 20, 2017
+
 						switch ($this_passenger) {
 							case "male":
-								$sql4 = "UPDATE `inventory` SET `passengerID` = '61531879' WHERE `inventoryID` = '$row3[inventoryID]' AND `reservationID` = '$reservationID'";
-								$result4 = $reservation->new_mysql($sql4);
+							$sql4 = "UPDATE `inventory` SET `passengerID` = '61531879', `DWC_discount` = '$check_discount', 
+							`general_discount_reason` = '$new_gdr' WHERE `inventoryID` = '$row3[inventoryID]' AND `reservationID` = '$reservationID'";
+							$result4 = $reservation->new_mysql($sql4);
 							break;
 
 							case "female":
-                        $sql4 = "UPDATE `inventory` SET `passengerID` = '61531880' WHERE `inventoryID` = '$row3[inventoryID]' AND `reservationID` = '$reservationID'";
-                        $result4 = $reservation->new_mysql($sql4);
+				                        $sql4 = "UPDATE `inventory` SET `passengerID` = '61531880', `DWC_discount` = '$check_discount',
+							`general_discount_reason` = '$new_gdr'  WHERE `inventoryID` = '$row3[inventoryID]' AND `reservationID` = '$reservationID'";
+				                        $result4 = $reservation->new_mysql($sql4);
 
 							break;
 
 							default:
-                        $sql4 = "UPDATE `inventory` SET `passengerID` = '61531204' WHERE `inventoryID` = '$row3[inventoryID]' AND `reservationID` = '$reservationID'";
-                        $result4 = $reservation->new_mysql($sql4);
+				                        $sql4 = "UPDATE `inventory` SET `passengerID` = '61531204', `DWC_discount` = '$check_discount',
+							`general_discount_reason` = '$new_gdr'  WHERE `inventoryID` = '$row3[inventoryID]' AND `reservationID` = '$reservationID'";
+				                        $result4 = $reservation->new_mysql($sql4);
 
 							break;
 						}
@@ -232,168 +338,163 @@ require "settings.php";
 							$login_key = md5(uniqid(rand(), true));
 							$sql3 = "UPDATE `inventory` SET `passengerID` = '$_SESSION[contactID]', `login_key` = '$login_key' WHERE `inventoryID` = '$row2[inventoryID]'";
 							$result3 = $reservation->new_mysql($sql3);
-// send GIS link
+							// send GIS link
 
-$login_key = md5(uniqid(rand(), true));
+							$login_key = md5(uniqid(rand(), true));
+							$sql2 = "UPDATE `inventory` SET `passengerID` = '$contactID', `login_key` = '$login_key' WHERE `inventoryID` = '$_GET[inventoryID]'";
 
-      $sql2 = "UPDATE `inventory` SET `passengerID` = '$contactID', `login_key` = '$login_key' WHERE `inventoryID` = '$_GET[inventoryID]'";
+							// generate and send gis
+							$first = $_SESSION['first'];
+							$last = $_SESSION['last'];
+							$email = $_SESSION['email'];
 
+							// get charter ID
+							$sql42 = "SELECT `charterID`,`reservationID` FROM `inventory` WHERE `inventoryID` = '$row2[inventoryID]'";
+							$result42 = $reservation->new_mysql($sql42);
+							while ($row42 = $result42->fetch_assoc()) {
+								$charterID = $row42['charterID'];
+								$reservationID = $row42['reservationID'];
+							}
 
+							// get boatname
+							$sql42 = "
+							SELECT 
+								`boats`.`name`,
+								`charters`.`start_date`
 
-// generate and send gis
+							FROM
+								`charters`,`boats`
+	
+							WHERE
+								`charters`.`charterID` = '$charterID'
+								AND `charters`.`boatID` = `boats`.`boatID`
+							";
+							$result42 = $reservation->new_mysql($sql42);
+							while ($row42 = $result42->fetch_assoc()) {
+								$name = $row42['name'];
+								$start_date = $row42['start_date'];
+							}
 
-$first = $_SESSION['first'];
-$last = $_SESSION['last'];
-$email = $_SESSION['email'];
+							// kbyg 
+							$sql42 = "
+							SELECT 
+								`reserve`.`inventory`.`inventoryID`,
+								`reserve`.`inventory`.`charterID`,
+								`reserve`.`inventory`.`passengerID`,
+								`reserve`.`inventory`.`login_key`,
+								`reserve`.`inventory`.`reservationID`,
+								`reserve`.`contacts`.`first`,
+								`reserve`.`contacts`.`last`,
+								`reserve`.`contacts`.`email`,
+								`reserve`.`contacts`.`contactID`,
+								`reserve`.`boats`.`fleet`,
+								`reserve`.`boats`.`name`,
+								`reserve`.`boats`.`reservationist_email`,
+								`af_df_unified2`.`kbyg`.`fileName`,
+								`reserve`.`charters`.`start_date`
+							FROM
+								`reserve`.`inventory`,
+								`reserve`.`contacts`,
+								`reserve`.`charters`,
+								`reserve`.`boats`,
+								`af_df_unified2`.`kbyg`
 
-// get charter ID
-$sql42 = "SELECT `charterID`,`reservationID` FROM `inventory` WHERE `inventoryID` = '$row2[inventoryID]'";
-$result42 = $reservation->new_mysql($sql42);
-while ($row42 = $result42->fetch_assoc()) {
-	$charterID = $row42['charterID'];
-	$reservationID = $row42['reservationID'];
-}
+							WHERE
+								`reserve`.`inventory`.`inventoryID` = '$row2[inventoryID]'
+								AND `reserve`.`inventory`.`passengerID` = `reserve`.`contacts`.`contactID`
+								AND `reserve`.`inventory`.`charterID` = `reserve`.`charters`.`charterID`
+								AND `reserve`.`charters`.`boatID` = `reserve`.`boats`.`boatID`
+								AND `reserve`.`charters`.`boatID` = `af_df_unified2`.`kbyg`.`boatID`
+								AND `reserve`.`charters`.`destinationID` = `af_df_unified2`.`kbyg`.`destinationID`
+							";
+							$result42 = $reservation->new_mysql($sql42);
+							while ($row42 = $result42->fetch_assoc()) {
+								$fileName = $row42['fileName'];
+								$reservationist_email = $row42['reservationist_email'];
+								$login_key = $row42['login_key'];
+							}
 
-// get boatname
-$sql42 = "
-SELECT 
-`boats`.`name`,
-`charters`.`start_date`
+							// create GIS profile
+							$sql42 = "SELECT * FROM `guestform_status` WHERE `passengerID` = '$contactID' AND `charterID` = '$charterID'";
+							$result42 = $reservation->new_mysql($sql42);
+								while ($row42 = $result42->fetch_assoc()) {
+									$err = "1";
+								}
+								if ($err != "1") {
+									$sql42 = "INSERT INTO `guestform_status` (`passengerID`,`charterID`) VALUES ('$contactID','$charterID')";
+									$result42 = $reservation->new_mysql($sql42);
+								}
 
-FROM
-`charters`,`boats`
+								$sql42 = "UPDATE `inventory` SET `passengerID` = '$contactID', `login_key` = '$login_key' WHERE `inventoryID` = '$row2[inventoryID]'";
+								$result42 = $reservation->new_mysql($sql42);
+								if ($result42 == "TRUE") {
+									// send GIS
+									$_URL = "https://gis.liveaboardfleet.com/gis/index.php/";
+									$guest_url = $_URL.$contactID."/".$reservationID."/".$charterID."/".$login_key;
+									// Add to notes
+									$note_date = date("Ymd");
+									$sql44 = "INSERT INTO `notes` (`note_date`,`table_ref`,`fkey`,`user_id`,`title`,`note`) 
+									VALUES 
+									('$note_date','inventory','$row2[inventoryID]','CRS','GIS Link','Link sent to (guest contact) $first $last - <a href=\"$guest_url\" target=_blank>GO TO GIS PROFILE</a>')";
+									$result44 = $reservation->new_mysql($sql44);
+									$guest_name = "$first $last";
+									$email_subject = 'Guest Profile for '.$guest_name.' - Embark Date '.date("M-d-Y",strtotime($start_date)).' (#'.$reservationID.') ' . $name;
+									$kbyg = "<a href=\"http://www.liveaboardfleet.net/aggressor/upload/$fileName\" target=_blank>Know Before You Go</a>";
+									// legacy (No - we can not use this Rich this is no longer supported by PHP - Robert
+									//$server2   = "mysql";
+									//$username2 = "root";
+									//$password2 = "F7m9dSz0";
+									//$database3 = "reserve";
+									//$database7 = "af_df_unified2";
+									//$af = mysql_connect($server2,$username2,$password2);
+									//$unify = mysql_connect($server2,$username2,$password2,true);
+									//mysql_select_db($database3, $af);
+									//mysql_select_db($database7, $unify);
 
-WHERE
-`charters`.`charterID` = '$charterID'
-AND `charters`.`boatID` = `boats`.`boatID`
-";
-$result42 = $reservation->new_mysql($sql42);
-while ($row42 = $result42->fetch_assoc()) {
-	$name = $row42['name'];
-	$start_date = $row42['start_date'];
-}
+									// get direct or reseller
+									$sql_who = "
+									SELECT
+										`reseller_agents`.`resellerID`
 
-// kbyg 
-$sql42 = "
-SELECT 
-`reserve`.`inventory`.`inventoryID`,
-`reserve`.`inventory`.`charterID`,
-`reserve`.`inventory`.`passengerID`,
-`reserve`.`inventory`.`login_key`,
-`reserve`.`inventory`.`reservationID`,
-`reserve`.`contacts`.`first`,
-`reserve`.`contacts`.`last`,
-`reserve`.`contacts`.`email`,
-`reserve`.`contacts`.`contactID`,
-`reserve`.`boats`.`fleet`,
-`reserve`.`boats`.`name`,
-`reserve`.`boats`.`reservationist_email`,
-`af_df_unified2`.`kbyg`.`fileName`,
-`reserve`.`charters`.`start_date`
-FROM
-`reserve`.`inventory`,
-`reserve`.`contacts`,
-`reserve`.`charters`,
-`reserve`.`boats`,
-`af_df_unified2`.`kbyg`
+									FROM
+										`reservations`,`reseller_agents`
 
-WHERE
-`reserve`.`inventory`.`inventoryID` = '$row2[inventoryID]'
-AND `reserve`.`inventory`.`passengerID` = `reserve`.`contacts`.`contactID`
-AND `reserve`.`inventory`.`charterID` = `reserve`.`charters`.`charterID`
-AND `reserve`.`charters`.`boatID` = `reserve`.`boats`.`boatID`
+									WHERE
+										`reservations`.`reservationID` = '$reservationID'
+										AND `reservations`.`reseller_agentID` = `reseller_agents`.`reseller_agentID`
 
-AND `reserve`.`charters`.`boatID` = `af_df_unified2`.`kbyg`.`boatID`
-AND `reserve`.`charters`.`destinationID` = `af_df_unified2`.`kbyg`.`destinationID`
-";
-$result42 = $reservation->new_mysql($sql42);
-while ($row42 = $result42->fetch_assoc()) {
-	$fileName = $row42['fileName'];
-	$reservationist_email = $row42['reservationist_email'];
-	$login_key = $row42['login_key'];
-}
-
-// create GIS profile
-$sql42 = "SELECT * FROM `guestform_status` WHERE `passengerID` = '$contactID' AND `charterID` = '$charterID'";
-$result42 = $reservation->new_mysql($sql42);
-while ($row42 = $result42->fetch_assoc()) {
-	$err = "1";
-}
-if ($err != "1") {
-	$sql42 = "INSERT INTO `guestform_status` (`passengerID`,`charterID`) VALUES ('$contactID','$charterID')";
-	$result42 = $reservation->new_mysql($sql42);
-}
-
-$sql42 = "UPDATE `inventory` SET `passengerID` = '$contactID', `login_key` = '$login_key' WHERE `inventoryID` = '$row2[inventoryID]'";
-$result42 = $reservation->new_mysql($sql42);
-if ($result42 == "TRUE") {
-	// send GIS
-	$_URL = "https://gis.liveaboardfleet.com/gis/index.php/";
-	$guest_url = $_URL.$contactID."/".$reservationID."/".$charterID."/".$login_key;
-	// Add to notes
-	$note_date = date("Ymd");
-	$sql44 = "INSERT INTO `notes` (`note_date`,`table_ref`,`fkey`,`user_id`,`title`,`note`) 
-	VALUES 
-	('$note_date','inventory','$row2[inventoryID]','CRS','GIS Link','Link sent to (guest contact) $first $last - <a href=\"$guest_url\" target=_blank>GO TO GIS PROFILE</a>')";
-	$result44 = $reservation->new_mysql($sql44);
-	$guest_name = "$first $last";
-	$email_subject = 'Guest Profile for '.$guest_name.' - Embark Date '.date("M-d-Y",strtotime($start_date)).' (#'.$reservationID.') ' . $name;
-	$kbyg = "<a href=\"http://www.liveaboardfleet.net/aggressor/upload/$fileName\" target=_blank>Know Before You Go</a>";
-	// legacy
-	$server2   = "mysql";
-	$username2 = "root";
-	$password2 = "F7m9dSz0";
-	$database3 = "reserve";
-	$database7 = "af_df_unified2";
-	$af = mysql_connect($server2,$username2,$password2);
-	$unify = mysql_connect($server2,$username2,$password2,true);
-	mysql_select_db($database3, $af);
-	mysql_select_db($database7, $unify);
-	// get direct or reseller
-	$sql_who = "
-	SELECT
-	`reseller_agents`.`resellerID`
-
-	FROM
-	`reservations`,`reseller_agents`
-
-	WHERE
-	`reservations`.`reservationID` = '$reservationID'
-	AND `reservations`.`reseller_agentID` = `reseller_agents`.`reseller_agentID`
-
-	";
-	$result_who = mysql_query($sql_who,$af);
-	for ($y=0; $y < mysql_num_rows($result_who); $y++) {
-		$row_who = mysql_fetch_assoc($result_who);
-		$resellerID = $row_who['resellerID'];
-	}
-	if ($resellerID == "19") {
-		$type = "CRS";
-	} else {
-		$type = "Reseller";
-	}
-	$sql_msg = "SELECT `message` FROM `gis_email` WHERE `type` = '$type'";
-	$result_msg = mysql_query($sql_msg, $unify);
-	for ($m=0; $m < mysql_num_rows($result_msg); $m++) {
-		$row_msg = mysql_fetch_assoc($result_msg);
-		$new_msg = str_replace("#kbyg#",$kbyg,$row_msg['message']);
-		$new_msg = str_replace("#guest_url#",$guest_url,$new_msg);
-
-	}
-	// end legacy
-	$email_message = "Dear $guest_name,<br><br>
-	$new_msg
-	";
-	$sendemail = mail($email,$email_subject,$email_message,$headers);
-}
-
-
-
-
-
-
-
-// end GIS
+									";
+									$resultW = $reservation->new_mysql($sql_who);
+									while ($rowW = $resultW->fetch_assoc()) {
+										$resellerID = $rowW['resellerID'];
+									}
+									//$result_who = mysql_query($sql_who,$af);
+									//for ($y=0; $y < mysql_num_rows($result_who); $y++) {
+										//$row_who = mysql_fetch_assoc($result_who);
+										//$resellerID = $row_who['resellerID'];
+									//}
+									if ($resellerID == "19") {
+										$type = "CRS";
+									} else {
+										$type = "Reseller";
+									}
+									$sql_msg = "SELECT `message` FROM `af_df_unified2`.`gis_email` WHERE `type` = '$type'";
+									$result_msg = $reservation->new_mysql($sql_msg);
+									while ($row_msg = $result_msg->fetch_assoc()) {
+								                $new_msg = str_replace("#kbyg#",$kbyg,$row_msg['message']);
+								                $new_msg = str_replace("#guest_url#",$guest_url,$new_msg);
+									}
+									//$result_msg = mysql_query($sql_msg, $unify);
+									//for ($m=0; $m < mysql_num_rows($result_msg); $m++) {
+										//$row_msg = mysql_fetch_assoc($result_msg);
+										//$new_msg = str_replace("#kbyg#",$kbyg,$row_msg['message']);
+										//$new_msg = str_replace("#guest_url#",$guest_url,$new_msg);
+									//}
+									// end legacy
+									$email_message = "Dear $guest_name,<br><br>$new_msg";
+									$sendemail = mail($email,$email_subject,$email_message,$headers);
+								}
+							// end GIS
 						}
 					}
 
@@ -471,6 +572,13 @@ if ($result42 == "TRUE") {
 						
 					}
 
+					$_SESSION['contact_name'] = $contact_name;
+					$_SESSION['reservationID'] = $reservationID;
+					$_SESSION['contactID'] = $contactID;
+
+					/*
+					// this is now displayed in order_processed.php
+
 					print "
 					<br><br>
 					<table width=800>
@@ -491,7 +599,7 @@ if ($result42 == "TRUE") {
 					<tr><td>&nbsp;</td><td><br>
 					<input type=\"image\" src=\"buttons/bt-dashboard.png\" onclick=\"location.href='guests.php?res=$reservationID&c=$contactID';return false;\">&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"index.php?s=1\" target=_blank><img src=\"buttons/bt-makeanother.png\" border=0></a><br>";
 
-
+					*/
 					?>
 
 
@@ -523,6 +631,11 @@ ga('ecommerce:send');
 </script>
 
 					<?php
+
+
+
+
+
 
 					// email contact
 

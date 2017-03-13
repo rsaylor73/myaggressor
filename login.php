@@ -8,7 +8,6 @@ if (($_GET['uuname'] != "") && ($_GET['uupass'] != "")) {
 
 	$result = $reservation->new_mysql($sql);
 	while ($row = $result->fetch_assoc()) {
-
                 $donotbook = $row['donotbook'];
                 if ($donotbook == "Y") {
                         print "
@@ -20,6 +19,14 @@ if (($_GET['uuname'] != "") && ($_GET['uupass'] != "")) {
                         ";
                         die;
                 }
+
+		// log in log
+		$date = date("Y-m-d");
+		$time = date("H:i:s");
+		$ip_address = $_SERVER['REMOTE_ADDR'];
+		$sql2 = "INSERT INTO `crs_rrs_login_log` (`date`,`time`,`contactID`,`ip_address`) VALUES ('$date','$time','$row[contactID]','$ip_address')";
+		$result2 = $reservation->new_mysql($sql2);
+		// end login log
 
 		$err = "0";
 		$_SESSION['uuname'] = $row['uuname'];
