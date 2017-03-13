@@ -2725,10 +2725,12 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
             switch ($_SESSION['contact_type']) {
                case "reseller_manager":
                case "reseller_agent":
+			$gis = " | <a href=\"gis.php?res=$row[reservationID]\">GIS</a>";
 	               $invoice = " | <a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Aggressor Invoice</a> | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
                break;
 
                case "reseller_third_party":
+		$gis = " | <a href=\"gis.php?res=$row[reservationID]\">GIS</a>";
                $invoice = " | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
                break;
 
@@ -2737,8 +2739,8 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 		print "<tr><td>$row[reservationID]</td><td>$row[name]</td><td>$row[start_date]</td><td>$row[nights]</td>";
 
 		if (($_SESSION['contactID'] == $row['reservation_contactID']) or ($_SESSION['contact_type'] == "reseller_third_party")) {
-			print "<td><a href=\"guests.php?res=$row[reservationID]&c=$_SESSION[contactID]\">Assign Guests</a> | 
-				<a href=\"gis.php?res=$row[reservationID]\">GIS</a> $invoice</td></tr>";
+			print "<td><a href=\"guests.php?res=$row[reservationID]&c=$_SESSION[contactID]\">Assign Guests</a> 
+				$gis $invoice</td></tr>";
 		} else {
 			print "<td>&nbsp;</td>";
 		}
@@ -3063,7 +3065,6 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 				die;
          }
          $this->header_top();
-
          // check if user is a reseller
          $cont = $this->is_general_reseller();
          $this->eval_reseller($cont);
