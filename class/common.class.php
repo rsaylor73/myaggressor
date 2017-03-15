@@ -1769,7 +1769,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 	            die;
 	        }
 	        $this->header_top();
-	        print "<br><span class=\"result-title-text\">Aggressor Fleet Boutique Coupon Codes($_SESSION[first] $_SESSION[last])</span><br><br>
+	        print "<br><span class=\"result-title-text\">Aggressor Fleet Boutique Coupon Codes ($_SESSION[first] $_SESSION[last])</span><br><br>
 	        <span class=\"details-description\">";
 
 		print "<table class=\"table table-striped\">
@@ -1785,7 +1785,28 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
 			$amount = $row['points_used'] * 0.05;
-			print "<tr><td>$row[code_issued]</td><td>$row[points_used]</td><td>$row[date]</td><td>$$amount</td><td>TBD</td></tr>";
+
+		        $linkID2 = new mysqli(HOST2, USER2, PASS2, DB2);
+			$sql2 = "SELECT `quantity` FROM `ps_cart_rule` WHERE `code` = '$row[code_issued]'";
+			$result2 = $linkID2->query($sql2);
+			while ($row2 = $result2->fetch_assoc()) {
+				$status = $row2['quantity'];
+			}
+			switch ($status) {
+				case "1":
+				$status2 = "<font color=green>No</font>";
+				break;
+
+				case "0":
+				$status2 = "<font color=red>Yes</font>";
+				break;
+
+				default:
+                                $status2 = "<font color=red>Yes</font>";
+				break;
+			}
+
+			print "<tr><td>$row[code_issued]</td><td>$row[points_used]</td><td>$row[date]</td><td>$$amount</td><td>$status2</td></tr>";
 			$found = "1";
 		}
 		if ($found != "1") {
@@ -1816,7 +1837,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         $code = $this->generate_code('8');
 
         $date1 = date("Y-m-d H:i:s");
-        $date2 = date("Y-m-d H:i:s", strtotime($date1 . ' +30 day'));
+        $date2 = date("Y-m-d H:i:s", strtotime($date1 . ' +2000 day'));
         $date3 = date("Ymd");
 
         $sql = "
