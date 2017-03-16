@@ -1335,16 +1335,37 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           $points = $row['points'];
         }
         if ($points > 0) {
+	  $cal = $points * .05;
           print "<form action=\"redeem.php\" method=\"post\" target=\"_blank\">
           <input type=\"hidden\" name=\"section\" value=\"redeem\">
           <table class=\"table table-striped\">
-          <tr><td>How many points would you like to redeem?</td><td><input type=\"number\" max=\"$points\" placeholder=\"$points\" name=\"points\" onkeypress=\"return isNumberKey(event)\" required class=\"form-control\"></td></tr>
-          <tr><td>&nbsp;</td><td><b>Balance: $points</b></td></tr>
+          <tr>
+		<td>How many points would you like to redeem?</td>
+		<td><input type=\"number\" max=\"$points\" placeholder=\"$points\" name=\"points\" id=\"points\" 
+		onmouseout=\"docal()\"
+		onchange=\"docal();\"
+		onkeypress=\"return isNumberKey(event);\" required class=\"form-control\"></td>
+		<td> = </td>
+		<td>
+
+		<div class=\"input-group\">
+		  <span class=\"input-group-addon\">$</span>
+		  <input type=\"text\" readonly id=\"visual\" class=\"form-control\" placeholder=\" 0.00\">
+		</div>
+
+
+	</td>
+
+	</tr>
+          <tr><td>&nbsp;</td><td align=\"right\"><b>Your Point Balance: $points</b></td><td>=</td><td><b>$ $cal</b></td></tr>
           <tr><td colspan=\"2\">
-		<input type=\"submit\" value=\"Redeem Points\" class=\"btn btn-primary\">&nbsp;&nbsp;
-		<input type=\"button\" value=\"View Past Coupons\" class=\"btn btn-success\" onclick=\"document.location.href='viewpastcoupons.php'\">&nbsp;&nbsp;
+		<input type=\"button\" value=\"View Past Coupons\" class=\"btn btn-primary\" onclick=\"document.location.href='viewpastcoupons.php'\">&nbsp;&nbsp;
 	
-          <input type=\"button\" value=\"Cancel\" class=\"btn btn-warning\" onclick=\"document.location.href='portal.php'\"></td></tr>
+          <input type=\"button\" value=\"Cancel\" class=\"btn btn-warning\" onclick=\"document.location.href='portal.php'\"></td>
+
+	<td colspan=\"2\" align=\"right\"><input type=\"submit\" value=\"Redeem Points\" class=\"btn btn-success\">
+
+	</tr>
           </table>
           </form>";
         } else {
@@ -1365,9 +1386,39 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 		if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
 			return false;
 		}
-
 		return true;
 	}
+
+	function docal() {
+		var num = document.getElementById('points').value;
+		num2 = num * 0.05;
+		num2 = number_format(num2,2, '.', ',' );
+		document.getElementById('visual').value = num2;
+	}
+
+	function number_format(number, decimals, decPoint, thousandsSep){
+	decimals = decimals || 0;
+	number = parseFloat(number);
+
+	if(!decPoint || !thousandsSep){
+		decPoint = '.';
+		thousandsSep = ',';
+	}
+
+	var roundedNumber = Math.round( Math.abs( number ) * ('1e' + decimals) ) + '';
+	var numbersString = decimals ? roundedNumber.slice(0, decimals * -1) : roundedNumber;
+	var decimalsString = decimals ? roundedNumber.slice(decimals * -1) : '';
+	var formattedNumber = "";
+
+	while(numbersString.length > 3){
+		formattedNumber += thousandsSep + numbersString.slice(-3)
+		numbersString = numbersString.slice(0,-3);
+	}
+
+	return (number < 0 ? '-' : '') + numbersString + formattedNumber + (decimalsString ? (decPoint + decimalsString) : '');
+}
+
+
 	</script>
 	<?php
 
