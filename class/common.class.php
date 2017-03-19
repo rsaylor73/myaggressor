@@ -1326,7 +1326,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         }
         $this->header_top();
         print "<br><span class=\"result-title-text\">Points ($_SESSION[first] $_SESSION[last])</span><br><br>
-        <span class=\"details-description\">";
+	";
 
         $points = "0";
         $sql = "SELECT `points` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
@@ -1357,7 +1357,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 	</td>
 
 	</tr>
-          <tr><td>&nbsp;</td><td align=\"right\"><b>Your Point Balance: $points</b></td><td>=</td><td><b>$ $cal</b></td></tr>
+          <tr><td>&nbsp;</td><td align=\"right\"><b>Your Point Balance: $points</b></td><td>=</td><td><b>$ ".number_format($cal,2,'.',',')."</b></td></tr>
           <tr><td colspan=\"2\">
 		<input type=\"button\" value=\"View Past Coupons\" class=\"btn btn-primary\" onclick=\"document.location.href='viewpastcoupons.php'\">&nbsp;&nbsp;
 	
@@ -1375,9 +1375,20 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         }
 
 	print "<br>
-	<b>Ways to earn Boutique Points:</b> 400 points for making a Reservation & Deposit, 100 for completing Customer Survey, & 100 as a Birthday gift.<br>";
+	<b>Ways to earn boutique points:</b> 400 points for making a Reservation & Deposit, 100 for completing Guest Survey, and 100 as a Birthday gift.
+	One point is equivalent to $.05. Example: 100 points equal $5. Points do not expire, however, redeemed points do. See FAQ’s below.<br><br>
 
-        print "</span>";
+	<b>FAQ’s</b><br>
+	<b>Do redeemed points expire?</b> - Yes, when you redeem points a coupon code is created for use in the LiveAboard Boutique. That coupon code will expire 2 years from the day it is created. You can see unused coupon codes by clicking the “View Past Coupons” button.<br><br>
+
+	<b>Can I combine my coupons?</b> - Yes, you can type in multiple coupon codes at check out.<br><br>
+
+	<b>Can I use my coupon on sale items and/or with other discounts & specials?</b> - Yes<br><br>
+
+	<b>Are there any restrictions?</b> - Yes, coupons can only be redeemed on Aggressor, Divegear & PirateGear products in our online LiveAboard Boutique. They can not be used on Aqua Lung products, charters or merchandise onboard our yacht stores.<br><br> 
+
+	";
+
 
 	?>
 	<script>
@@ -1821,7 +1832,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 	        }
 	        $this->header_top();
 	        print "<br><span class=\"result-title-text\">Aggressor Fleet Boutique Coupon Codes ($_SESSION[first] $_SESSION[last])</span><br><br>
-	        <span class=\"details-description\">";
+		";
 
 		print "<table class=\"table table-striped\">
 		<tr>
@@ -1867,7 +1878,6 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 
 
 
-	        print "</span>";
 	        $this->header_bot();
 	}
 
@@ -1888,7 +1898,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         $code = $this->generate_code('8');
 
         $date1 = date("Y-m-d H:i:s");
-        $date2 = date("Y-m-d H:i:s", strtotime($date1 . ' +2000 day'));
+        $date2 = date("Y-m-d H:i:s", strtotime($date1 . ' +2 year'));
         $date3 = date("Ymd");
 
         $sql = "
@@ -1929,11 +1939,15 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           $result5 = $this->new_mysql($sql5);
           $_SESSION['points'] = $points;
 
-          print "<br><br>Thank you, your points have been redeemed in the amount <b>$ $amount</b>. Please use coupon code <b><font color=red>$code</font></b> at the <a href=\"http://www.liveaboardboutique.com\" target=_blank>Aggressor Fleet Boutique</a>.<br><br>
+          print "<br><br>Thank you, your points have been redeemed in the amount <b>$ ". number_format($amount,2,'.',',')."</b>. Please use coupon code <b><font color=red>$code</font></b> at the <a href=\"http://www.liveaboardboutique.com\" target=_blank>Aggressor Fleet Boutique</a>.<br><br>
 
-	<b>Please write down the code above. Once you close or leave this page the code will no longer be available.</b>
 
-	<br><br><input type=\"button\" value=\"Back to My Aggressor\" class=\"btn btn-success\" onclick=\"document.location.href='portal.php'\"><br>";
+	Please copy & paste the code above into the Coupon box at check out.<br>
+	Your code can also be found on your Points page by clicking the “View Past Coupons” button.
+
+	<br><br>
+	<input type=\"button\" value=\"Back to Boutique Points\" class=\"btn btn-primary\" onclick=\"document.location.href='redeem.php'\">&nbsp;
+	<input type=\"button\" value=\"Back to My Aggressor\" class=\"btn btn-primary\" onclick=\"document.location.href='portal.php'\"><br>";
         }
 
 
@@ -2026,7 +2040,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
             die;
         }
         $this->header_top();
-        print "<br><span class=\"result-title-text\">Dive Log ($_SESSION[first] $_SESSION[last])</span><br><br>
+        print "<br><span class=\"result-title-text\">Dive Log ($_SESSION[first] $_SESSION[last])&nbsp;<a href=\"adddivelog.php\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Log</a></span><br><br>
         <span class=\"details-description\">";
         // content
 
@@ -2408,13 +2422,16 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
             die;
         }
         $this->header_top();
-        print "<h2>Dive Log</h2>";
+        print "<h2>Dive Log &nbsp;<a href=\"adddivelog.php\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Log</a></h2>";
         $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY replace(`dive_date`,'-','') DESC";
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "<a href=\"adddivelog.php?section=edit&id=$row[id]\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> $row[dive_date] - $row[site]</a><br>";
+	  $found = "1";
         }
-
+	if ($found != "1") {
+		print "<br><font color=blue>You do not have any dive logs.</font><br>";
+	}
 
         print "</span>";
         $this->header_bot();
