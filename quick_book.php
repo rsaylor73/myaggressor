@@ -46,7 +46,7 @@
 
 			switch ($_SESSION['contact_type']) {
                case "consumer":
-					$stop = "4";
+					$stop = "6";
 					break;
 
 					default:
@@ -60,7 +60,7 @@
                   <input type=\"image\" src=\"buttons/bt-booknow.png\" name=\"inventoryID_$_POST[qb]\" id=\"inventoryID_$_POST[qb]\" onclick=\"quickbook".$_POST['qb']."(this.form);return false;\">
                   </form>";
 
-				print "<br><font color=red>You can not book for then 4 staterooms.</font>";
+				print "<br><font color=red>Limit Reached: You can only book 6 bunks per reservation.</font>";
                   ?>            
                                 <script>
                                 function quickbook<?php echo $_POST['qb'];?>(myform) {
@@ -123,7 +123,7 @@
 
 
 			print "<form name=\"MyForm\"><input type=\"hidden\" name=\"cancel\" value=\"$_POST[qb]\">
-			<input type=\"image\" src=\"buttons/bt-cancel.png\" onclick=\"quickbook".$_POST['qb']."(this.form);return false;\"> <a href=\"javascript:void(0)\" title=\"You have reserved this space for 30 minutes. To checkout click Continue.\">reserved</a>
+			<input type=\"image\" src=\"buttons/bt-cancel.png\" onclick=\"quickbook".$_POST['qb']."(this.form);return false;\"> <a href=\"javascript:void(0)\" title=\"You have reserved this space for 45 minutes. To checkout click Continue.\">reserved</a>
 			</form>";
                   ?>            
                                 <script>
