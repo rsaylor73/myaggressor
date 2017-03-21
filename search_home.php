@@ -257,7 +257,7 @@ function selectAll(selectBox,selectAll) {
       <div id="reservation-start-input-box-submit">
         &nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-primary btn_custom" value="Search" style="width:200px;"> 
 		</form><br>
-		<br>
+		<br><br>
 
 
 		&nbsp;&nbsp;&nbsp;<input type="button" class="btn btn-success btn_custom btn_custom_font" value="Specials" onclick="document.location.href='specials.php'">
