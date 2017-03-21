@@ -99,8 +99,8 @@ UNION
 
 SELECT
         `ri`.`yacht` AS 'name',
-        `bi`.`longitude`,
-        `bi`.`latitude`
+        `bi`.`latitude`,
+        `bi`.`longitude`
 
 FROM
         `reservations_imported` ri,
@@ -112,7 +112,6 @@ WHERE
 
 GROUP BY `name`
 ";
-
 
 $result4 = $this->new_mysql($sql4);
 while ($row4 = $result4->fetch_assoc()) {
@@ -137,13 +136,17 @@ while ($row4 = $result4->fetch_assoc()) {
 
 <?php
 /*
+   print "
     {
-        "title": 'Bahamas',
-        "lat": '25.022566',
-        "lng": '-77.365723',
-        "description": 'Bahamas Aggressor',
-        "icon": "red-circle.png"
+        \"title\": 'Bahamas',
+        \"lat\": '25.022566',
+        \"lng\": '-77.365723',
+        \"description\": 'Bahamas Aggressor',
+        \"icon\": \"red-circle.png\"
     },
+   ";
+*/
+/*
     {
         "title": 'Sri Lanka',
         "lat": '6.903705',

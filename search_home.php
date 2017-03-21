@@ -83,20 +83,22 @@
                print "<option selected>$_GET[passengers]</option>";
             }
             if ($_GET['passengers'] == "") {
-               print "<option selected value=\"1\">--Select--</option>";
+               print "<option selected value=\"1\">Select</option>";
             }
             ?>
 
-				<?php
-            switch ($_SESSION['contact_type']) {
-               case "consumer":
-					$options = '
-	            <option value="1">1</option>
-   	         <option value="2">2</option>
-      	      <option value="3">3</option>
-         	   <option value="4">4</option>
-					';
-               break;
+	<?php
+	switch ($_SESSION['contact_type']) {
+		case "consumer":
+		$options = '
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+         	<option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+		';
+                break;
 
 
                case "reseller_manager":
@@ -146,6 +148,8 @@
                <option value="2">2</option>
                <option value="3">3</option>
                <option value="4">4</option>
+               <option value="5">5</option>
+               <option value="6">6</option>
                ';
 					break;
             }
@@ -251,9 +255,14 @@ function selectAll(selectBox,selectAll) {
 }
 </script>
       <div id="reservation-start-input-box-submit">
-        &nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-success btn_custom" value="Search" style="width:200px;"> 
+        &nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-primary btn_custom" value="Search" style="width:200px;"> 
 		</form><br>
-		<br>
+		<br><br>
+
+
+		&nbsp;&nbsp;&nbsp;<input type="button" class="btn btn-success btn_custom btn_custom_font" value="Specials" onclick="document.location.href='specials.php'">
+		<br><br>
+
 		<form name="MyForm" id="MyForm" method="get" action="portal.php">
 		
 
@@ -263,8 +272,8 @@ function selectAll(selectBox,selectAll) {
 			&nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Log In" id="submit" style="width:200px;">
 			<?php
 			} else {
-                        print "&nbsp;&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-primary\" value=\"My Aggressor\" id=\"submit\">&nbsp;&nbsp;
-                        <input type=\"button\" class=\"btn btn-primary\" value=\"Log Out\" onclick=\"document.location.href='logout.php';return false;\">";
+                        print "&nbsp;&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-primary btn_custom\" value=\"Home\" id=\"submit\"><br><br>
+                        &nbsp;&nbsp;&nbsp;<input type=\"button\" class=\"btn btn-primary btn_custom\" value=\"Log Out\" onclick=\"document.location.href='logout.php';return false;\"><br><br>";
 
 			}
 		?>
