@@ -257,7 +257,7 @@ function selectAll(selectBox,selectAll) {
       <div id="reservation-start-input-box-submit">
         &nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-primary btn_custom" value="Search" style="width:200px;"> 
 		</form><br>
-		<br>
+		<br><br>
 
 
 		&nbsp;&nbsp;&nbsp;<input type="button" class="btn btn-success btn_custom btn_custom_font" value="Specials" onclick="document.location.href='specials.php'">
@@ -272,8 +272,8 @@ function selectAll(selectBox,selectAll) {
 			&nbsp;&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Log In" id="submit" style="width:200px;">
 			<?php
 			} else {
-                        print "&nbsp;&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-primary\" value=\"My Aggressor\" id=\"submit\">&nbsp;&nbsp;
-                        <input type=\"button\" class=\"btn btn-primary\" value=\"Log Out\" onclick=\"document.location.href='logout.php';return false;\">";
+                        print "&nbsp;&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-primary btn_custom\" value=\"Home\" id=\"submit\"><br><br>
+                        &nbsp;&nbsp;&nbsp;<input type=\"button\" class=\"btn btn-primary btn_custom\" value=\"Log Out\" onclick=\"document.location.href='logout.php';return false;\"><br><br>";
 
 			}
 		?>
