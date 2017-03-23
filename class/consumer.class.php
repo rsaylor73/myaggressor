@@ -3033,10 +3033,10 @@ class Reservation {
 
    	      print "<table border=\"0\" width=\"800\" cellspacing=3>";
 
-				print '
+				print '		
 						<tr><td width="300">&nbsp;</td>
-						<td width="90" class="view_details-description">Gender</td>
-							<td width="146" class="view_details-description">Stateroom</td>
+							<td width="90" class="view_details-description">Gender</td>
+							<td width="146" class="view_details-description">Available Bed</td>
 							<td width="156" class="view_details-description">Amount</td>
 							<td width="166"></tr>
 				';
@@ -3181,7 +3181,23 @@ class Reservation {
 							} else {
 								$sex = $this->get_sex($_GET['charter'],$row['bunk']);
 							}
-						print "<tr><td width=\"250\">&nbsp;</td>
+						if(!isset($stateroom_number))
+							{
+							$stateroom_number='Stateroom '.substr($bunk,0,2);
+							}
+							else
+							{
+							if($stateroom_number!='Stateroom '.substr($bunk,0,2))
+								{
+								$stateroom_number='Stateroom '.substr($bunk,0,2);
+								}
+								else
+								{
+								$stateroom_number='';
+								}
+
+							}
+						print "<tr><td width='250'></td><td width='120'>$stateroom_number</td></tr><tr><td width=\"250\">&nbsp;</td>
 						<td class=\"details-description\">".$sex."</td>
 						<td class=\"details-description\">$bunk</td>";
 
