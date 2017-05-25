@@ -893,7 +893,7 @@ class Reservation {
                                  <tr>
                                     <td width=\"263\" class=\"details-top\">&nbsp;</td>
                                     <td width=\"303\" class=\"details-top\">&nbsp;</td>
-                                    <td width=\"283\" align=\"right\" class=\"d;etails-top\">&nbsp;</td>
+                                    <td width=\"283\" align=\"right\" class=\"details-top\">&nbsp;</td>
                                  </tr>
                               </table> 
                            </td>
