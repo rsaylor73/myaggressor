@@ -893,7 +893,7 @@ class Reservation {
                                  <tr>
                                     <td width=\"263\" class=\"details-top\">&nbsp;</td>
                                     <td width=\"303\" class=\"details-top\">&nbsp;</td>
-                                    <td width=\"283\" align=\"right\" class=\"details-top\">&nbsp;</td>
+                                    <td width=\"283\" align=\"right\" class=\"d;etails-top\">&nbsp;</td>
                                  </tr>
                               </table> 
                            </td>
@@ -2058,6 +2058,8 @@ class Reservation {
 			AND (`reserve`.`inventory`.`sessionID` = '$ses_id' OR `reserve`.`inventory`.`sessionID` = '')
 			#AND `reserve`.`inventory`.`status` = 'avail'
       ";
+	if($_GET['passengers']==1)
+		$sql=$sql."And `reserve`.`inventory`.`bunk_description` not like '%QN%' And `reserve`.`inventory`.`bunk_description` not like '%KING%' And `reserve`.`inventory`.`bunk_description` not like '%Queen%'";
       return $sql;
    }
 
@@ -2521,7 +2523,8 @@ class Reservation {
 
 
 	public function details_pax1() {
-         print "
+         
+	print "
          <div id=\"result_wrapper\">
             <div id=\"result_pos1\">
                <div id=\"result_pos2\">
@@ -2566,6 +2569,7 @@ class Reservation {
             AND `reserve`.`charters`.`destinationID` = `reserve`.`destinations`.`destinationID`
 
          ";
+	
          $result = $this->new_mysql($sql);
          while($row = $result->fetch_assoc()) {
             $di = $row['destination_image'];
@@ -2711,10 +2715,14 @@ class Reservation {
 				AND `reserve`.`boats`.`boatID` = `reserve`.`bunks`.`boatID`
 				AND `reserve`.`inventory`.`bunk` = concat(`reserve`.`boats`.`abbreviation`,'-',`reserve`.`bunks`.`cabin`,`reserve`.`bunks`.`bunk`)
 				AND `reserve`.`bunks`.`cabin_type` != ''
-
-			";
+				 and `inventory`.`bunk_description` not like '%queen%'
+                                        and `inventory`.`bunk_description` not like '%qn'
+                                and `inventory`.`bunk_description` not like '%QN%' 
+				and `inventory`.`bunk_description` not like '%KING%' 		
+		";
+		
 //ROBERT2
-
+			
 			print "<table border=0 width=700>
 			<tr><td colspan=4>
 

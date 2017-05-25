@@ -40,8 +40,12 @@ class Common {
                      }
                   }
                }
-
-
+		if($row['contact_type']!="consumer"){
+		$today= date("Ymd"); 
+		$sql3="Insert into `reseller_res_log` (`contactID`,`reseller_agentID`,`date`) values('$row[contactID]','$row[reseller_agentID]',$today)";
+		//echo($sql3);
+		$result3=$this->new_mysql($sql3);
+			}
             }
             if ($status != "TRUE") {
                $status = "FALSE";
@@ -54,7 +58,7 @@ class Common {
          if ($stop == "1") {
             $status = "FALSE";
          }
-
+	
          return $status;
       }
 
