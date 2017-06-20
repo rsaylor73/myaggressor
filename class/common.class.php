@@ -1103,11 +1103,33 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         ";
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
+		// get GIS link
+		$sql2 = "
+		SELECT
+			`i`.`charterID`,
+			`i`.`passengerID`,
+			`i`.`reservationID`,
+			`i`.`login_key`
+
+		FROM
+			`inventory` i
+
+		WHERE
+			`i`.`reservationID` = '$reservationID'
+			AND `i`.`passengerID` = '$_SESSION[contactID]'
+			AND `i`.`login_key` != ''
+		";
+		$result2 = $this->new_mysql($sql2);
+		while ($row2 = $result2->fetch_assoc()) {
+			$gis_link = "<br>
+			<a href=\"https://gis.liveaboardfleet.com/gis/index.php/$row2[passengerID]/$row2[reservationID]/$row2[charterID]/$row2[login_key]\" target=_blank>Access GIS</a>";
+		}
+
           print "<br>
           <table class=\"table-curved\" cellspacing=\"0\" cellpadding=\"0\" width=\"220\" height=\"75\">
             <td valign=middle width=\"72\"><center><img src=\"$row[logo_url]\" width=\"60\" height=\"71\"></center></td>
             <td valign=middle width=\"148\"><b><span class=\"details-prices2\"><center>$row[name]</center></span></b>
-            <span class=\"details-prices2-red\"><p><center>$row[days] Days</center></p></span></td>
+            <span class=\"details-prices2-red\"><p><center>$row[days] Days$gis_link</center></p></span></td>
           </tr>
           </table>
 	  ";
@@ -1304,7 +1326,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         }
         $this->header_top();
         print "<br><span class=\"result-title-text\">Points ($_SESSION[first] $_SESSION[last])</span><br><br>
-        <span class=\"details-description\">";
+	";
 
         $points = "0";
         $sql = "SELECT `points` FROM `contacts` WHERE `contactID` = '$_SESSION[contactID]'";
@@ -1313,23 +1335,104 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           $points = $row['points'];
         }
         if ($points > 0) {
+	  $cal = $points * .05;
           print "<form action=\"redeem.php\" method=\"post\" target=\"_blank\">
           <input type=\"hidden\" name=\"section\" value=\"redeem\">
-          <table class=\"table\">
-          <tr><td>How many points would you like to redeem?</td><td><input type=\"text\" name=\"points\" size=\"20\" required></td></tr>
-          <tr><td>&nbsp;</td><td><b>Balance: $points</b></td></tr>
-          <tr><td colspan=\"2\"><input type=\"submit\" value=\"Redeem Points\" class=\"btn btn-primary\">&nbsp;&nbsp;
-          <input type=\"button\" value=\"Cancel\" class=\"btn btn-warning\" onclick=\"document.location.href='portal.php'\"></td></tr>
+          <table class=\"table table-striped\">
+          <tr>
+		<td>How many points would you like to redeem?</td>
+		<td><input type=\"number\" max=\"$points\" placeholder=\"$points\" name=\"points\" id=\"points\" 
+		onmouseout=\"docal()\"
+		onchange=\"docal();\"
+		onkeypress=\"return isNumberKey(event);\" required class=\"form-control\"></td>
+		<td> = </td>
+		<td>
+
+		<div class=\"input-group\">
+		  <span class=\"input-group-addon\">$</span>
+		  <input type=\"text\" readonly id=\"visual\" class=\"form-control\" placeholder=\" 0.00\">
+		</div>
+
+
+	</td>
+
+	</tr>
+          <tr><td>&nbsp;</td><td align=\"right\"><b>Your Point Balance: $points</b></td><td>=</td><td><b>$ ".number_format($cal,2,'.',',')."</b></td></tr>
+          <tr><td colspan=\"2\">
+		<input type=\"button\" value=\"View Past Coupons\" class=\"btn btn-primary\" onclick=\"document.location.href='viewpastcoupons.php'\">&nbsp;&nbsp;
+	
+          <input type=\"button\" value=\"Cancel\" class=\"btn btn-warning\" onclick=\"document.location.href='portal.php'\"></td>
+
+	<td colspan=\"2\" align=\"right\"><input type=\"submit\" value=\"Redeem Points\" class=\"btn btn-success\">
+
+	</tr>
           </table>
           </form>";
         } else {
-          print "<br><font color=red>Sorry, but you do not have any points to redeem.</font><br>";
+		print "<br><font color=red>Sorry, but you do not have any points to redeem.</font><br><br>
+		<input type=\"button\" value=\"View Past Coupons\" class=\"btn btn-success\" onclick=\"document.location.href='viewpastcoupons.php'\"><br>
+		";
         }
 
 	print "<br>
-	<b>Ways to earn Boutique Points:</b> 400 points for making a Reservation & Deposit, 100 for completing Customer Survey, & 100 as a Birthday gift.<br>";
+	<b>Ways to earn boutique points:</b> 400 points for making a Reservation & Deposit, 100 for completing Guest Survey, and 100 as a Birthday gift.
+	One point is equivalent to $.05. Example: 100 points equal $5. Points do not expire, however, redeemed points do. See FAQ’s below.<br><br>
 
-        print "</span>";
+	<b>FAQ’s</b><br>
+	<b>Do redeemed points expire?</b> - Yes, when you redeem points a coupon code is created for use in the LiveAboard Boutique. That coupon code will expire 2 years from the day it is created. You can see unused coupon codes by clicking the “View Past Coupons” button.<br><br>
+
+	<b>Can I combine my coupons?</b> - Yes, you can type in multiple coupon codes at check out.<br><br>
+
+	<b>Can I use my coupon on sale items and/or with other discounts & specials?</b> - Yes<br><br>
+
+	<b>Are there any restrictions?</b> - Yes, coupons can only be redeemed on Aggressor, Divegear & PirateGear products in our online LiveAboard Boutique. They can not be used on Aqua Lung products, charters or merchandise onboard our yacht stores.<br><br> 
+
+	";
+
+
+	?>
+	<script>
+	function isNumberKey(evt) {
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+			return false;
+		}
+		return true;
+	}
+
+	function docal() {
+		var num = document.getElementById('points').value;
+		num2 = num * 0.05;
+		num2 = number_format(num2,2, '.', ',' );
+		document.getElementById('visual').value = num2;
+	}
+
+	function number_format(number, decimals, decPoint, thousandsSep){
+	decimals = decimals || 0;
+	number = parseFloat(number);
+
+	if(!decPoint || !thousandsSep){
+		decPoint = '.';
+		thousandsSep = ',';
+	}
+
+	var roundedNumber = Math.round( Math.abs( number ) * ('1e' + decimals) ) + '';
+	var numbersString = decimals ? roundedNumber.slice(0, decimals * -1) : roundedNumber;
+	var decimalsString = decimals ? roundedNumber.slice(decimals * -1) : '';
+	var formattedNumber = "";
+
+	while(numbersString.length > 3){
+		formattedNumber += thousandsSep + numbersString.slice(-3)
+		numbersString = numbersString.slice(0,-3);
+	}
+
+	return (number < 0 ? '-' : '') + numbersString + formattedNumber + (decimalsString ? (decPoint + decimalsString) : '');
+}
+
+
+	</script>
+	<?php
+
         $this->header_bot();
 
       }
@@ -1717,6 +1820,67 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         return $code;
       }
 
+	public function viewpastcoupons() {
+	        $uri = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	        $check_login = $this->check_login();
+        	if ($check_login == "FALSE") {
+	            // show login/register
+        	    //include "class/consummer.class.php";
+	            $reservation = new Reservation($linkID);
+	            $reservation->login_screen($uri);
+	            die;
+	        }
+	        $this->header_top();
+	        print "<br><span class=\"result-title-text\">Aggressor Fleet Boutique Coupon Codes ($_SESSION[first] $_SESSION[last])</span><br><br>
+		";
+
+		print "<table class=\"table table-striped\">
+		<tr>
+			<td><b>Coupon Code</b></td>
+			<td><b>Pounts Redeemed</b></td>
+			<td><b>Date Created</b></td>
+			<td><b>Dollar Value</b></td>
+			<td><b>Coupon Redeemed</b></td>
+		</tr>";
+
+		$sql = "SELECT `points_used`,`code_issued`,DATE_FORMAT(`date`,'%m/%d/%Y') AS 'date' FROM `points_log` WHERE `contactID` = '$_SESSION[contactID]'";
+		$result = $this->new_mysql($sql);
+		while ($row = $result->fetch_assoc()) {
+			$amount = $row['points_used'] * 0.05;
+
+		        $linkID2 = new mysqli(HOST2, USER2, PASS2, DB2);
+			$sql2 = "SELECT `quantity` FROM `ps_cart_rule` WHERE `code` = '$row[code_issued]'";
+			$result2 = $linkID2->query($sql2);
+			while ($row2 = $result2->fetch_assoc()) {
+				$status = $row2['quantity'];
+			}
+			switch ($status) {
+				case "1":
+				$status2 = "<font color=green>No</font>";
+				break;
+
+				case "0":
+				$status2 = "<font color=red>Yes</font>";
+				break;
+
+				default:
+                                $status2 = "<font color=red>Yes</font>";
+				break;
+			}
+
+			print "<tr><td>$row[code_issued]</td><td>$row[points_used]</td><td>$row[date]</td><td>$$amount</td><td>$status2</td></tr>";
+			$found = "1";
+		}
+		if ($found != "1") {
+			print "<tr><td colspan=\"5\"><font color=blue>You do not have any points redeemed.</font></td></tr>";
+		}
+		print "</table>";
+
+
+
+	        $this->header_bot();
+	}
+
 
       private function create_coupon($amount,$points) {
 
@@ -1734,7 +1898,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
         $code = $this->generate_code('8');
 
         $date1 = date("Y-m-d H:i:s");
-        $date2 = date("Y-m-d H:i:s", strtotime($date1 . ' +30 day'));
+        $date2 = date("Y-m-d H:i:s", strtotime($date1 . ' +2 year'));
         $date3 = date("Ymd");
 
         $sql = "
@@ -1775,11 +1939,15 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
           $result5 = $this->new_mysql($sql5);
           $_SESSION['points'] = $points;
 
-          print "<br><br>Thank you, your points have been redeemed in the amount <b>$ $amount</b>. Please use coupon code <b><font color=red>$code</font></b> at the <a href=\"http://www.liveaboardboutique.com\" target=_blank>Aggressor Fleet Boutique</a>.<br><br>
+          print "<br><br>Thank you, your points have been redeemed in the amount <b>$ ". number_format($amount,2,'.',',')."</b>. Please use coupon code <b><font color=red>$code</font></b> at the <a href=\"http://www.liveaboardboutique.com\" target=_blank>Aggressor Fleet Boutique</a>.<br><br>
 
-	<b>Please write down the code above. Once you close or leave this page the code will no longer be available.</b>
 
-	<br><br><input type=\"button\" value=\"Back to My Aggressor\" class=\"btn btn-success\" onclick=\"document.location.href='portal.php'\"><br>";
+	Please copy & paste the code above into the Coupon box at check out.<br>
+	Your code can also be found on your Points page by clicking the “View Past Coupons” button.
+
+	<br><br>
+	<input type=\"button\" value=\"Back to Boutique Points\" class=\"btn btn-primary\" onclick=\"document.location.href='redeem.php'\">&nbsp;
+	<input type=\"button\" value=\"Back to My Aggressor\" class=\"btn btn-primary\" onclick=\"document.location.href='portal.php'\"><br>";
         }
 
 
@@ -1872,7 +2040,7 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
             die;
         }
         $this->header_top();
-        print "<br><span class=\"result-title-text\">Dive Log ($_SESSION[first] $_SESSION[last])</span><br><br>
+        print "<br><span class=\"result-title-text\">Dive Log ($_SESSION[first] $_SESSION[last])&nbsp;<a href=\"adddivelog.php\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Log</a></span><br><br>
         <span class=\"details-description\">";
         // content
 
@@ -2254,13 +2422,16 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
             die;
         }
         $this->header_top();
-        print "<h2>Dive Log</h2>";
+        print "<h2>Dive Log &nbsp;<a href=\"adddivelog.php\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Log</a></h2>";
         $sql = "SELECT `id`,DATE_FORMAT(`dive_date`,'%m/%d/%Y') AS 'dive_date', `site` FROM `dive_log` WHERE `contactID` = '$_SESSION[contactID]' ORDER BY replace(`dive_date`,'-','') DESC";
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
           print "<a href=\"adddivelog.php?section=edit&id=$row[id]\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> $row[dive_date] - $row[site]</a><br>";
+	  $found = "1";
         }
-
+	if ($found != "1") {
+		print "<br><font color=blue>You do not have any dive logs.</font><br>";
+	}
 
         print "</span>";
         $this->header_bot();
@@ -2643,20 +2814,22 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
             switch ($_SESSION['contact_type']) {
                case "reseller_manager":
                case "reseller_agent":
+			$gis = " | <a href=\"gis.php?res=$row[reservationID]\">GIS</a>";
 	               $invoice = " | <a href=\"invoice.php?r=$row[reservationID]\" target=_blank>Aggressor Invoice</a> | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
                break;
 
                case "reseller_third_party":
+		$gis = " | <a href=\"gis.php?res=$row[reservationID]\">GIS</a>";
                $invoice = " | <a href=\"generate_invoice.php?r=$row[reservationID]&rid=$_SESSION[resellerID]\" target=_blank>Generate Invoice</a>";
                break;
 
             }
 
 		print "<tr><td>$row[reservationID]</td><td>$row[name]</td><td>$row[start_date]</td><td>$row[nights]</td>";
-
+$diff=date($row['start_date'])-date();
 		if (($_SESSION['contactID'] == $row['reservation_contactID']) or ($_SESSION['contact_type'] == "reseller_third_party")) {
-			print "<td><a href=\"guests.php?res=$row[reservationID]&c=$_SESSION[contactID]\">Assign Guests</a> | 
-				<a href=\"gis.php?res=$row[reservationID]\">GIS</a> $invoice</td></tr>";
+			print "<td><a href=\"guests.php?res=$row[reservationID]&c=$_SESSION[contactID]\">Assign Guests</a> 
+				$gis $invoice</td></tr>";
 		} else {
 			print "<td>&nbsp;</td>";
 		}
@@ -2981,7 +3154,6 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
 				die;
          }
          $this->header_top();
-
          // check if user is a reseller
          $cont = $this->is_general_reseller();
          $this->eval_reseller($cont);
@@ -4133,9 +4305,105 @@ Thank you for accepting the terms and conditions of WayneWorks Marine, LLC dba A
          }
 
 
-
          $this->header_bot();
 
 		}
+
+
+
+        public function map_numbers($max,$pages) {
+
+                for ($i=0; $i < $pages; $i++) {
+                        if ($stop == "") {
+                                $stop = "0";
+                        }
+                        if ($i > 0) {
+                                $stop = $stop + $max;
+                        }
+                        $i2 = $i + 1;
+                        $array[$i2] = $stop;
+                }
+                return $array;
+        }
+
+        public function page_numbers($sql,$url) {
+                $max = "20";
+                $result = $this->new_mysql($sql);
+                $total_records = $result->num_rows;
+                $total_records = $total_records / $max;
+                $pages = ceil($total_records);
+
+                        $page = $_GET['page'];
+                        if ($page == "") {
+                                $page = "1";
+                        }
+
+                        $html = "<div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
+                        $html .= "<button type=\"button\" class=\"btn btn-default\" disabled>Page</button>";
+                        if ($page == "1") {
+                                $html .= "<button type=\"button\" class=\"btn btn-primary\" onclick=\"document.location.href='".$url.$page."&stop=0'\">1</button>";
+                                $array = $this->map_numbers($max,$pages);
+                                $next = $page + 1;
+                                $next10 = $page + 10;
+                                $next100 = $page + 100;
+
+                                if ($next < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next."&stop=".$array[$next]."'\">&gt;&gt;</button>";
+                                }
+
+                                if ($next10 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next10."&stop=".$array[$next10]."'\">+ 10</button>";
+                                }
+
+                                if ($next100 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next100."&stop=".$array[$next100]."'\">+ 100</button>";
+                                }
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pages."&stop=".$array[$pages]."'\">$pages</button>";
+
+                        } else {
+                                $array = $this->map_numbers($max,$pages);
+
+                                $pre = $page - 1;
+                                $pre10 = $page - 10;
+                                $pre100 = $page - 100;
+                                $next = $page + 1;
+                                $next10 = $page + 10;
+                                $next100 = $page + 100;
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url."1&stop=0'\">1</button>";
+
+                                if ($pre10 > 0) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pre10."&stop=$array[$pre10]'\">- 10</button>";
+                                }
+
+                                if ($pre100 > 0) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pre100."&stop=$array[$pre100]'\">- 100</button>";
+                                }
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pre."&stop=$array[$pre]'\">&lt;&lt;</button>";
+
+                                $html .= "<button type=\"button\" class=\"btn btn-primary\" onclick=\"document.location.href='".$url.$page."&stop=$array[$page]'\">$page</button>";
+
+                                if ($next < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next."&stop=$array[$next]'\">&gt;&gt;</button>";
+                                }
+
+                                if ($next10 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next10."&stop=$array[$next10]'\">+ 10</button>";
+                                }
+
+                                if ($next100 < $pages) {
+                                        $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$next100."&stop=$array[$next100]'\">+ 100</button>";
+                                }
+
+                                $html .= "<button type=\"button\" class=\"btn btn-default\" onclick=\"document.location.href='".$url.$pages."&stop=$array[$pages]'\">$pages</button>";
+
+                        }
+                        $html .= "</div>";
+                return $html;
+        }
+
+
 }
 ?>
